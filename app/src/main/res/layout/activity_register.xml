@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_height="match_parent"
+    tools:context=".Activities.RegisterActivity">
+    <ImageView
+
+        android:id="@+id/imgBackRegister"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/img_back"
+        android:scaleType="centerCrop"
+        />
+    <RelativeLayout
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvHi"
+            android:layout_width="16dp"
+            android:layout_height="24dp"
+            android:lineHeight="24dp"
+            android:text="HI"
+            android:textColor="#8A8B7A"
+            android:textSize="16dp" />
+        <ImageView
+            android:id="@+id/imgHi"
+            android:layout_marginStart="20dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toRightOf="@id/tvHi"
+            android:src="@drawable/img_hello" />
+
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgHi"
+            android:lineHeight="31.5dp"
+            android:text="Welcome to "
+            android:textColor="@color/black"
+            android:textSize="21dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgHi"
+            android:layout_toRightOf="@id/tvWelcome"
+            android:lineHeight="31.5dp"
+            android:text="Gz Musical"
+            android:textColor="@color/colorPrimary"
+            android:textSize="21dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:paddingBottom="15dp"
+            android:layout_width="100dp"
+            android:layout_height="69dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_logo_green" />
+    </RelativeLayout>
+
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="10dp"
+        android:scrollIndicators="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="137dp"
+                android:layout_height="29dp"
+                android:layout_gravity="left"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/custom_button_oval"
+                android:gravity="center"
+                android:lineHeight="20dp"
+                android:text="Login Details"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="Phone Number">
+
+                <EditText
+                    android:lines="1"
+                    android:maxLength="10"
+                    android:inputType="number"
+                    android:id="@+id/edtPhoneNumberRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="345dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="This will be your username"
+                android:textColor="@color/textColor"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="Password">
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/edtPasswordRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="Confirm Password">
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/edtConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="144dp"
+                android:layout_height="29dp"
+                android:layout_gravity="left"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_button_oval"
+                android:gravity="center"
+                android:lineHeight="20dp"
+                android:text="Personal Details"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="Salutations">
+
+                <EditText
+                    android:id="@+id/edtSalutation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="First Name">
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/edtFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="Last Name">
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/edtlastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="105dp"
+                android:layout_height="29dp"
+                android:layout_gravity="left"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_button_oval"
+                android:gravity="center"
+                android:lineHeight="20dp"
+                android:text="Birthday"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="354dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:lineHeight="20dp"
+                android:text="We would never want to miss such a special day. Your birthday cannot be changed after submission."
+                android:textColor="@color/textColor"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tipDate"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="Day">
+
+                    <EditText
+                        android:lines="1"
+                        android:id="@+id/edtDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:lineHeight="20dp"
+                        android:textColor="@color/textColor"
+                        android:textSize="14dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tipMonth"
+                    android:layout_width="213dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:hint="Month">
+
+                    <EditText
+                        android:id="@+id/edtMonnth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:lineHeight="20dp"
+                        android:textColor="@color/textColor"
+                        android:textSize="14dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="144dp"
+                android:layout_height="29dp"
+                android:layout_gravity="left"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_button_oval"
+                android:gravity="center"
+                android:lineHeight="20dp"
+                android:text="Contact Address"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="Address">
+
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/edtAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="City">
+
+                <EditText
+                    android:id="@+id/edtCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="District">
+
+                <EditText
+                    android:id="@+id/edtDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="Ward">
+
+                <EditText
+                    android:id="@+id/edtWard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:lineHeight="20dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="14dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+
+                android:textColor="@color/textColor"
+                android:layout_width="345dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="Phone number preferences and terms"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="345dp"
+                android:layout_height="40dp">
+
+                <CheckBox
+                    android:buttonTint="@color/colorPrimary"
+                    android:id="@+id/cbRegisterNotification"
+                    android:layout_centerVertical="true"
+                   android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="left"
+                    />
+
+                <TextView
+                    android:layout_width="285dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_toRightOf="@id/cbRegisterNotification"
+                    android:lineHeight="20dp"
+                    android:text="I do not wish to receive news, special offers and more form Gz Musical"
+                    android:textColor="@color/textColor"
+                    android:textSize="12dp"
+                     />
+            </RelativeLayout>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:text="By clicking this button, I agree to the
+Gz Musical Site"
+                android:textStyle="bold"
+                android:lineHeight="20dp"
+                android:textSize="14dp"
+                android:textColor="@color/textColor"
+                android:layout_marginStart="25dp"
+                android:layout_gravity="left"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                />
+            <TextView
+                android:text="Terms of Use"
+                android:lineHeight="20dp"
+                android:textSize="12dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginStart="25dp"
+                android:layout_gravity="left"
+                android:layout_width="78dp"
+                android:layout_height="20dp"
+                />
+            <Button
+                android:layout_marginBottom="10dp"
+                android:id="@+id/btnRegister"
+                android:layout_marginTop="10dp"
+                android:lineHeight="20dp"
+                android:textSize="14dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginEnd="30dp"
+                android:layout_gravity="right"
+                android:text="Join now"
+                android:textAllCaps="false"
+                android:layout_width="102dp"
+                android:layout_height="35dp"
+                android:background="@drawable/custom_button_oval"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

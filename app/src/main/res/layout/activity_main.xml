@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".Activities.MainActivity">
+
+   <androidx.viewpager2.widget.ViewPager2
+       android:id="@+id/vpMainActivity"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent" />
+   <RelativeLayout
+       android:layout_alignParentBottom="true"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content">
+      <com.google.android.material.bottomnavigation.BottomNavigationView
+          android:id="@+id/bottomNavigationMain"
+          app:itemIconTint="@color/custom_bottom_color_item"
+          android:background="@drawable/custom_bottom_navigation_shape"
+          android:layout_width="match_parent"
+          android:layout_height="56dp"
+          android:layout_margin="30dp"
+          android:elevation="3dp"
+          app:itemRippleColor="@android:color/transparent"
+          app:labelVisibilityMode="unlabeled"
+          app:menu="@menu/menu_bottom_navigation"
+          />
+   </RelativeLayout>
+
+   <RelativeLayout
+       android:id="@+id/layoutSetting"
+       android:visibility="visible"
+       android:layout_alignParentRight="true"
+       android:background="@android:color/transparent"
+       android:layout_width="258dp"
+       android:layout_height="match_parent">
+      <View
+          android:background="#B000623B"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+      <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+         <ImageView
+             android:layout_gravity="end"
+             android:id="@+id/imgClose"
+             android:layout_margin="20dp"
+             android:layout_width="30dp"
+             android:layout_height="30dp"
+             android:src="@drawable/ic_close"
+             />
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/cimgAvtSetting"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/custom_avt_shape"
+                android:padding="2dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_avt" />
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="50dp">
+
+           </LinearLayout>
+         </LinearLayout>
+
+      </LinearLayout>
+
+   </RelativeLayout>
+</RelativeLayout>

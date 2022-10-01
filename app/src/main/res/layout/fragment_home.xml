@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".Fragments.HomeFragment">
+
+    <RelativeLayout
+        android:id="@+id/rltToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="40dp">
+
+        <ImageView
+            android:id="@+id/imgNotificationHome"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_notification" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_logo_white" />
+
+        <ImageView
+            android:id="@+id/imgDrawerOpen"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_drawer" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rltUserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/rltToolbar"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="40dp">
+
+        <TextView
+            android:id="@+id/tvGreetingHome"
+            android:layout_width="110dp"
+            android:layout_height="20dp"
+            android:lineHeight="20dp"
+            android:text="Good morning,"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:lineHeight="20dp"
+            android:text="Nhat Lam"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="19dp"
+            android:textStyle="bold" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cimgAvt"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/custom_avt_shape"
+            android:padding="2dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_avt" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_centerHorizontal="true"
+        android:id="@+id/cvCard"
+        android:layout_below="@+id/rltUserInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <androidx.cardview.widget.CardView
+            android:layout_width="275dp"
+            android:layout_height="166dp"
+            android:layout_marginTop="20dp"
+            android:background="#D9FFFFFF"
+            app:cardCornerRadius="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="112dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:alpha="0.6"
+                    android:paddingStart="80dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_logo_green"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tvGMR"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:lineHeight="20dp"
+                    android:text="GZ MUSICAL REWARD"
+                    android:textColor="#00623B"
+                    android:textSize="11dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvLv"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_below="@id/tvGMR"
+                    android:gravity="center_horizontal"
+                    android:letterSpacing="0.02"
+                    android:text="Green Level"
+                    android:textColor="#00623B"
+                    android:textSize="10dp" />
+
+                <LinearLayout
+                    android:id="@+id/lnLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLv"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="20dp"
+                        android:text="35"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="26dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="20dp"
+                        android:text=" / "
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="26dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:lineHeight="20dp"
+                        android:text="100"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="170dp"
+                    android:layout_height="14dp"
+                    android:layout_below="@id/lnLevel"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="20dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_9" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:lineHeight="20dp"
+                    android:text="65 Stars to Next Rewards"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="9dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:background="@drawable/custom_border_top_shape"
+        android:layout_height="match_parent"
+
+        android:layout_below="@+id/cvCard"
+        android:layout_marginTop="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+           >
+            <TextView
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_margin="20dp"
+                android:layout_width="53dp"
+                android:layout_height="21dp"
+                android:text="For you"
+                android:textSize="14dp"
+                android:lineHeight="21dp"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvPromotionHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                 />
+            <me.relex.circleindicator.CircleIndicator2
+                android:id="@+id/ciPromotionHome"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                app:ci_drawable="@drawable/custom_indicator"
+                />
+            <TextView
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_margin="20dp"
+                android:layout_width="53dp"
+                android:layout_height="21dp"
+                android:text="News"
+                android:textSize="14dp"
+                android:lineHeight="21dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvNewsHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                 />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
