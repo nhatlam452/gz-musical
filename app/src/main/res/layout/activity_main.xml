@@ -4,73 +4,240 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".Activities.MainActivity">
 
-   <androidx.viewpager2.widget.ViewPager2
-       android:id="@+id/vpMainActivity"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent" />
-   <RelativeLayout
-       android:layout_alignParentBottom="true"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content">
-      <com.google.android.material.bottomnavigation.BottomNavigationView
-          android:id="@+id/bottomNavigationMain"
-          app:itemIconTint="@color/custom_bottom_color_item"
-          android:background="@drawable/custom_bottom_navigation_shape"
-          android:layout_width="match_parent"
-          android:layout_height="56dp"
-          android:layout_margin="30dp"
-          android:elevation="3dp"
-          app:itemRippleColor="@android:color/transparent"
-          app:labelVisibilityMode="unlabeled"
-          app:menu="@menu/menu_bottom_navigation"
-          />
-   </RelativeLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpMainActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-   <RelativeLayout
-       android:id="@+id/layoutSetting"
-       android:visibility="visible"
-       android:layout_alignParentRight="true"
-       android:background="@android:color/transparent"
-       android:layout_width="258dp"
-       android:layout_height="match_parent">
-      <View
-          android:background="#B000623B"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"/>
-      <LinearLayout
-          android:orientation="vertical"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-         <ImageView
-             android:layout_gravity="end"
-             android:id="@+id/imgClose"
-             android:layout_margin="20dp"
-             android:layout_width="30dp"
-             android:layout_height="30dp"
-             android:src="@drawable/ic_close"
-             />
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/cimgAvtSetting"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/custom_avt_shape"
-                android:padding="2dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_avt" />
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dp">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
-           </LinearLayout>
-         </LinearLayout>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationMain"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_margin="30dp"
+            android:background="@drawable/custom_bottom_navigation_shape"
+            android:elevation="3dp"
+            app:itemIconTint="@color/custom_bottom_color_item"
+            app:itemRippleColor="@android:color/transparent"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/menu_bottom_navigation" />
+    </RelativeLayout>
 
-      </LinearLayout>
+    <RelativeLayout
 
-   </RelativeLayout>
+        android:id="@+id/layoutSetting"
+        android:layout_width="258dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#B000623B" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="20dp">
+
+            <ImageView
+                android:id="@+id/imgClose"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_margin="20dp"
+                android:src="@drawable/ic_close" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/cimgAvtSetting"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/custom_avt_shape"
+                    android:padding="2dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img_avt" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="20dp"
+                        android:text="Nhat Lam"
+                        android:textColor="@color/white"
+                        android:textSize="19dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineHeight="20dp"
+                        android:lines="1"
+                        android:text="nhatlam452@gmail.com"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:lineHeight="20dp"
+                    android:text="Notifications"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:layout_width="69dp"
+                    android:layout_height="27dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="10dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="Saved Address"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="Language"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="FAQ"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="Help"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="Privacy Police"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="Term of Service"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="Contact Us"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="Log out"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/white" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="50dp"
+            android:layout_above="@+id/tvCopyright"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_contact_fb"
+                />
+            <ImageView
+                android:layout_marginStart="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_contact_ins"
+                />
+            <ImageView
+                android:layout_marginStart="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_contact_youtube"
+                />
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tvCopyright"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:lineHeight="12dp"
+            android:textSize="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="© 2021 Gz Musical Company. All rights reserved."
+            />
+    </RelativeLayout>
 </RelativeLayout>

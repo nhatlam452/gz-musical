@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:orientation="vertical"
     tools:context=".Fragments.HomeFragment">
 
     <RelativeLayout
@@ -29,7 +28,7 @@
             android:src="@drawable/ic_logo_white" />
 
         <ImageView
-            android:id="@+id/imgDrawerOpen"
+            android:id="@+id/imgHomeOpenSetting"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_alignParentRight="true"
@@ -191,56 +190,60 @@
 
 
     <ScrollView
+        android:scrollbars="none"
+        android:id="@+id/svHome"
         android:layout_width="match_parent"
-        android:background="@drawable/custom_border_top_shape"
         android:layout_height="match_parent"
-
         android:layout_below="@+id/cvCard"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        android:background="@drawable/custom_border_top_shape"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-           >
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
             <TextView
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_margin="20dp"
                 android:layout_width="53dp"
                 android:layout_height="21dp"
-                android:text="For you"
-                android:textSize="14dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
                 android:lineHeight="21dp"
-                />
+                android:text="For you"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvPromotionHome"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="wrap_content" />
+
             <me.relex.circleindicator.CircleIndicator2
                 android:id="@+id/ciPromotionHome"
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                app:ci_drawable="@drawable/custom_indicator"
-                />
+                android:layout_marginTop="5dp"
+                app:ci_drawable="@drawable/custom_indicator" />
+
             <TextView
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_margin="20dp"
                 android:layout_width="53dp"
                 android:layout_height="21dp"
-                android:text="News"
-                android:textSize="14dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
                 android:lineHeight="21dp"
-                />
+                android:text="News"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvNewsHome"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 

@@ -31,9 +31,5 @@ public class AppUtil {
             return  networkInfo != null && networkInfo.isConnected();
         }
     }
-    public static void sendBroadCastReceiver(Context context,Boolean isShow) {
-        Intent intent = new Intent(String.valueOf(R.string.open_drawer));
-        intent.putExtra(String.valueOf(R.string.is_show_drawer), isShow);
-        context.sendBroadcast(intent);
-    }
+
 }

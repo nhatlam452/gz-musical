@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#00623B</color>
     <color name="textColor">#A6000000</color>
+    <color name="cartTabColor">#D9D07E</color>
 
 </resources>

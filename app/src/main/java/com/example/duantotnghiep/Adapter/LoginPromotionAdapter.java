@@ -21,6 +21,7 @@ public class LoginPromotionAdapter extends RecyclerView.Adapter<LoginPromotionAd
         this.mListPhoto = mListPhoto;
     }
 
+    @NonNull
     @Override
     public LoginPromotionAdapter.LoginPromotionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_promotion_login_screen,parent,false);

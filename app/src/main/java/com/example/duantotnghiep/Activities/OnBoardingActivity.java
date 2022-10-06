@@ -73,7 +73,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     private List<Photo> getListPhoto(){
         List<Photo> list = new ArrayList<>();
         list.add(new Photo(R.drawable.img_1,"\"If you look deep enough you will see music,the heart of nature being everywhere music\""));
-        list.add(new Photo(R.drawable.img_2,"\"We have learned to express the more delicate nuances of feeling by penetrating more deeply into the mysteries of harmony\""));
+        list.add(new Photo(R.drawable.img_11,"\"We have learned to express the more delicate nuances of feeling by penetrating more deeply into the mysteries of harmony\""));
         list.add(new Photo(R.drawable.img_3,"\"Music is a hidden arithmetic exercise of the soul, which does not know what it is counting\""));
         return list;
     }

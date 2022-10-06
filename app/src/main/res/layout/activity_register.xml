@@ -3,23 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:layout_height="match_parent"
     tools:context=".Activities.RegisterActivity">
+
     <ImageView
 
         android:id="@+id/imgBackRegister"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/img_back"
         android:scaleType="centerCrop"
-        />
+        android:src="@drawable/img_back" />
+
     <RelativeLayout
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp">
 
         <TextView
             android:id="@+id/tvHi"
@@ -29,11 +30,12 @@
             android:text="HI"
             android:textColor="#8A8B7A"
             android:textSize="16dp" />
+
         <ImageView
             android:id="@+id/imgHi"
-            android:layout_marginStart="20dp"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_marginStart="20dp"
             android:layout_toRightOf="@id/tvHi"
             android:src="@drawable/img_hello" />
 
@@ -60,20 +62,19 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:paddingBottom="15dp"
             android:layout_width="100dp"
             android:layout_height="69dp"
             android:layout_alignParentRight="true"
+            android:paddingBottom="15dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_logo_green" />
     </RelativeLayout>
 
     <ScrollView
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingVertical="10dp"
-        android:scrollIndicators="none">
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,14 +102,14 @@
                 android:hint="Phone Number">
 
                 <EditText
-                    android:lines="1"
-                    android:maxLength="10"
-                    android:inputType="number"
                     android:id="@+id/edtPhoneNumberRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:inputType="number"
                     android:lineHeight="20dp"
+                    android:lines="1"
+                    android:maxLength="10"
                     android:textColor="@color/textColor"
                     android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -129,12 +130,12 @@
                 android:hint="Password">
 
                 <EditText
-                    android:lines="1"
                     android:id="@+id/edtPasswordRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:lineHeight="20dp"
+                    android:lines="1"
                     android:textColor="@color/textColor"
                     android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -146,12 +147,12 @@
                 android:hint="Confirm Password">
 
                 <EditText
-                    android:lines="1"
                     android:id="@+id/edtConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:lineHeight="20dp"
+                    android:lines="1"
                     android:textColor="@color/textColor"
                     android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -193,12 +194,12 @@
                 android:hint="First Name">
 
                 <EditText
-                    android:lines="1"
                     android:id="@+id/edtFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:lineHeight="20dp"
+                    android:lines="1"
                     android:textColor="@color/textColor"
                     android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -210,12 +211,12 @@
                 android:hint="Last Name">
 
                 <EditText
-                    android:lines="1"
                     android:id="@+id/edtlastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:lineHeight="20dp"
+                    android:lines="1"
                     android:textColor="@color/textColor"
                     android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -256,12 +257,12 @@
                     android:hint="Day">
 
                     <EditText
-                        android:lines="1"
                         android:id="@+id/edtDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:lineHeight="20dp"
+                        android:lines="1"
                         android:textColor="@color/textColor"
                         android:textSize="14dp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -306,12 +307,12 @@
                 android:hint="Address">
 
                 <EditText
-                    android:lines="1"
                     android:id="@+id/edtAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:lineHeight="20dp"
+                    android:lines="1"
                     android:textColor="@color/textColor"
                     android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -366,27 +367,27 @@
 
             <TextView
 
-                android:textColor="@color/textColor"
                 android:layout_width="345dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
                 android:text="Phone number preferences and terms"
+                android:textColor="@color/textColor"
                 android:textSize="14dp"
                 android:textStyle="bold" />
+
             <RelativeLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="345dp"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp">
 
                 <CheckBox
-                    android:buttonTint="@color/colorPrimary"
                     android:id="@+id/cbRegisterNotification"
-                    android:layout_centerVertical="true"
-                   android:layout_width="30dp"
+                    android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_centerVertical="true"
                     android:layout_gravity="left"
-                    />
+                    android:buttonTint="@color/colorPrimary" />
 
                 <TextView
                     android:layout_width="285dp"
@@ -396,48 +397,47 @@
                     android:lineHeight="20dp"
                     android:text="I do not wish to receive news, special offers and more form Gz Musical"
                     android:textColor="@color/textColor"
-                    android:textSize="12dp"
-                     />
+                    android:textSize="12dp" />
             </RelativeLayout>
+
             <TextView
-                android:layout_marginTop="20dp"
-                android:text="By clicking this button, I agree to the
-Gz Musical Site"
-                android:textStyle="bold"
-                android:lineHeight="20dp"
-                android:textSize="14dp"
-                android:textColor="@color/textColor"
-                android:layout_marginStart="25dp"
-                android:layout_gravity="left"
                 android:layout_width="250dp"
                 android:layout_height="40dp"
-                />
-            <TextView
-                android:text="Terms of Use"
-                android:lineHeight="20dp"
-                android:textSize="12dp"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginStart="25dp"
                 android:layout_gravity="left"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="By clicking this button, I agree to the
+Gz Musical Site"
+                android:textColor="@color/textColor"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:layout_width="78dp"
                 android:layout_height="20dp"
-                />
-            <Button
-                android:layout_marginBottom="10dp"
-                android:id="@+id/btnRegister"
-                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:layout_marginStart="25dp"
                 android:lineHeight="20dp"
-                android:textSize="14dp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:layout_marginEnd="30dp"
-                android:layout_gravity="right"
-                android:text="Join now"
-                android:textAllCaps="false"
+                android:text="Terms of Use"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12dp" />
+
+            <Button
+                android:id="@+id/btnRegister"
                 android:layout_width="102dp"
                 android:layout_height="35dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/custom_button_oval"
-                />
+                android:lineHeight="20dp"
+                android:text="Join now"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>

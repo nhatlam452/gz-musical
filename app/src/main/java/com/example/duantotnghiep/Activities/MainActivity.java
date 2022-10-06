@@ -7,25 +7,24 @@ import androidx.transition.TransitionManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.duantotnghiep.Adapter.ChangeFragmentAdapter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.TranslateAnimation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private RelativeLayout layoutSetting;
     private ViewPager2 vpMainActivity;
     private BottomNavigationView bottomNavigationMain;
-    private BroadcastReceiver mBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +35,7 @@ public class MainActivity extends AppCompatActivity {
         layoutSetting = findViewById(R.id.layoutSetting);
         ImageView imgClose = findViewById(R.id.imgClose);
         setUpViewPager();
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (String.valueOf(R.string.open_drawer).equals(intent.getAction())) {
-                    boolean show = intent.getBooleanExtra(String.valueOf(R.string.is_show_drawer), false);
-                    if (show) {
-                        Transition transition = new Slide(Gravity.END);
-                        transition.setDuration(600);
-                        transition.addTarget(R.id.layoutSetting);
 
-                        TransitionManager.beginDelayedTransition((ViewGroup) getWindow().getDecorView().getRootView(), transition);
-                        layoutSetting.setVisibility(View.VISIBLE);
-                    }
-                }
-
-            }
-        };
         imgClose.setOnClickListener(v -> {
             Transition transition = new Slide(Gravity.END);
             transition.setDuration(600);
@@ -61,6 +44,17 @@ public class MainActivity extends AppCompatActivity {
             TransitionManager.beginDelayedTransition((ViewGroup) getWindow().getDecorView().getRootView(), transition);
             layoutSetting.setVisibility(View.GONE);
         });
+    }
+    public void hideBottomNar(View view){
+        view.setOnTouchListener(new TranslateAnimation(this,bottomNavigationMain));
+    }
+    public void OpenDrawer(){
+        Transition transition = new Slide(Gravity.END);
+        transition.setDuration(600);
+        transition.addTarget(R.id.layoutSetting);
+
+        TransitionManager.beginDelayedTransition((ViewGroup) getWindow().getDecorView().getRootView(), transition);
+        layoutSetting.setVisibility(View.VISIBLE);
     }
 
     private void setUpViewPager() {
@@ -115,17 +109,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(String.valueOf(R.string.open_drawer));
-        registerReceiver(mBroadcastReceiver, intentFilter);
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(mBroadcastReceiver);
-
-    }
 }
