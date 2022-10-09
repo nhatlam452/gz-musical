@@ -11,7 +11,7 @@ import android.os.Looper;
 import android.widget.Button;
 
 import com.example.duantotnghiep.Adapter.OnBoardingAdapter;
-import com.example.duantotnghiep.Models.Photo;
+import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.R;
 
 import java.util.ArrayList;

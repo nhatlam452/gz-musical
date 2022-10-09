@@ -92,6 +92,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:background="@color/white"
             android:layout_marginTop="10dp"
             android:id="@+id/tilPhoneNumberLogin"
             android:layout_width="345dp"
@@ -112,6 +113,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:background="@color/white"
             android:id="@+id/tilPasswordLogin"
             android:layout_width="345dp"
             android:layout_height="wrap_content"

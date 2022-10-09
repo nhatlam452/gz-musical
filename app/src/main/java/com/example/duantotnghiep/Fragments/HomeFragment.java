@@ -10,14 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import com.example.duantotnghiep.Activities.MainActivity;
 import com.example.duantotnghiep.Adapter.HomeNewsAdapter;
 import com.example.duantotnghiep.Adapter.LoginPromotionAdapter;
-import com.example.duantotnghiep.Models.Photo;
+import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.SnapHelperOneByOne;
 import com.example.duantotnghiep.Utilities.TranslateAnimation;

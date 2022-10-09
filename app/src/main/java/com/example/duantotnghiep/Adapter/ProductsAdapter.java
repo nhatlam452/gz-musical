@@ -15,17 +15,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.duantotnghiep.Activities.LoginActivity;
-import com.example.duantotnghiep.Models.Photo;
+import com.example.duantotnghiep.Model.Photo;
+import com.example.duantotnghiep.Model.Products;
 import com.example.duantotnghiep.R;
 
 import java.util.List;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder> {
-    private final List<Photo> mListPhoto;
+    private final List<Products> mListProduct;
     private final Context context;
-    public ProductsAdapter(Context context,List<Photo> mListPhoto) {
-        this.mListPhoto = mListPhoto;
+    public ProductsAdapter(Context context,List<Products> mListProduct) {
+        this.mListProduct = mListProduct;
         this.context = context;
     }
 
@@ -38,21 +40,21 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     @Override
     public void onBindViewHolder(@NonNull ProductsAdapter.ProductsViewHolder holder, int position) {
-        Photo photo = mListPhoto.get(position);
-        if(photo == null){
+        Products products = mListProduct.get(position);
+        if(products == null){
             return;
         }
-        holder.imgProduct.setImageResource(photo.getResourceId());
-        holder.imgProduct.setOnClickListener(v -> context.startActivity(new Intent(context,LoginActivity.class)));
+        Glide.with(context).load(products.getUrl()).into(holder.imgProduct);
         holder.layoutProduct.startAnimation(AnimationUtils.loadAnimation(holder.layoutProduct.getContext(),R.anim.anim_rcv_product));
         holder.tvPrice.setPaintFlags(holder.tvPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.tvPrice.setText("2.500.000 d");
+        holder.tvPrice.setText(products.getPrice());
+        holder.tvProductName.setText(products.getProductName().trim());
     }
 
     @Override
     public int getItemCount() {
-        if (mListPhoto != null){
-            return mListPhoto.size();
+        if (mListProduct != null){
+            return mListProduct.size();
         }
         return 0;
     }
@@ -60,12 +62,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     public static class ProductsViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
         LinearLayout layoutProduct;
-        TextView tvPrice;
+        TextView tvPrice,tvProductName;
         public ProductsViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProducts);
             layoutProduct = itemView.findViewById(R.id.layoutProduct);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvProductName = itemView.findViewById(R.id.tvProductName);
         }
     }
 }

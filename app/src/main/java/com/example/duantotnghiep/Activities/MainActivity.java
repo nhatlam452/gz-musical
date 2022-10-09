@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 
 import com.example.duantotnghiep.Adapter.ChangeFragmentAdapter;
 import com.example.duantotnghiep.R;
-import com.example.duantotnghiep.Utilities.TranslateAnimation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
             TransitionManager.beginDelayedTransition((ViewGroup) getWindow().getDecorView().getRootView(), transition);
             layoutSetting.setVisibility(View.GONE);
         });
-    }
-    public void hideBottomNar(View view){
-        view.setOnTouchListener(new TranslateAnimation(this,bottomNavigationMain));
     }
     public void OpenDrawer(){
         Transition transition = new Slide(Gravity.END);

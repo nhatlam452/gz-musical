@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.duantotnghiep.Models.Photo;
+import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.R;
 
 import java.util.List;

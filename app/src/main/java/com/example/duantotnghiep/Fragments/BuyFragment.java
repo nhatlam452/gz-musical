@@ -5,22 +5,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
-import android.view.WindowManager;
-import android.view.WindowMetrics;
-import android.widget.LinearLayout;
 
-import com.example.duantotnghiep.Adapter.ProductsAdapter;
-import com.example.duantotnghiep.Models.Photo;
+import com.example.duantotnghiep.Retrofit.RetrofitCallback;
+import com.example.duantotnghiep.Retrofit.RetrofitController;
+import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.TranslateAnimation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,11 +31,7 @@ public class BuyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rcvProducts = view.findViewById(R.id.rcvProducts);
         mList = getList();
-        ProductsAdapter productsAdapter = new ProductsAdapter(getContext(),mList);
-        rcvProducts.setLayoutManager(new LinearLayoutManager(getContext()));
-        rcvProducts.setHasFixedSize(true);
-        rcvProducts.setAdapter(productsAdapter);
-
+        RetrofitController.ApiService.getService(getContext()).get_all_product().enqueue(RetrofitCallback.getAllProduct(getContext(),rcvProducts));
         if (getActivity() != null) {
             BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationMain);
             rcvProducts.setOnTouchListener(new TranslateAnimation(getActivity(), bottomNavigationView));

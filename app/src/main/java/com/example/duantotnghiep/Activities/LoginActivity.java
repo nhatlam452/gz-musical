@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.duantotnghiep.Adapter.LoginPromotionAdapter;
-import com.example.duantotnghiep.Models.Photo;
+import com.example.duantotnghiep.Retrofit.RetrofitCallback;
+import com.example.duantotnghiep.Retrofit.RetrofitController;
+import com.example.duantotnghiep.Model.User;
+import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.SnapHelperOneByOne;
 
@@ -26,8 +30,9 @@ public class LoginActivity extends AppCompatActivity {
     private RecyclerView rcvPromotion;
     private CircleIndicator2 ciPromotion;
     private LoginPromotionAdapter promotionAdapter;
-    Button btnLogin;
+    private Button btnLogin;
     private TextView tvSignUp, tvForgotPassword;
+    private EditText edtPhoneNumberLogin,edtPasswordLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +50,10 @@ public class LoginActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
         btnLogin.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+            String phoneNumber = edtPhoneNumberLogin.getText().toString().trim();
+            String password = edtPasswordLogin.getText().toString().trim();
+            User user = new User(phoneNumber,password);
+            RetrofitController.ApiService.getService(LoginActivity.this).check_login(phoneNumber,password).enqueue(RetrofitCallback.getCheckLogin(LoginActivity.this));
 
         });
 
@@ -82,6 +88,8 @@ public class LoginActivity extends AppCompatActivity {
     private void initUi() {
 
         rcvPromotion = findViewById(R.id.vpPromotion);
+        edtPhoneNumberLogin = findViewById(R.id.edtPhoneNumberLogin);
+        edtPasswordLogin = findViewById(R.id.edtPasswordLogin);
         btnLogin = findViewById(R.id.btnLogin);
         ciPromotion = findViewById(R.id.ciPromotion);
         tvSignUp = findViewById(R.id.tvSignUp);

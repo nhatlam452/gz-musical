@@ -1,4 +1,4 @@
-package com.example.duantotnghiep.Models;
+package com.example.duantotnghiep.Model;
 
 public class Photo {
     private int resourceId;
