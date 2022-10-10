@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ProductResponse {
+public class ProductListResponse {
     @SerializedName("respone_code")
     private int responseCode;
     private String error;
     private String message;
     private List<Products> data;
 
-    public ProductResponse() {
+    public ProductListResponse() {
     }
 
-    public ProductResponse(int responseCode, String error, String message, List<Products> data) {
+    public ProductListResponse(int responseCode, String error, String message, List<Products> data) {
         this.responseCode = responseCode;
         this.error = error;
         this.message = message;
