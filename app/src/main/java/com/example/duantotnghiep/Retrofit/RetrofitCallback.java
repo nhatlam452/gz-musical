@@ -60,13 +60,14 @@ public class RetrofitCallback {
                     ProductResponse productResponse = response.body();
                     if (productResponse.getResponseCode() == 1) {
                         ProductsAdapter adapter = new ProductsAdapter(context,productResponse.getData());
-                        recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setAdapter(adapter);
 
                     }
                 }
-                Log.d("===>>", "" + response.code());
+                ProductResponse productResponse = response.body();
+
+                Log.d("===>>", "" + productResponse.getResponseCode());
 
             }
 

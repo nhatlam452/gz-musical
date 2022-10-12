@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         if(products == null){
             return;
         }
+        Toast.makeText(context, ""+mListProduct.size(), Toast.LENGTH_SHORT).show();
         Glide.with(context).load(products.getUrl()).into(holder.imgProduct);
         holder.layoutProduct.startAnimation(AnimationUtils.loadAnimation(holder.layoutProduct.getContext(),R.anim.anim_rcv_product));
         holder.tvPrice.setPaintFlags(holder.tvPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

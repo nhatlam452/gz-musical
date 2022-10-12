@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment {
     private void setRecycleViewPromotion() {
         List<Photo> mListPhoto = getListPhoto();
         LoginPromotionAdapter promotionAdapter = new LoginPromotionAdapter(mListPhoto);
-        HomeNewsAdapter homeNewsAdapter = new HomeNewsAdapter(mListPhoto);
+        HomeNewsAdapter homeNewsAdapter = new HomeNewsAdapter(mListPhoto,getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rcvPromotionHome.setLayoutManager(linearLayoutManager);
         rcvNewsHome.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -82,11 +82,9 @@ public class HomeFragment extends Fragment {
 
     private List<Photo> getListPhoto() {
         List<Photo> list = new ArrayList<>();
-        list.add(new Photo(R.drawable.img, "12th Dec 2021: Pistachio Christmas\n" +
-                " Tree Frappuccino"));
-        list.add(new Photo(R.drawable.img_4, "Art in a Cup: Buy One Get One"));
-        list.add(new Photo(R.drawable.img_5, "12th Dec 2021: Pistachio Christmas\n" +
-                " Tree Frappuccino"));
+        list.add(new Photo(R.drawable.anh1, "2023 KAWAI MUSIC SCHOOL PIANO COMPETITION","https://vietthuong.vn/2023-kawai-music-school-piano-competition"));
+        list.add(new Photo(R.drawable.anh2, "WORKSHOP PIANO: PIECES OF ART","https://vietthuong.vn/workshop-piano-pieces-of-art"));
+        list.add(new Photo(R.drawable.anh3, "ĐỆM’S SECRET WORKSHOP","https://vietthuong.vn/dems-secret-workshop"));
         return list;
     }
 

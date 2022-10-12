@@ -30,7 +30,7 @@ public class BuyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rcvProducts = view.findViewById(R.id.rcvProducts);
-        mList = getList();
+//        mList = getList();
         RetrofitController.ApiService.getService(getContext()).get_all_product().enqueue(RetrofitCallback.getAllProduct(getContext(),rcvProducts));
         if (getActivity() != null) {
             BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationMain);
@@ -42,17 +42,17 @@ public class BuyFragment extends Fragment {
     private List<Photo> getList() {
         List<Photo> list = new ArrayList<>();
         list.add(new Photo(R.drawable.img_10, "12th Dec 2021: Pistachio Christmas\n" +
-                " Tree Frappuccino"));
-        list.add(new Photo(R.drawable.img_16, "Art in a Cup: Buy One Get One"));
-        list.add(new Photo(R.drawable.img_13, "Art in a Cup: Buy One Get One"));
+                " Tree Frappuccino","https://www.nbcnews.com/news/world/blasts-kyiv-russian-missiles-putin-ukraine-crimea-bridge-attack-rcna51418"));
+        list.add(new Photo(R.drawable.img_16, "Art in a Cup: Buy One Get One","https://www.nbcnews.com/news/world/blasts-kyiv-russian-missiles-putin-ukraine-crimea-bridge-attack-rcna51418"));
+        list.add(new Photo(R.drawable.img_13, "Art in a Cup: Buy One Get One","https://www.nbcnews.com/news/world/blasts-kyiv-russian-missiles-putin-ukraine-crimea-bridge-attack-rcna51418"));
         list.add(new Photo(R.drawable.img_17, "12th Dec 2021: Pistachio Christmas\n" +
-                " Tree Frappuccino"));
+                " Tree Frappuccino","https://www.nbcnews.com/news/world/blasts-kyiv-russian-missiles-putin-ukraine-crimea-bridge-attack-rcna51418"));
         list.add(new Photo(R.drawable.img_10, "12th Dec 2021: Pistachio Christmas\n" +
-                " Tree Frappuccino"));
-        list.add(new Photo(R.drawable.img_16, "Art in a Cup: Buy One Get One"));
-        list.add(new Photo(R.drawable.img_13, "Art in a Cup: Buy One Get One"));
+                " Tree Frappuccino","https://www.nbcnews.com/news/world/blasts-kyiv-russian-missiles-putin-ukraine-crimea-bridge-attack-rcna51418"));
+        list.add(new Photo(R.drawable.img_16, "Art in a Cup: Buy One Get One","https://www.nbcnews.com/news/world/blasts-kyiv-russian-missiles-putin-ukraine-crimea-bridge-attack-rcna51418"));
+        list.add(new Photo(R.drawable.img_13, "Art in a Cup: Buy One Get One","https://www.nbcnews.com/news/world/blasts-kyiv-russian-missiles-putin-ukraine-crimea-bridge-attack-rcna51418"));
         list.add(new Photo(R.drawable.img_17, "12th Dec 2021: Pistachio Christmas\n" +
-                " Tree Frappuccino"));
+                " Tree Frappuccino","https://www.nbcnews.com/news/world/blasts-kyiv-russian-missiles-putin-ukraine-crimea-bridge-attack-rcna51418"));
         return list;
     }
 

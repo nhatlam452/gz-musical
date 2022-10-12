@@ -99,9 +99,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private List<Photo> getListPhoto() {
         List<Photo> list = new ArrayList<>();
-        list.add(new Photo(R.drawable.img, null));
-        list.add(new Photo(R.drawable.img_4, null));
-        list.add(new Photo(R.drawable.img_5, null));
+        list.add(new Photo(R.drawable.img, null,null));
+        list.add(new Photo(R.drawable.img_4, null,null));
+        list.add(new Photo(R.drawable.img_5, null,null));
         return list;
     }
 }

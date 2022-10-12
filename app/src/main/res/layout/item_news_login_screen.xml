@@ -8,6 +8,7 @@
     android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cvCard"
             app:cardCornerRadius="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -32,6 +33,5 @@
             android:textAlignment="center"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:text="Shop Now: BTS X Starbucks Korea: Limited Edition Menus and Merchandise In A Pretty Purple Shade"
             />
 </LinearLayout>

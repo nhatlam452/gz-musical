@@ -24,7 +24,7 @@ import retrofit2.http.POST;
 public class RetrofitController {
     private static class RetrofitBuilder {
 
-        private static final String BASE_URL = "http://192.168.137.1/API_DATN/";
+        private static final String BASE_URL = "http://192.168.100.72/API_DATN/";
         private final Retrofit retrofit = buildRetrofit();
         private static RetrofitBuilder instance;
         private final Context context;

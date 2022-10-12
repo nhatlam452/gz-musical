@@ -1,6 +1,9 @@
 package com.example.duantotnghiep.Adapter;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.duantotnghiep.Activities.WebViewActivity;
 import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.R;
 
@@ -17,6 +21,7 @@ import java.util.List;
 
 public class OnBoardingAdapter extends RecyclerView.Adapter<OnBoardingAdapter.OnBoardingViewHolder> {
     private final List<Photo> mListPhoto;
+
 
     public OnBoardingAdapter(List<Photo> mListPhoto) {
         this.mListPhoto = mListPhoto;
@@ -36,6 +41,7 @@ public class OnBoardingAdapter extends RecyclerView.Adapter<OnBoardingAdapter.On
         }
         holder.tvSloganItemOnBoarding.setText(photo.getSlogan());
         holder.imgItemOnBoarding.setImageResource(photo.getResourceId());
+
     }
 
     @Override
