@@ -53,8 +53,8 @@ public class AppUtil {
 
         public static boolean isValidPassword(String string) {
             String PATTERN;
-            //The password must contain at least one lowercase character, one uppercase character, one digit, one special character, and a length between 8 to 20
-            PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,25}$";
+            //The password must contain at least one lowercase character, one uppercase character, one digit, one special character, and a length between 8 to 15
+            PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$";
             Pattern pattern = Pattern.compile(PATTERN);
             Matcher matcher = pattern.matcher(string);
             return matcher.matches();

@@ -8,6 +8,8 @@ public class User {
     private String fbId;
     private String email;
     private String fullname;
+    private String firstName;
+    private String lastName;
     private String password;
     private String dob;
     private String salutation;

@@ -35,6 +35,4 @@ public class ProductService implements ProductContract.Model {
             }
         });
     }
-
-
 }

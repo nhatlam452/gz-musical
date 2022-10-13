@@ -3,6 +3,7 @@ package com.example.duantotnghiep.Retrofit;
 import android.content.Context;
 
 
+import com.example.duantotnghiep.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -18,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-        private static final String BASE_URL = "http://192.168.100.95/API_DATN/";
+        private static final String BASE_URL = String.valueOf(R.string.BASE_URL_API);
         private static Retrofit retrofit = null;
         public static Retrofit getClient(){
             if (retrofit == null){

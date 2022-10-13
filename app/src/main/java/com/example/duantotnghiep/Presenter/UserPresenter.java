@@ -33,7 +33,7 @@ public class UserPresenter implements LoginContract.Presenter,LoginContract.Mode
         loginView.hideProgress();
         if (userResponse.getResponseCode() == 1){
         loginView.setUserInfo(userResponse.getData().get(0));
-        loginView.startActivity();
+        loginView.onSuccess();
         }else {
             loginView.showToast("Wrong Phone Number or Password");
         }

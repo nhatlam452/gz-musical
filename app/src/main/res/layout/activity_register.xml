@@ -94,10 +94,19 @@
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:textStyle="bold" />
-
+            <TextView
+                android:layout_width="345dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="This will be your username"
+                android:textColor="@color/textColor"
+                android:textStyle="bold" />
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipPhoneNumberRegister"
                 android:layout_width="345dp"
                 android:layout_height="wrap_content"
+                app:errorEnabled="true"
                 android:layout_marginTop="5dp"
                 android:hint="Phone Number">
 
@@ -114,20 +123,19 @@
                     android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:layout_width="345dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:text="This will be your username"
-                android:textColor="@color/textColor"
-                android:textStyle="bold" />
+
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipPassword"
                 android:layout_width="345dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Password">
+                app:counterEnabled="true"
+                app:counterMaxLength="15"
+                android:hint="Password"
+                app:boxStrokeColor="#FF0000"
+                app:hintTextColor="#FF0000"
+                app:passwordToggleEnabled="true">
 
                 <EditText
                     android:id="@+id/edtPasswordRegister"
@@ -140,10 +148,125 @@
                     android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
+                android:id="@+id/layoutCheckPassword"
                 android:layout_width="345dp"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCheckLength"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="x"
+                        android:textColor="#D50000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Length between 8 to 15"
+                        android:textColor="@color/black"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCheckDigit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="x"
+                        android:textColor="#D50000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contain at least one digit"
+                        android:textColor="@color/black"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCheckLowercase"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="x"
+                        android:textColor="#D50000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contain at least one lowercase character"
+                        android:textColor="@color/black"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCheckUppercase"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="x"
+                        android:textColor="#D50000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contain at least one uppercase character"
+                        android:textColor="@color/black"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvCheckSpecialCharacter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:text="x"
+                        android:textColor="#D50000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Contain at least one special character"
+                        android:textColor="@color/black"
+                        android:textStyle="italic" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="345dp"
+                android:id="@+id/tipConfirmPassword"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                app:errorEnabled="true"
                 android:hint="Confirm Password">
 
                 <EditText
@@ -172,12 +295,17 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipSalutation"
                 android:layout_width="345dp"
+                app:errorEnabled="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="Salutations">
 
                 <EditText
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                     android:id="@+id/edtSalutation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -188,7 +316,9 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipFirstName"
                 android:layout_width="345dp"
+                app:errorEnabled="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="First Name">
@@ -205,6 +335,8 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                app:errorEnabled="true"
+                android:id="@+id/tipLastName"
                 android:layout_width="345dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -251,12 +383,15 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tipDate"
+                    app:errorEnabled="true"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:hint="Day">
 
                     <EditText
+                        android:cursorVisible="false"
+                        android:focusable="false"
                         android:id="@+id/edtDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -269,6 +404,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tipMonth"
+                    app:errorEnabled="true"
                     android:layout_width="213dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -276,7 +412,9 @@
                     android:hint="Month">
 
                     <EditText
-                        android:id="@+id/edtMonnth"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:id="@+id/edtMonth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
@@ -302,11 +440,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="345dp"
+                android:id="@+id/tipAddress"
+                app:errorEnabled="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="Address">
 
                 <EditText
+
                     android:id="@+id/edtAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -319,11 +460,16 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="345dp"
+                app:errorEnabled="true"
+                android:id="@+id/tipCity"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="City">
 
                 <EditText
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                     android:id="@+id/edtCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -337,9 +483,14 @@
                 android:layout_width="345dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:id="@+id/tipDistrict"
+                app:errorEnabled="true"
                 android:hint="District">
 
                 <EditText
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    android:cursorVisible="false"
+                    android:focusable="false"
                     android:id="@+id/edtDistrict"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -350,12 +501,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tipWard"
                 android:layout_width="345dp"
+                app:errorEnabled="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="Ward">
 
                 <EditText
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                     android:id="@+id/edtWard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

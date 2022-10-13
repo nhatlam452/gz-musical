@@ -10,5 +10,6 @@
     <color name="colorPrimary">#00623B</color>
     <color name="textColor">#A6000000</color>
     <color name="cartTabColor">#D9D07E</color>
+    <color name="red">#D50000</color>
 
 </resources>

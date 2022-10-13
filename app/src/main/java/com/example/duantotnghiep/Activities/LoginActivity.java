@@ -35,8 +35,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private LoginPromotionAdapter promotionAdapter;
     private Button btnLogin;
     private TextView tvSignUp, tvForgotPassword;
-    private EditText edtPhoneNumberLogin,edtPasswordLogin;
+    private EditText edtPhoneNumberLogin, edtPasswordLogin;
     private UserPresenter userPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         btnLogin.setOnClickListener(v -> {
             String phoneNumber = edtPhoneNumberLogin.getText().toString().trim();
             String password = edtPasswordLogin.getText().toString().trim();
-            userPresenter.getCheckLogin(phoneNumber,password);
+            userPresenter.getCheckLogin(phoneNumber, password);
 //            RetrofitController.ApiService.getService(LoginActivity.this).check_login(phoneNumber,password).enqueue(RetrofitCallback.getCheckLogin(LoginActivity.this));
 
         });
@@ -96,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         tvSignUp = findViewById(R.id.tvSignUp);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         userPresenter = new UserPresenter(this);
-     }
+    }
 
     private List<Photo> getListPhoto() {
         List<Photo> list = new ArrayList<>();
@@ -107,9 +108,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     @Override
-    public void startActivity() {
-        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+    public void onSuccess() {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+        finish();
     }
 
     @Override
@@ -124,22 +126,18 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void showProgress() {
-        Log.d("===","show Progress");
+        Log.d("===", "show Progress");
     }
 
     @Override
     public void hideProgress() {
-        Log.d("===","hide Progress");
-
-    }
-
-    @Override
-    public void showDialog() {
+        Log.d("===", "hide Progress");
 
     }
 
     @Override
     public void onResponseFail(Throwable t) {
-    Log.d("=== Error : " ,t.getMessage());
+        Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
+        Log.d("=== Error : ", t.getMessage());
     }
 }

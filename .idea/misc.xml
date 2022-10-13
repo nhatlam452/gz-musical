@@ -6,6 +6,7 @@
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_avt_shape.xml" value="0.1635" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_background_card_view.xml" value="0.1635" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_background_rcv.xml" value="0.179" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_border_shape.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_border_top_shape.xml" value="0.1635" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_bottom_color_item.xml" value="0.1635" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_bottom_navigation_shape.xml" value="0.1635" />
@@ -15,6 +16,7 @@
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_indicator.xml" value="0.1635" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_rcv_border.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/dotted_line.xml" value="0.8" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1635" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_forgot_password.xml" value="0.2" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_login.xml" value="0.264" />
@@ -32,6 +34,8 @@
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_photo_on_boarding_screen.xml" value="0.264" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_product_layout.xml" value="0.264" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_promotion_login_screen.xml" value="0.536" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/layout_dialog_spinner.xml" value="0.25416666666666665" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/layout_item_spinner.xml" value="0.25416666666666665" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/menu/menu_bottom_navigation.xml" value="0.25416666666666665" />
       </map>
     </option>

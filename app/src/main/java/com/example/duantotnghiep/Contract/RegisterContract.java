@@ -1,21 +1,18 @@
 package com.example.duantotnghiep.Contract;
 
-import android.content.Context;
-
 import com.example.duantotnghiep.Model.Response.UserResponse;
 import com.example.duantotnghiep.Model.User;
 
-public interface LoginContract {
+public interface RegisterContract {
     interface Model{
         interface  OnFinishedListener{
             void  onFinished(UserResponse userResponse);
             void  onFailure(Throwable t);
         }
-        void getLogin(OnFinishedListener onFinishedListener,String phone , String password);
+        void getRegister(OnFinishedListener onFinishedListener,String phone , String password);
     }
     interface View{
         void onSuccess();
-        void setUserInfo(User user);
         void showToast(String msg);
         void showProgress();
         void hideProgress();
@@ -23,7 +20,7 @@ public interface LoginContract {
     }
 
     interface Presenter {
-        void getCheckLogin(String phone , String password);
+        void getCheckRegister(String phone , String password);
 
     }
 }
