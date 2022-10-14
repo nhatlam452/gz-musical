@@ -1,26 +1,26 @@
 package com.example.duantotnghiep.Contract;
 
-import com.example.duantotnghiep.Model.Response.UserResponse;
+import android.app.Activity;
+
 import com.example.duantotnghiep.Model.User;
 
 public interface RegisterContract {
     interface Model{
-        interface  OnFinishedListener{
-            void  onFinished(UserResponse userResponse);
-            void  onFailure(Throwable t);
+        interface  OnFinishedRegisterListener{
+            void  onRegisterFinished(int code,String msg);
+            void  onRegisterFailure(Throwable t);
         }
-        void getRegister(OnFinishedListener onFinishedListener,String phone , String password);
+        void getRegister(OnFinishedRegisterListener onFinishedListener,User user);
     }
     interface View{
-        void onSuccess();
-        void showToast(String msg);
+        void onRegisterSuccess();
+        void onRegisterFail(String msg);
         void showProgress();
         void hideProgress();
         void onResponseFail(Throwable t);
     }
 
     interface Presenter {
-        void getCheckRegister(String phone , String password);
-
+        void getCheckRegister(User user, String otp, String id, Activity activity);
     }
 }

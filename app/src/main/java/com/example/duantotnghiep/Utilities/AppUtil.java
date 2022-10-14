@@ -39,14 +39,10 @@ public class AppUtil {
     }
 
     public static class ValidateInput {
-        public static boolean isEmpty(String string) {
-            return TextUtils.isEmpty(string);
-        }
-
-        public static boolean isValidPhoneNumber(String string) {
+        public static boolean isValidPhoneNumber(String phoneNumber) {
             final String PHONE_REGEX = "0" + "\\d{9}";
             Pattern pattern = Pattern.compile(PHONE_REGEX);
-            Matcher matcher = pattern.matcher(string);
+            Matcher matcher = pattern.matcher(phoneNumber);
             return matcher.matches();
         }
 

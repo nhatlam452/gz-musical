@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.duantotnghiep.Adapter.LoginPromotionAdapter;
 import com.example.duantotnghiep.Contract.LoginContract;
+import com.example.duantotnghiep.Contract.RegisterContract;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.Presenter.UserPresenter;
@@ -107,21 +108,18 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         return list;
     }
 
+
     @Override
-    public void onSuccess() {
+    public void onLoginSuccess(User user) {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         finish();
     }
 
     @Override
-    public void setUserInfo(User user) {
+    public void onLoginFail(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 
-    }
-
-    @Override
-    public void showToast(String msg) {
-        Toast.makeText(this, "msg : " + msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

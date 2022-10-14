@@ -127,6 +127,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tipPassword"
+                app:errorEnabled="true"
                 android:layout_width="345dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -384,7 +385,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tipDate"
                     app:errorEnabled="true"
-                    android:layout_width="80dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:hint="Day">

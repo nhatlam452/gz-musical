@@ -1,7 +1,6 @@
 package com.example.duantotnghiep.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.duantotnghiep.Activities.LoginActivity;
-import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.Model.Products;
 import com.example.duantotnghiep.R;
 

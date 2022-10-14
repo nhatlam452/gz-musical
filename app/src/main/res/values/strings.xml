@@ -6,6 +6,4 @@
     <string name="is_show_drawer">Is Show</string>
     <string name="check">✔</string>
     <string name="x">✖</string>
-    <string name="BASE_URL_API">http://192.168.100.95/API_DATN/</string>
-    <string name="BASE_URL_API_LOCATION">https://api.mysupership.vn/v1/partner/areas/</string>
 </resources>

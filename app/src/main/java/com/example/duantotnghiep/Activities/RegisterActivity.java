@@ -17,42 +17,42 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duantotnghiep.Adapter.SpinnerAdapter;
 import com.example.duantotnghiep.Adapter.SpinnerLocationAdapter;
 import com.example.duantotnghiep.Contract.LocationContract;
+import com.example.duantotnghiep.Contract.VerifyOtpInterface;
 import com.example.duantotnghiep.Model.Location;
+import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.LocationPresenter;
+import com.example.duantotnghiep.Presenter.VerifyOtpPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppUtil;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegisterActivity extends AppCompatActivity implements LocationContract.View {
+public class RegisterActivity extends AppCompatActivity implements LocationContract.View, VerifyOtpInterface {
     private LocationPresenter locationPresenter;
+    private VerifyOtpPresenter verifyOtpPresenter;
     private ImageView imgBackRegister;
     private TextView tvCheckLength, tvCheckLowercase, tvCheckUppercase, tvCheckDigit, tvCheckSpecialCharacter;
     private Button btnRegister;
-    private TextInputLayout tipPassword,tipPhoneNumberRegister,tipConfirmPassword,tipFirstName,tipLastName,tipAddress;
+    private TextInputLayout tipPassword, tipPhoneNumberRegister, tipConfirmPassword, tipFirstName,
+            tipLastName, tipAddress, tipSalutation, tipDate, tipMonth, tipCity, tipDistrict, tipWard;
     private LinearLayout layoutCheckPassword;
-    private Spinner spnSalutation;
     private EditText edtPhoneNumberRegister, edtPasswordRegister, edtConfirmPassword,
-            edtFirstName, edtLastName, edtAddress,edtSalutation,edtDate,edtMonth,edtCity,
-            edtDistrict,edtWard;
+            edtFirstName, edtLastName, edtAddress, edtSalutation, edtDate, edtMonth, edtCity,
+            edtDistrict, edtWard;
     private CheckBox cbRegisterNotification;
     private final Pattern specialChar = Pattern.compile("[!@#$%^&*_+.-]");
     private final Pattern digitChar = Pattern.compile("\\d");
@@ -82,15 +82,15 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
             mList.add("Mrs.");
             mList.add("My Friend ");
             mList.add("Sir ");
-            openDialog(mList,edtSalutation,"Salutation");
+            openDialog(mList, edtSalutation, "Salutation");
         });
 
         edtDate.setOnClickListener(v -> {
             List<String> mList = new ArrayList<>();
             for (int i = 1; i < 31; i++) {
-                mList.add(i+"");
+                mList.add(i + "");
             }
-            openDialog(mList,edtDate,"Date");
+            openDialog(mList, edtDate, "Date");
         });
         edtMonth.setOnClickListener(v -> {
             List<String> mList = new ArrayList<>();
@@ -107,34 +107,159 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
             mList.add("November");
             mList.add("December");
 
-            openDialog(mList,edtDate,"Month");
+            openDialog(mList, edtMonth, "Month");
         });
         edtCity.setOnClickListener(v -> {
-            locationPresenter.getCity(edtCity,"YOUR CITY");
+            locationPresenter.getCity(edtCity, "YOUR CITY");
             edtDistrict.setText(null);
             edtWard.setText(null);
             mCodeDistrict = null;
         });
         edtDistrict.setOnClickListener(v -> {
             mCodeWard = null;
-            locationPresenter.getDistrict(mCodeDistrict,edtDistrict,"YOUR DISTRICT");
+            locationPresenter.getDistrict(mCodeDistrict, edtDistrict, "YOUR DISTRICT");
             edtWard.setText(null);
         });
-        edtWard.setOnClickListener(v -> {
-            locationPresenter.getWard(mCodeWard,edtWard,"YOUR WARD");
+        edtWard.setOnClickListener(v -> locationPresenter.getWard(mCodeWard, edtWard, "YOUR WARD"));
+        btnRegister.setOnClickListener(v -> {
+            if (checkValidateInputRegister()){
+                String phoneNumber = edtPhoneNumberRegister.getText().toString().trim();
+                String password = edtPasswordRegister.getText().toString().trim();
+                String salutation = edtSalutation.getText().toString().trim();
+                String firstName = edtFirstName.getText().toString().trim();
+                String lastName = edtLastName.getText().toString().trim();
+                String dob = edtDate.getText().toString().trim() +"/" + edtMonth.getText().toString().trim();
+                String address = edtAddress.getText().toString().trim();
+                String city = edtCity.getText().toString().trim();
+                String district = edtDistrict.getText().toString().trim();
+                String ward = edtWard.getText().toString().trim();
+                String isNoti ;
+                if (cbRegisterNotification.isChecked()){
+                    isNoti = "1";
+                }else {
+                    isNoti = "0";
+                }
+                User user = new User(null,phoneNumber,null,null,firstName,lastName,password,dob,salutation,isNoti,address,city,district,ward,"0");
+                verifyOtpPresenter.sendOtp(phoneNumber,this,user);
+            }
         });
+
     }
 
-    private void openDialog(List<String> mList,EditText editText,String title) {
+    private boolean checkValidateInputRegister() {
+        boolean isAllValidate ;
+        String phoneNumber = edtPhoneNumberRegister.getText().toString().trim();
+        String password = edtPasswordRegister.getText().toString().trim();
+        String confirmPassword = edtConfirmPassword.getText().toString().trim();
+        String salutation = edtSalutation.getText().toString().trim();
+        String firstName = edtFirstName.getText().toString().trim();
+        String lastName = edtLastName.getText().toString().trim();
+        String date = edtDate.getText().toString().trim();
+        String month = edtMonth.getText().toString().trim();
+        String address = edtAddress.getText().toString().trim();
+        String city = edtCity.getText().toString().trim();
+        String district = edtDistrict.getText().toString().trim();
+        String ward = edtWard.getText().toString().trim();
+        //Validate Phone number
+        if (phoneNumber.isEmpty()) {
+            tipPhoneNumberRegister.setError("Phone number is Empty");
+        } else if (phoneNumber.length() < 10 || !AppUtil.ValidateInput.isValidPhoneNumber(phoneNumber)) {
+            tipPhoneNumberRegister.setError("Invalid Phone number");
+        } else {
+            tipPhoneNumberRegister.setError(null);
+        }
+        //Validate Password
+        if (password.isEmpty()) {
+            tipPassword.setError("Password is Empty");
+        } else if (!AppUtil.ValidateInput.isValidPassword(password)) {
+            tipPassword.setError("Invalid Password");
+        } else {
+            tipPassword.setError(null);
+        }
+
+        if (confirmPassword.isEmpty()) {
+            tipConfirmPassword.setError("Confirm password is Empty");
+        } else if (!confirmPassword.equals(password)) {
+            tipConfirmPassword.setError("Password does not match");
+        } else {
+            tipConfirmPassword.setError(null);
+        }
+
+        //Validate Person Detail
+        if (salutation.isEmpty()) {
+            tipSalutation.setError("Please choose your salutation");
+        } else {
+            tipSalutation.setError(null);
+        }
+
+        if (firstName.isEmpty()) {
+            tipFirstName.setError("First name is Empty");
+        } else {
+            tipFirstName.setError(null);
+        }
+
+        if (lastName.isEmpty()) {
+            tipLastName.setError("Last name is Empty");
+        } else {
+            tipLastName.setError(null);
+        }
+
+        //Validate Birthday
+        if (date.isEmpty()) {
+            tipDate.setError("Please choose your date");
+        } else {
+            tipDate.setError(null);
+        }
+
+        if (month.isEmpty()) {
+            tipMonth.setError("Please choose your month");
+        } else {
+            tipMonth.setError(null);
+        }
+
+        //Validate Address
+        if (address.isEmpty()) {
+            tipAddress.setError("Address is Empty");
+        } else {
+            tipAddress.setError(null);
+        }
+
+        if (city.isEmpty()) {
+            tipCity.setError("Please choose your City");
+        } else {
+            tipCity.setError(null);
+        }
+
+        if (district.isEmpty()) {
+            tipDistrict.setError("Please choose your District");
+        } else {
+            tipDistrict.setError(null);
+        }
+
+        if (ward.isEmpty()) {
+            tipWard.setError("Please choose your Ward");
+        } else {
+            tipWard.setError(null);
+        }
+
+        isAllValidate = tipPhoneNumberRegister.getError() == null && tipPassword.getError() == null && tipConfirmPassword.getError() == null &&
+                tipSalutation.getError() == null && tipFirstName.getError() == null && tipLastName.getError() == null &&
+                tipMonth.getError() == null && tipDate.getError() == null && tipAddress.getError() == null && tipCity.getError() == null
+                && tipDistrict.getError() == null && tipWard.getError() == null;
+        return isAllValidate;
+
+    }
+
+    private void openDialog(List<String> mList, EditText editText, String title) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_spinner);
         Window window = dialog.getWindow();
-        if (window == null){
+        if (window == null) {
             return;
         }
 
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
@@ -145,27 +270,25 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
         RecyclerView rcvSpinner = dialog.findViewById(R.id.rcvSpinner);
 
         tvTitle.setText(title);
-        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this, mList, new SpinnerAdapter.OnClickSetText() {
-            @Override
-            public void onClickSetText(String s) {
-                editText.setText(s);
-                dialog.dismiss();
-            }
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this, mList, s -> {
+            editText.setText(s);
+            dialog.dismiss();
         });
         rcvSpinner.setLayoutManager(new LinearLayoutManager(this));
         rcvSpinner.setAdapter(spinnerAdapter);
         dialog.show();
     }
-    private void openDialogLocation(List<Location> mList,EditText editText,String title) {
+
+    private void openDialogLocation(List<Location> mList, EditText editText, String title) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_spinner);
         Window window = dialog.getWindow();
-        if (window == null){
+        if (window == null) {
             return;
         }
 
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
@@ -176,18 +299,15 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
         RecyclerView rcvSpinner = dialog.findViewById(R.id.rcvSpinner);
 
         tvTitle.setText(title);
-        SpinnerLocationAdapter spinnerAdapter = new SpinnerLocationAdapter(this, mList, new SpinnerLocationAdapter.OnClickSetText() {
-            @Override
-            public void onClickSetText(String s,String code) {
-                editText.setText(s);
-                if (mCodeDistrict == null){
-                    mCodeDistrict = code;
-                }
-                if (mCodeWard == null){
-                    mCodeWard = code;
-                }
-                dialog.dismiss();
+        SpinnerLocationAdapter spinnerAdapter = new SpinnerLocationAdapter(this, mList, (s, code) -> {
+            editText.setText(s);
+            if (mCodeDistrict == null) {
+                mCodeDistrict = code;
             }
+            if (mCodeWard == null) {
+                mCodeWard = code;
+            }
+            dialog.dismiss();
         });
         rcvSpinner.setLayoutManager(new LinearLayoutManager(this));
         rcvSpinner.setAdapter(spinnerAdapter);
@@ -195,6 +315,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
     }
 
     private void initUI() {
+        verifyOtpPresenter = new VerifyOtpPresenter(this);
         locationPresenter = new LocationPresenter(this);
         imgBackRegister = findViewById(R.id.imgBackRegister);
         edtDate = findViewById(R.id.edtDate);
@@ -211,6 +332,17 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
         cbRegisterNotification = findViewById(R.id.cbRegisterNotification);
         layoutCheckPassword = findViewById(R.id.layoutCheckPassword);
         tipPassword = findViewById(R.id.tipPassword);
+        tipPhoneNumberRegister = findViewById(R.id.tipPhoneNumberRegister);
+        tipConfirmPassword = findViewById(R.id.tipConfirmPassword);
+        tipSalutation = findViewById(R.id.tipSalutation);
+        tipFirstName = findViewById(R.id.tipFirstName);
+        tipLastName = findViewById(R.id.tipLastName);
+        tipDate = findViewById(R.id.tipDate);
+        tipMonth = findViewById(R.id.tipMonth);
+        tipAddress = findViewById(R.id.tipAddress);
+        tipCity = findViewById(R.id.tipCity);
+        tipDistrict = findViewById(R.id.tipDistrict);
+        tipWard = findViewById(R.id.tipWard);
         tvCheckLength = findViewById(R.id.tvCheckLength);
         tvCheckLowercase = findViewById(R.id.tvCheckLowercase);
         edtCity = findViewById(R.id.edtCity);
@@ -313,12 +445,27 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
     }
 
     @Override
-    public void onGetLocationSuccess(List<Location> mList,EditText editText,String title) {
-        openDialogLocation(mList,editText,title);
+    public void onGetLocationSuccess(List<Location> mList, EditText editText, String title) {
+        openDialogLocation(mList, editText, title);
     }
 
     @Override
     public void onResponseFail(Throwable t) {
-        Log.d("===>",t.getMessage());
+        Log.d("===>", t.getMessage());
+    }
+
+    @Override
+    public void onSendOtpSuccess(User user,String id) {
+        Intent i = new Intent(this,OtpVerifyActivity.class);
+        i.putExtra("UserRegister",user);
+        i.putExtra("verificationId",id);
+        startActivity(i);
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+
+    }
+
+    @Override
+    public void onSendOtpFailed(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

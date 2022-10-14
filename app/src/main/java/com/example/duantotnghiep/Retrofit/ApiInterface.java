@@ -4,8 +4,10 @@ import com.example.duantotnghiep.Model.Location;
 import com.example.duantotnghiep.Model.Response.LocationResponse;
 import com.example.duantotnghiep.Model.Response.ProductListResponse;
 import com.example.duantotnghiep.Model.Response.UserResponse;
+import com.example.duantotnghiep.Model.User;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -18,6 +20,8 @@ public interface ApiInterface {
     Call<UserResponse> check_login(@Field("phoneNumber") String phoneNumber ,
                                    @Field("password") String password
     );
+    @POST("views/insert-user.php")
+    Call<UserResponse> register_user(@Body User User);
     @GET("views/get-all-product.php")
     Call<ProductListResponse> get_all_product();
     @GET("province")

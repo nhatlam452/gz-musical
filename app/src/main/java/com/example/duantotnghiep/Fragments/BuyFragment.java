@@ -40,7 +40,6 @@ public class BuyFragment extends Fragment implements ProductContract.View {
         presenter = new ProductPresenter(this);
         mList = getList();
         presenter.getProduct();
-//        RetrofitController.ApiService.getService(getContext()).get_all_product().enqueue(RetrofitCallback.getAllProduct(getContext(),rcvProducts));
         if (getActivity() != null) {
             BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationMain);
             rcvProducts.setOnTouchListener(new TranslateAnimation(getActivity(), bottomNavigationView));
