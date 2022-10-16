@@ -6,42 +6,52 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.duantotnghiep.Contract.RegisterContract;
+import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 
-public class OtpVerifyActivity extends AppCompatActivity implements RegisterContract.View{
+public class OtpVerifyActivity extends AppCompatActivity implements UserContract.View {
     private EditText edtOTP1, edtOTP2, edtOTP3, edtOTP4, edtOTP5, edtOTP6;
     private UserPresenter userPresenter;
     private Button btnConfirmOtp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        initUI();
         setContentView(R.layout.activity_otp_verify);
+        initUI();
         User user = (User) getIntent().getSerializableExtra("UserRegister");
         String verificationId = getIntent().getStringExtra("verificationId");
 
-        btnConfirmOtp.setOnClickListener(v ->{
+        btnConfirmOtp.setOnClickListener(v -> {
             String OTP = edtOTP1.getText().toString() + edtOTP2.getText().toString() + edtOTP3.getText().toString() + edtOTP4.getText().toString() + edtOTP5.getText().toString() + edtOTP6.getText().toString();
-            if (OTP.isEmpty())
-                Toast.makeText(getApplicationContext(), "Blank Field can not be processed", Toast.LENGTH_LONG).show();
-            else if (OTP.length() != 6)
-                Toast.makeText(getApplicationContext(), "Invalid OTP", Toast.LENGTH_LONG).show();
-            else {
-                userPresenter.getCheckRegister(user,OTP,verificationId,this);
+            if (OTP.length() != 6) {
+                Toast.makeText(getApplicationContext(), "Please fill the OTP ", Toast.LENGTH_LONG).show();
+                return;
             }
+
+            if (getIntent().getBooleanExtra("isForgotPassword", false)) {
+                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, OTP);
+                signInWithPhoneAuthCredential(credential);
+            } else {
+                userPresenter.onRegister(user, OTP, verificationId, this);
+            }
+
         });
     }
 
+
     private void initUI() {
-        userPresenter = new UserPresenter((RegisterContract.View) this);
+        userPresenter = new UserPresenter(this);
         btnConfirmOtp = findViewById(R.id.btnConfirmOtp);
         edtOTP1 = findViewById(R.id.edtOTP1);
         edtOTP2 = findViewById(R.id.edtOTP2);
@@ -149,29 +159,36 @@ public class OtpVerifyActivity extends AppCompatActivity implements RegisterCont
     }
 
     @Override
-    public void onRegisterSuccess() {
-        startActivity(new Intent(this,RegisterSuccessActivity.class));
-        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+    public void onSuccess(User user) {
+
+        startActivity(new Intent(this, RegisterSuccessActivity.class));
         finish();
-    }
-
-    @Override
-    public void onRegisterFail(String msg) {
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
 
     }
 
     @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
+    public void onFail(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        Log.d("OtpActivity : ", "Msg : " + msg);
     }
 
     @Override
     public void onResponseFail(Throwable t) {
         Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
     }
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        startActivity(new Intent(this,ChangePasswordActivity.class));
+                    } else {
+                        Toast.makeText(this, task.getException() + "", Toast.LENGTH_SHORT).show();
+                        // Sign in failed, display a message and update the UI
+                        Log.w("========>", "signInWithCredential:failure", task.getException());
+                    }
+                });
+    }
+
 }

@@ -1,114 +1,89 @@
 package com.example.duantotnghiep.Presenter;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 
-import com.example.duantotnghiep.Contract.LoginContract;
-import com.example.duantotnghiep.Contract.RegisterContract;
+import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.Response.UserResponse;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Service.UserService;
 import com.example.duantotnghiep.Utilities.AppUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-public class UserPresenter implements LoginContract.Presenter, LoginContract.Model.OnFinishedListener, RegisterContract.Model.OnFinishedRegisterListener, RegisterContract.Presenter {
+public class UserPresenter implements UserContract.Presenter, UserContract.Model.OnFinishedListener {
 
     private final String TAG = "USER PRESENTER";
-    private  FirebaseAuth mAuth ;
-    private LoginContract.View loginView;
-    private LoginContract.Model model;
-    private RegisterContract.View registerView;
-    private RegisterContract.Model registerModel;
+    private final UserContract.View mView;
+    private final UserContract.Model model;
 
-
-    public UserPresenter(LoginContract.View loginView) {
-        this.loginView = loginView;
+    public UserPresenter(UserContract.View mView) {
+        this.mView = mView;
         model = new UserService();
     }
-
-    public UserPresenter(RegisterContract.View registerView) {
-        this.registerView = registerView;
-        registerModel = new UserService();
-    }
-
     @Override
-    public void getCheckLogin(String phone, String password) {
+    public void onLogin(String phone, String password) {
         if (phone.isEmpty() || password.isEmpty()) {
-            loginView.onLoginFail("Phone Number or Password is Empty");
+            mView.onFail("Phone Number or Password is Empty");
         } else if (!AppUtil.ValidateInput.isValidPhoneNumber(phone)) {
-            loginView.onLoginFail("Invalid Phone Number");
+            mView.onFail("Invalid Phone Number");
         }
-        loginView.showProgress();
         model.getLogin(this, phone, password);
     }
 
 
     @Override
-    public void onLoginFinished(UserResponse userResponse) {
-        loginView.hideProgress();
-        if (userResponse.getResponseCode() == 1) {
-            loginView.onLoginSuccess(userResponse.getData().get(0));
-        } else {
-            loginView.onLoginFail("Wrong Phone Number or Password");
-            Log.d(TAG, "Login code : " + userResponse.getResponseCode() + "Login Msg : " + userResponse.getMessage());
-        }
-
-    }
-
-    @Override
-    public void onLoginFailure(Throwable t) {
-        loginView.onResponseFail(t);
-    }
-
-    @Override
-    public void onRegisterFinished(int code, String msg) {
-        if (code == 1) {
-            registerView.onRegisterSuccess();
-        } else {
-            registerView.onRegisterFail("Register is not Success");
-        }
-        Log.d(TAG, "Code : " + code + "---- Msg : " + msg);
-
-    }
-
-    @Override
-    public void onRegisterFailure(Throwable t) {
-        Log.d(TAG, t.getMessage());
-
-    }
-
-    @Override
-    public void getCheckRegister(User user, String otp, String id, Activity activity) {
+    public void onRegister(User user, String otp, String id, Activity activity) {
         if (user == null) {
             return;
         }
-
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, otp);
         signInWithPhoneAuthCredential(credential,user,this,activity);
+    }
 
+    @Override
+    public void onCheckExits(String phone) {
+        model.checkExitsUser(this,phone);
+    }
+
+    @Override
+    public void onChangePassword() {
 
     }
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential, User user, RegisterContract.Model.OnFinishedRegisterListener onFinishedRegisterListener,Activity activity) {
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            registerModel.getRegister(onFinishedRegisterListener,user);
-                        } else {
-                            // Sign in failed, display a message and update the UI
-                            Log.w("========>", "signInWithCredential:failure", task.getException());
 
-                        }
+    @Override
+    public void onFinished(UserResponse userResponse) {
+        if (userResponse.getResponseCode() == 1) {
+            if (userResponse.getData() == null){
+                mView.onSuccess(null);
+                return;
+            }
+            mView.onSuccess(userResponse.getData().get(0));
+        }
+        else {
+            mView.onFail(userResponse.getMessage());
+            Log.d(TAG, " code : " + userResponse.getResponseCode() + " Msg : " + userResponse.getMessage());
+        }
+
+    }
+    @Override
+    public void onFailure(Throwable t) {
+        mView.onResponseFail(t);
+    }
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential, User user, UserContract.Model.OnFinishedListener onFinishedListener, Activity activity) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(activity, task -> {
+                    if (task.isSuccessful()) {
+                            model.getRegister(onFinishedListener,user);
+                    } else {
+                        Toast.makeText(activity, task.getException() + "", Toast.LENGTH_SHORT).show();
+                        // Sign in failed, display a message and update the UI
+                        Log.w("========>", "signInWithCredential:failure", task.getException());
                     }
                 });
     }

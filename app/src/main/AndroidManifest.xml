@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.RegisterSuccessActivity"
             android:exported="false" />
         <activity
@@ -28,19 +31,13 @@
             android:exported="false" />
         <activity
             android:name=".Activities.RegisterActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".Activities.LoginActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".Activities.OnBoardingActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".Activities.SplashActivity"
             android:exported="true">
@@ -52,10 +49,7 @@
         </activity>
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="true">
-
-        </activity>
-
+            android:exported="true"></activity>
     </application>
 
 </manifest>

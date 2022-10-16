@@ -28,7 +28,7 @@ import android.widget.Toast;
 import com.example.duantotnghiep.Adapter.SpinnerAdapter;
 import com.example.duantotnghiep.Adapter.SpinnerLocationAdapter;
 import com.example.duantotnghiep.Contract.LocationContract;
-import com.example.duantotnghiep.Contract.VerifyOtpInterface;
+import com.example.duantotnghiep.Presenter.VerifyOtpInterface;
 import com.example.duantotnghiep.Model.Location;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.LocationPresenter;

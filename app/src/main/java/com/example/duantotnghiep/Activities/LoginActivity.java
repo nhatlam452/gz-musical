@@ -5,18 +5,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duantotnghiep.Adapter.LoginPromotionAdapter;
-import com.example.duantotnghiep.Contract.LoginContract;
-import com.example.duantotnghiep.Contract.RegisterContract;
+import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.Presenter.UserPresenter;
@@ -30,22 +30,31 @@ import java.util.TimerTask;
 
 import me.relex.circleindicator.CircleIndicator2;
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+public class LoginActivity extends AppCompatActivity implements UserContract.View {
     private RecyclerView rcvPromotion;
     private CircleIndicator2 ciPromotion;
     private LoginPromotionAdapter promotionAdapter;
     private Button btnLogin;
+    private CheckBox cbKeepLogged;
     private TextView tvSignUp, tvForgotPassword;
     private EditText edtPhoneNumberLogin, edtPasswordLogin;
     private UserPresenter userPresenter;
+    private SharedPreferences.Editor mEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        SharedPreferences mSharePrefer = getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), 0);
+        mEditor = mSharePrefer.edit();
         initUi();
+        boolean isLogin = mSharePrefer.getBoolean(String.valueOf(R.string.REMEMBER_LOGIN), false);
+        if (isLogin) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+            finish();
+        }
         setRecycleView();
-
         tvSignUp.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
@@ -57,9 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         btnLogin.setOnClickListener(v -> {
             String phoneNumber = edtPhoneNumberLogin.getText().toString().trim();
             String password = edtPasswordLogin.getText().toString().trim();
-            userPresenter.getCheckLogin(phoneNumber, password);
-//            RetrofitController.ApiService.getService(LoginActivity.this).check_login(phoneNumber,password).enqueue(RetrofitCallback.getCheckLogin(LoginActivity.this));
-
+            userPresenter.onLogin(phoneNumber, password);
         });
 
     }
@@ -91,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     private void initUi() {
         rcvPromotion = findViewById(R.id.vpPromotion);
+        cbKeepLogged = findViewById(R.id.cbKeepLogged);
         edtPhoneNumberLogin = findViewById(R.id.edtPhoneNumberLogin);
         edtPasswordLogin = findViewById(R.id.edtPasswordLogin);
         btnLogin = findViewById(R.id.btnLogin);
@@ -110,27 +118,18 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
 
     @Override
-    public void onLoginSuccess(User user) {
+    public void onSuccess(User user) {
+        if (cbKeepLogged.isChecked()) {
+            mEditor.putBoolean(String.valueOf(R.string.REMEMBER_LOGIN), true);
+        }
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         finish();
     }
 
     @Override
-    public void onLoginFail(String msg) {
+    public void onFail(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void showProgress() {
-        Log.d("===", "show Progress");
-    }
-
-    @Override
-    public void hideProgress() {
-        Log.d("===", "hide Progress");
-
     }
 
     @Override

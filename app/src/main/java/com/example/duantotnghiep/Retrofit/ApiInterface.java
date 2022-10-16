@@ -17,18 +17,27 @@ import retrofit2.http.Query;
 public interface ApiInterface {
     @FormUrlEncoded
     @POST("views/check-login.php")
-    Call<UserResponse> check_login(@Field("phoneNumber") String phoneNumber ,
+    Call<UserResponse> check_login(@Field("phoneNumber") String phoneNumber,
                                    @Field("password") String password
     );
+
+    @FormUrlEncoded
+    @POST("views/check-user-exits.php")
+    Call<UserResponse> check_user_exits(@Field("phoneNumber") String phoneNumber);
+
     @POST("views/insert-user.php")
     Call<UserResponse> register_user(@Body User User);
+
     @GET("views/get-all-product.php")
     Call<ProductListResponse> get_all_product();
+
     @GET("province")
     Call<LocationResponse> getCity();
+
     @GET("district")
     Call<LocationResponse> getDistrict(@Query("province") String province);
+
     @GET("commune")
     Call<LocationResponse> getWard(@Query("district")
-                                    String district);
+                                           String district);
 }

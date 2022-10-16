@@ -17,8 +17,7 @@ public interface ProductContract {
     }
     interface View{
         void setProductList(List<Products> mListProduct);
-        void showProgress();
-        void hideProgress();
+
         void onResponseFail(Throwable t);
     }
 

@@ -81,16 +81,6 @@ public class BuyFragment extends Fragment implements ProductContract.View {
     }
 
     @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
     public void onResponseFail(Throwable t) {
         Log.d(TAG,t.getMessage());
     }
