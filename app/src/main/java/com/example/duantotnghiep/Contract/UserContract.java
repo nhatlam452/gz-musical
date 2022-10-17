@@ -15,7 +15,7 @@ public interface UserContract {
         void getLogin(OnFinishedListener onFinishedListener,String phone , String password);
         void getRegister(OnFinishedListener onFinishedListener, User user);
         void checkExitsUser(OnFinishedListener onFinishedListener,String phone);
-        void changePassword(OnFinishedListener onFinishedListener,String phone,String password);
+        void changePassword(OnFinishedListener onFinishedListener,String phone,String newPassword,String password);
     }
     interface View{
         void onSuccess(User user);
@@ -27,6 +27,6 @@ public interface UserContract {
         void onLogin(String phone , String password);
         void onRegister(User user, String otp, String id, Activity activity);
         void onCheckExits(String phone);
-        void onChangePassword();
+        void onChangePassword(String phoneNumber,String newPassword,String oldPassword);
     }
 }

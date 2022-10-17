@@ -51,8 +51,8 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
     }
 
     @Override
-    public void onChangePassword() {
-
+    public void onChangePassword(String phoneNumber,String newPassword,String oldPassword) {
+        model.changePassword(this,phoneNumber,newPassword,oldPassword);
     }
 
     @Override

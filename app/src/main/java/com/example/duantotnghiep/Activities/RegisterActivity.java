@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
         btnRegister.setOnClickListener(v -> {
-            startActivity(new Intent(RegisterActivity.this, RegisterSuccessActivity.class));
+            startActivity(new Intent(RegisterActivity.this, SuccessActivity.class));
             finish();
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });

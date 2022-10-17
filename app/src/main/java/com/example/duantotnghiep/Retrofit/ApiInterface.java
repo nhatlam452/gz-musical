@@ -24,7 +24,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("views/check-user-exits.php")
     Call<UserResponse> check_user_exits(@Field("phoneNumber") String phoneNumber);
+    @FormUrlEncoded
+    @POST("views/update-user-password.php")
+    Call<UserResponse> change_user_password(@Field("phoneNumber") String phoneNumber,
+                                            @Field("newPassword") String newPassword,
+                                            @Field("password") String password
 
+    );
     @POST("views/insert-user.php")
     Call<UserResponse> register_user(@Body User User);
 

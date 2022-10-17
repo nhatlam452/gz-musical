@@ -160,8 +160,9 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
 
     @Override
     public void onSuccess(User user) {
-
-        startActivity(new Intent(this, RegisterSuccessActivity.class));
+        Intent i = new Intent(this,SuccessActivity.class);
+        i.putExtra("Notification","Thanks for giving us your precious time. Now you are ready for an enjoyable moment.");
+        startActivity(i);
         finish();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
 
@@ -182,7 +183,12 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        startActivity(new Intent(this,ChangePasswordActivity.class));
+                        Intent i = new Intent(this,ChangePasswordActivity.class);
+                        i.putExtra("userPhone",getIntent().getStringExtra("userPhone"));
+                        startActivity(i);
+                        finish();
+                        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+
                     } else {
                         Toast.makeText(this, task.getException() + "", Toast.LENGTH_SHORT).show();
                         // Sign in failed, display a message and update the UI

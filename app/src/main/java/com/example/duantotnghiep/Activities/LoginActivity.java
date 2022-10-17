@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     private EditText edtPhoneNumberLogin, edtPasswordLogin;
     private UserPresenter userPresenter;
     private SharedPreferences.Editor mEditor;
-
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
