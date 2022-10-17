@@ -5,11 +5,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -22,6 +29,7 @@ import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.SnapHelperOneByOne;
 
 import java.util.ArrayList;
@@ -41,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     private EditText edtPhoneNumberLogin, edtPasswordLogin;
     private UserPresenter userPresenter;
     private SharedPreferences.Editor mEditor;
-    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +57,7 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
         SharedPreferences mSharePrefer = getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), 0);
         mEditor = mSharePrefer.edit();
         initUi();
+
         boolean isLogin = mSharePrefer.getBoolean(String.valueOf(R.string.REMEMBER_LOGIN), false);
         if (isLogin) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -65,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
         btnLogin.setOnClickListener(v -> {
+            AppUtil.showDialog.show(this);
             String phoneNumber = edtPhoneNumberLogin.getText().toString().trim();
             String password = edtPasswordLogin.getText().toString().trim();
             userPresenter.onLogin(phoneNumber, password);
@@ -72,9 +82,12 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
 
     }
 
+
+
+
     private void setRecycleView() {
         List<Photo> mListPhoto = getListPhoto();
-        promotionAdapter = new LoginPromotionAdapter(mListPhoto);
+        promotionAdapter = new LoginPromotionAdapter(mListPhoto,this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LoginActivity.this, LinearLayoutManager.HORIZONTAL, false);
         rcvPromotion.setLayoutManager(linearLayoutManager);
         LinearSnapHelper linearSnapHelper = new SnapHelperOneByOne();
@@ -123,6 +136,7 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
         if (cbKeepLogged.isChecked()) {
             mEditor.putBoolean(String.valueOf(R.string.REMEMBER_LOGIN), true);
         }
+        AppUtil.showDialog.dismiss();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         finish();
@@ -130,11 +144,13 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
 
     @Override
     public void onFail(String msg) {
+        AppUtil.showDialog.dismiss();
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResponseFail(Throwable t) {
+        AppUtil.showDialog.dismiss();
         Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
         Log.d("=== Error : ", t.getMessage());
     }

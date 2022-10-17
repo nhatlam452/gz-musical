@@ -41,11 +41,13 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserCon
         });
         tvSignUpForgotPassword.setOnClickListener(v -> {
             startActivity(new Intent(ForgotPasswordActivity.this,RegisterActivity.class));
+            finish();
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
         btnResetPassword.setOnClickListener(v -> {
             String phoneNumber = edtPhoneNumberForgotPassword.getText().toString().trim();
             if (AppUtil.ValidateInput.isValidPhoneNumber(phoneNumber)){
+                AppUtil.showDialog.show(this);
                 userPresenter.onCheckExits(phoneNumber);
             }else {
                 Toast.makeText(this, "Invalid Phone Number", Toast.LENGTH_SHORT).show();
@@ -77,17 +79,20 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserCon
 
     @Override
     public void onFail(String msg) {
+        AppUtil.showDialog.dismiss();
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResponseFail(Throwable t) {
+        AppUtil.showDialog.dismiss();
         Toast.makeText(this, "Unknown Error", Toast.LENGTH_SHORT).show();
         Log.d(TAG,"Error : " +t.getMessage());
     }
 
     @Override
     public void onSendOtpSuccess(User user, String id) {
+        AppUtil.showDialog.dismiss();
         Intent i = new Intent(this,OtpVerifyActivity.class);
         i.putExtra("isForgotPassword",true);
         i.putExtra("userPhone",edtPhoneNumberForgotPassword.getText().toString());
@@ -98,6 +103,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserCon
 
     @Override
     public void onSendOtpFailed(String msg) {
+        AppUtil.showDialog.dismiss();
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }

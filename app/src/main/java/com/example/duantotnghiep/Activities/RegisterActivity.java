@@ -139,6 +139,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
                 }else {
                     isNoti = "0";
                 }
+                AppUtil.showDialog.show(this);
                 User user = new User(null,phoneNumber,null,null,firstName,lastName,password,dob,salutation,isNoti,address,city,district,ward,"0");
                 verifyOtpPresenter.sendOtp(phoneNumber,this,user);
             }
@@ -461,11 +462,14 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
         i.putExtra("verificationId",id);
         startActivity(i);
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+        AppUtil.showDialog.dismiss();
+
 
     }
 
     @Override
     public void onSendOtpFailed(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        AppUtil.showDialog.dismiss();
     }
 }

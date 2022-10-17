@@ -15,6 +15,7 @@ import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -33,9 +34,11 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
         String verificationId = getIntent().getStringExtra("verificationId");
 
         btnConfirmOtp.setOnClickListener(v -> {
+            AppUtil.showDialog.show(this);
             String OTP = edtOTP1.getText().toString() + edtOTP2.getText().toString() + edtOTP3.getText().toString() + edtOTP4.getText().toString() + edtOTP5.getText().toString() + edtOTP6.getText().toString();
             if (OTP.length() != 6) {
                 Toast.makeText(getApplicationContext(), "Please fill the OTP ", Toast.LENGTH_LONG).show();
+                AppUtil.showDialog.dismiss();
                 return;
             }
 
@@ -165,17 +168,19 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
         startActivity(i);
         finish();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
-
+        AppUtil.showDialog.dismiss();
     }
 
     @Override
     public void onFail(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         Log.d("OtpActivity : ", "Msg : " + msg);
+        AppUtil.showDialog.dismiss();
     }
 
     @Override
     public void onResponseFail(Throwable t) {
+        AppUtil.showDialog.dismiss();
         Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
     }
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
@@ -187,11 +192,13 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
                         i.putExtra("userPhone",getIntent().getStringExtra("userPhone"));
                         startActivity(i);
                         finish();
+                        AppUtil.showDialog.dismiss();
                         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
 
                     } else {
                         Toast.makeText(this, task.getException() + "", Toast.LENGTH_SHORT).show();
                         // Sign in failed, display a message and update the UI
+                        AppUtil.showDialog.dismiss();
                         Log.w("========>", "signInWithCredential:failure", task.getException());
                     }
                 });

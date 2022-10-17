@@ -1,18 +1,21 @@
 package com.example.duantotnghiep.Utilities;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.example.duantotnghiep.R;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +53,7 @@ public class AppUtil {
         public static boolean isValidPassword(String string) {
             String PATTERN;
             //The password must contain at least one lowercase character, one uppercase character, one digit, one special character, and a length between 8 to 15
-            PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,15}$";
+            PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–{}:;',?/*~$^+=<>]).{8,15}$";
             Pattern pattern = Pattern.compile(PATTERN);
             Matcher matcher = pattern.matcher(string);
             return matcher.matches();
@@ -81,4 +84,29 @@ public class AppUtil {
 //        }
     }
 
+    public static class showDialog{
+        static Dialog progressDialog;
+        public static void show(Context context){
+            progressDialog =new Dialog(context);
+            progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            progressDialog.setContentView(R.layout.progess_dialog);
+            Window window = progressDialog.getWindow();
+            if (window == null) {
+                return;
+            }
+
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            WindowManager.LayoutParams windowAttributes = window.getAttributes();
+            windowAttributes.gravity = Gravity.CENTER;
+            window.setAttributes(windowAttributes);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+        }
+        public static void dismiss(){
+            progressDialog.dismiss();
+        }
+    }
 }

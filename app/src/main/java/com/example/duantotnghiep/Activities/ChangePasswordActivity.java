@@ -60,6 +60,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCon
                         Toast.makeText(this, "Unknown  a Error", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    AppUtil.showDialog.show(this);
                     userPresenter.onChangePassword(phoneNumber,newPassword,null);
                 }
             }else {
@@ -86,15 +87,18 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCon
         startActivity(i);
         finish();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+        AppUtil.showDialog.dismiss();
     }
 
     @Override
     public void onFail(String msg) {
+        AppUtil.showDialog.dismiss();
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onResponseFail(Throwable t) {
+        AppUtil.showDialog.dismiss();
         Toast.makeText(this, "Unknown  Error", Toast.LENGTH_SHORT).show();
         Log.d("ChangePasswordActivity",t.getMessage());
     }

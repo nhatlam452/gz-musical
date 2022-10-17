@@ -1,5 +1,8 @@
 package com.example.duantotnghiep.Adapter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.duantotnghiep.Activities.WebViewActivity;
 import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.R;
 
@@ -16,9 +20,11 @@ import java.util.List;
 
 public class LoginPromotionAdapter extends RecyclerView.Adapter<LoginPromotionAdapter.LoginPromotionViewHolder> {
     private final List<Photo> mListPhoto;
+    private Context context;
 
-    public LoginPromotionAdapter(List<Photo> mListPhoto) {
+    public LoginPromotionAdapter(List<Photo> mListPhoto, Context context) {
         this.mListPhoto = mListPhoto;
+        this.context = context;
     }
 
     @NonNull
@@ -40,6 +46,11 @@ public class LoginPromotionAdapter extends RecyclerView.Adapter<LoginPromotionAd
         }else {
             holder.tvDescription.setText(photo.getSlogan());
         }
+        holder.imgItemPromotion.setOnClickListener(v->{
+            context.startActivity(new Intent(context, WebViewActivity.class));
+            Activity activity = (Activity) context;
+            activity.overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+        });
     }
 
     @Override

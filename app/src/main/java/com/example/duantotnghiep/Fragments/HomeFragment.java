@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
 
     private void setRecycleViewPromotion() {
         List<Photo> mListPhoto = getListPhoto();
-        LoginPromotionAdapter promotionAdapter = new LoginPromotionAdapter(mListPhoto);
+        LoginPromotionAdapter promotionAdapter = new LoginPromotionAdapter(mListPhoto,getContext());
         HomeNewsAdapter homeNewsAdapter = new HomeNewsAdapter(mListPhoto);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rcvPromotionHome.setLayoutManager(linearLayoutManager);
