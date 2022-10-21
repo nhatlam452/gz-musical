@@ -8,4 +8,5 @@
     <string name="x">✖</string>
     <string name="CHECK_FIRST_INSTALL">CHECK_FIRST_INSTALL</string>
     <string name="REMEMBER_LOGIN">REMEMBER_LOGIN</string>
+    <string name="isLogin">isLogin</string>
 </resources>

@@ -13,7 +13,7 @@
             android:layout_height="wrap_content">
             <ImageView
 
-                android:id="@+id/imgItemNews"
+                android:id="@+id/imgItemPromotion"
                 android:scaleType="centerCrop"
                 android:layout_width="110dp"
                 android:layout_height="140dp"
@@ -25,7 +25,7 @@
             android:textStyle="bold"
             android:lineHeight="12dp"
             android:layout_gravity="center"
-            android:id="@+id/tvDescriptionNews"
+            android:id="@+id/tvDescription"
             android:paddingVertical="5dp"
             android:textSize="8dp"
             android:textColor="@color/black"

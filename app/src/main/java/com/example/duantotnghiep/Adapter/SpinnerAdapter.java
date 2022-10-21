@@ -4,15 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.duantotnghiep.Model.Products;
 import com.example.duantotnghiep.R;
 
 import java.util.List;
@@ -20,14 +16,12 @@ import java.util.List;
 
 public class SpinnerAdapter extends RecyclerView.Adapter<SpinnerAdapter.SpinnerViewHolder>{
     private final List<String> mList;
-    private final Context context;
-    private OnClickSetText onClickSetText;
+    private final OnClickSetText onClickSetText;
     public interface OnClickSetText{
          void onClickSetText(String s);
     }
     public SpinnerAdapter(Context context, List<String> mList,OnClickSetText onClickSetText) {
         this.mList = mList;
-        this.context = context;
         this.onClickSetText = onClickSetText;
     }
 
@@ -45,9 +39,7 @@ public class SpinnerAdapter extends RecyclerView.Adapter<SpinnerAdapter.SpinnerV
             return;
         }
         holder.tvItem.setText(s);
-        holder.tvItem.setOnClickListener(v -> {
-            onClickSetText.onClickSetText(s);
-        });
+        holder.tvItem.setOnClickListener(v -> onClickSetText.onClickSetText(s));
     }
 
     @Override

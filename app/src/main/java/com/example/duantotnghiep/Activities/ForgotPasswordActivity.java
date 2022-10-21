@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.UserPresenter;
-import com.example.duantotnghiep.Presenter.VerifyOtpInterface;
+import com.example.duantotnghiep.Contract.VerifyOtpInterface;
 import com.example.duantotnghiep.Presenter.VerifyOtpPresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;

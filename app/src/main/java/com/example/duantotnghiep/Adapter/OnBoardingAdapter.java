@@ -22,6 +22,7 @@ public class OnBoardingAdapter extends RecyclerView.Adapter<OnBoardingAdapter.On
         this.mListPhoto = mListPhoto;
     }
 
+    @NonNull
     @Override
     public OnBoardingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_photo_on_boarding_screen,parent,false);

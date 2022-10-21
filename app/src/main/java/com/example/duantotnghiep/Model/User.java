@@ -9,6 +9,7 @@ public class User implements Serializable {
     private String phoneNumber;
     private String fbId;
     private String email;
+    private String avt;
     private String firstName;
     private String lastName;
     private String password;
@@ -20,6 +21,14 @@ public class User implements Serializable {
     private String district;
     private String ward;
     private String role;
+
+    public String getAvt() {
+        return avt;
+    }
+
+    public void setAvt(String avt) {
+        this.avt = avt;
+    }
 
     public String getAddress() {
         return address;
@@ -53,11 +62,12 @@ public class User implements Serializable {
         this.ward = ward;
     }
 
-    public User(String userId, String phoneNumber, String fbId, String email, String firstName, String lastName, String password, String dob, String salutation, String notification, String address, String city, String district, String ward, String role) {
+    public User(String userId, String phoneNumber, String fbId, String email,String avt, String firstName, String lastName, String password, String dob, String salutation, String notification, String address, String city, String district, String ward, String role) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;
         this.fbId = fbId;
         this.email = email;
+        this.avt = avt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;

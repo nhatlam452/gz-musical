@@ -28,7 +28,7 @@ import android.widget.Toast;
 import com.example.duantotnghiep.Adapter.SpinnerAdapter;
 import com.example.duantotnghiep.Adapter.SpinnerLocationAdapter;
 import com.example.duantotnghiep.Contract.LocationContract;
-import com.example.duantotnghiep.Presenter.VerifyOtpInterface;
+import com.example.duantotnghiep.Contract.VerifyOtpInterface;
 import com.example.duantotnghiep.Model.Location;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.LocationPresenter;
@@ -140,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
                     isNoti = "0";
                 }
                 AppUtil.showDialog.show(this);
-                User user = new User(null,phoneNumber,null,null,firstName,lastName,password,dob,salutation,isNoti,address,city,district,ward,"0");
+                User user = new User(null,phoneNumber,null,null,null,firstName,lastName,password,dob,salutation,isNoti,address,city,district,ward,"0");
                 verifyOtpPresenter.sendOtp(phoneNumber,this,user);
             }
         });

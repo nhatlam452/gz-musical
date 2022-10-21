@@ -36,7 +36,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="@android:color/transparent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <View
             android:layout_width="match_parent"
@@ -68,30 +68,46 @@
                     android:background="@drawable/custom_avt_shape"
                     android:padding="2dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_avt" />
+                    android:src="@drawable/ic_baseline_person_add_alt_1_24" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineHeight="20dp"
-                        android:text="Nhat Lam"
-                        android:textColor="@color/white"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvUserNameSetting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lineHeight="20dp"
+                            android:textColor="@color/white"
+                            android:textSize="19dp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/imgChangeUserInfo"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_drive_file_rename_outline_fill0_wght400_grad0_opsz48"
+                            app:tint="@color/white" />
+                    </RelativeLayout>
+
 
                     <TextView
+                        android:id="@+id/tvEmailSetting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineHeight="20dp"
                         android:lines="1"
-                        android:text="nhatlam452@gmail.com"
                         android:textColor="@color/white"
                         android:textSize="12dp" />
                 </LinearLayout>
@@ -117,10 +133,12 @@
                     android:layout_width="69dp"
                     android:layout_height="27dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginEnd="10dp" />
+                    android:layout_marginEnd="10dp"
+                    android:checked="false" />
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/tvSavedAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -139,15 +157,17 @@
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tvAU"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="FAQ"
+                android:text="About Us"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tvHelp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -157,6 +177,7 @@
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tvPrivacyPolice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -166,6 +187,7 @@
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tvTOS"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -175,6 +197,7 @@
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tvContactUsSetting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -184,13 +207,24 @@
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tvTellYourFiend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:lineHeight="20dp"
+                android:text="Tell Your Friend"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/tvLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
                 android:text="Log out"
                 android:textColor="@color/white"
-                android:textSize="12dp"
+                android:textSize="14dp"
                 android:textStyle="bold" />
 
             <View

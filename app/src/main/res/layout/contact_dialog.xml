@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tvTitle"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:text="Contact Us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgHotline"
+            android:background="@drawable/custom_avt_shape_black"
+            android:layout_width="20dp"
+            android:scaleType="centerCrop"
+            android:padding="2dp"
+            android:src="@drawable/ic_baseline_local_phone_24"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            />
+        <TextView
+            android:id="@+id/tvHotline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            android:text="Call Hotline : (090) 991 6020"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgEmail"
+            android:background="@drawable/custom_avt_shape_black"
+            android:layout_width="20dp"
+            android:scaleType="centerCrop"
+            android:padding="2dp"
+            android:src="@drawable/ic_baseline_email_24"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            />
+        <TextView
+            android:id="@+id/tvEmailUS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            android:text="Email Us"
+            />
+    </LinearLayout>
+
+</LinearLayout>

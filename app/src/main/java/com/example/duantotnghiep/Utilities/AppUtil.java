@@ -2,6 +2,7 @@ package com.example.duantotnghiep.Utilities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -9,17 +10,32 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.R;
+import com.google.gson.Gson;
 
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AppUtil {
+    public static String formatPhoneNumber(String phoneNumber) {
+        return String.format("%s %s %s",phoneNumber.subSequence(0,3),"****",phoneNumber.subSequence(7,10));
+    }
+
+    public static User getUserInfo(Context context) {
+        SharedPreferences mPrefs = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = mPrefs.getString("UserInfo", "");
+        Log.d("==>", json);
+        return gson.fromJson(json, User.class);
+    }
+
     public static boolean isNetworkAvailable(Context context) {
         if (context == null) {
             return false;
@@ -84,10 +100,11 @@ public class AppUtil {
 //        }
     }
 
-    public static class showDialog{
+    public static class showDialog {
         static Dialog progressDialog;
-        public static void show(Context context){
-            progressDialog =new Dialog(context);
+
+        public static void show(Context context) {
+            progressDialog = new Dialog(context);
             progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             progressDialog.setContentView(R.layout.progess_dialog);
             Window window = progressDialog.getWindow();
@@ -105,7 +122,8 @@ public class AppUtil {
             progressDialog.show();
 
         }
-        public static void dismiss(){
+
+        public static void dismiss() {
             progressDialog.dismiss();
         }
     }

@@ -3,10 +3,10 @@ package com.example.duantotnghiep.Presenter;
 import android.app.Activity;
 
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.example.duantotnghiep.Contract.VerifyOtpInterface;
 import com.example.duantotnghiep.Model.User;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;

@@ -18,7 +18,7 @@ import java.util.List;
 public class SpinnerLocationAdapter extends RecyclerView.Adapter<SpinnerLocationAdapter.SpinnerViewHolder>{
     private final List<Location> mList;
     private final Context context;
-    private OnClickSetText onClickSetText;
+    private final OnClickSetText onClickSetText;
     public interface OnClickSetText{
          void onClickSetText(String s,String code);
     }
@@ -42,9 +42,7 @@ public class SpinnerLocationAdapter extends RecyclerView.Adapter<SpinnerLocation
             return;
         }
         holder.tvItem.setText(location.getName());
-        holder.tvItem.setOnClickListener(v -> {
-            onClickSetText.onClickSetText(location.getName(),location.getCode());
-        });
+        holder.tvItem.setOnClickListener(v -> onClickSetText.onClickSetText(location.getName(),location.getCode()));
     }
 
     @Override

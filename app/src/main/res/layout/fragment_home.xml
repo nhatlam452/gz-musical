@@ -72,8 +72,10 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/custom_avt_shape"
             android:padding="2dp"
+            android:src="@drawable/ic_baseline_person_add_alt_1_24"
             android:scaleType="centerCrop"
-            android:src="@drawable/img_avt" />
+
+            />
     </RelativeLayout>
     <RelativeLayout
         android:layout_centerHorizontal="true"

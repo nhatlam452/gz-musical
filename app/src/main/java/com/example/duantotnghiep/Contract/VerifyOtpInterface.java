@@ -1,4 +1,4 @@
-package com.example.duantotnghiep.Presenter;
+package com.example.duantotnghiep.Contract;
 
 import com.example.duantotnghiep.Model.User;
 

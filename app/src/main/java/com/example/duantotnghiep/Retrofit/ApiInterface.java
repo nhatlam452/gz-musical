@@ -1,7 +1,9 @@
 package com.example.duantotnghiep.Retrofit;
 
 import com.example.duantotnghiep.Model.Location;
+import com.example.duantotnghiep.Model.News;
 import com.example.duantotnghiep.Model.Response.LocationResponse;
+import com.example.duantotnghiep.Model.Response.NewsResponse;
 import com.example.duantotnghiep.Model.Response.ProductListResponse;
 import com.example.duantotnghiep.Model.Response.UserResponse;
 import com.example.duantotnghiep.Model.User;
@@ -36,7 +38,8 @@ public interface ApiInterface {
 
     @GET("views/get-all-product.php")
     Call<ProductListResponse> get_all_product();
-
+    @GET("views/get-all-news.php")
+    Call<NewsResponse> get_all_news();
     @GET("province")
     Call<LocationResponse> getCity();
 
