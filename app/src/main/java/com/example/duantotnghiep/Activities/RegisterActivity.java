@@ -31,6 +31,7 @@ import com.example.duantotnghiep.Contract.LocationContract;
 import com.example.duantotnghiep.Contract.VerifyOtpInterface;
 import com.example.duantotnghiep.Model.Location;
 import com.example.duantotnghiep.Model.User;
+import com.example.duantotnghiep.Model.UserAddress;
 import com.example.duantotnghiep.Presenter.LocationPresenter;
 import com.example.duantotnghiep.Presenter.VerifyOtpPresenter;
 import com.example.duantotnghiep.R;
@@ -140,8 +141,8 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
                     isNoti = "0";
                 }
                 AppUtil.showDialog.show(this);
-                User user = new User(null,phoneNumber,null,null,null,firstName,lastName,password,dob,salutation,isNoti,address,city,district,ward,"0");
-                verifyOtpPresenter.sendOtp(phoneNumber,this,user);
+                User user = new User(address,city,district,ward,null,null,phoneNumber,null,null,null,firstName,lastName,password,dob,salutation,isNoti,"0");
+                verifyOtpPresenter.sendOtp(this,user);
             }
         });
 

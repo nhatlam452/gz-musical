@@ -51,5 +51,4 @@ dependencies {
     implementation 'androidx.browser:browser:1.4.0'
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
     implementation 'com.airbnb.android:lottie:5.2.0'
-    implementation 'io.github.ParkSangGwon:tedimagepicker:1.1.10'
 }

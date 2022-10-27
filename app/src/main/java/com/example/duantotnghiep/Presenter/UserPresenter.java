@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 
 import com.example.duantotnghiep.Contract.UserContract;
+import com.example.duantotnghiep.Model.Response.AddressResponse;
 import com.example.duantotnghiep.Model.Response.UserResponse;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Service.UserService;
@@ -20,6 +21,7 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
     private final String TAG = "USER PRESENTER";
     private final UserContract.View mView;
     private final UserContract.Model model;
+
 
     public UserPresenter(UserContract.View mView) {
         this.mView = mView;
@@ -39,6 +41,7 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
     @Override
     public void onRegister(User user, String otp, String id, Activity activity) {
         if (user == null) {
+            mView.onFail("Please check your register form");
             return;
         }
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, otp);
@@ -47,22 +50,37 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
 
     @Override
     public void onCheckExits(String phone) {
+        if (phone == null) {
+            mView.onFail("Please check your input");
+            return;
+        }
         model.checkExitsUser(this,phone);
     }
 
     @Override
+    public void onUpdateInfo(String param, String value, String userId) {
+        if (param == null || value == null || userId == null){
+            Log.d(TAG,"Lack info");
+            return;
+        }
+        model.updateUser(this,param,value,userId);
+    }
+
+
+
+    @Override
     public void onChangePassword(String phoneNumber,String newPassword,String oldPassword) {
+        if (phoneNumber == null || newPassword == null){
+            mView.onFail("Please check your input");
+        }
         model.changePassword(this,phoneNumber,newPassword,oldPassword);
     }
 
     @Override
     public void onFinished(UserResponse userResponse) {
         if (userResponse.getResponseCode() == 1) {
-            if (userResponse.getData() == null){
-                mView.onSuccess(null);
-                return;
-            }
             mView.onSuccess(userResponse.getData().get(0));
+            Log.d(TAG,userResponse.getMessage()+"");
         }
         else {
             mView.onFail(userResponse.getMessage());
@@ -74,7 +92,7 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
     public void onFailure(Throwable t) {
         mView.onResponseFail(t);
     }
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential, User user, UserContract.Model.OnFinishedListener onFinishedListener, Activity activity) {
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential,User user, UserContract.Model.OnFinishedListener onFinishedListener, Activity activity) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, task -> {
@@ -87,4 +105,6 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
                     }
                 });
     }
+
+
 }

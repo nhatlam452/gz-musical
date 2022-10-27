@@ -3,11 +3,15 @@ package com.example.duantotnghiep.Service;
 
 import android.util.Log;
 
+
 import androidx.annotation.NonNull;
 
+import com.example.duantotnghiep.Contract.AddressContact;
 import com.example.duantotnghiep.Contract.UserContract;
+import com.example.duantotnghiep.Model.Response.AddressResponse;
 import com.example.duantotnghiep.Model.Response.UserResponse;
 import com.example.duantotnghiep.Model.User;
+import com.example.duantotnghiep.Model.UserAddress;
 import com.example.duantotnghiep.Retrofit.ApiInterface;
 import com.example.duantotnghiep.Retrofit.ApiClient;
 
@@ -15,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserService implements UserContract.Model {
+public class UserService implements UserContract.Model, AddressContact.AddressModel {
     private final ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
     private final String TAG = "User Service :";
 
@@ -23,81 +27,69 @@ public class UserService implements UserContract.Model {
     public void getLogin(OnFinishedListener onFinishedListener, String phone, String password) {
 
         Call<UserResponse> call = apiInterface.check_login(phone, password);
-
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
-                if (response.body() != null && response.isSuccessful()) {
-                    UserResponse userResponse = response.body();
-                    onFinishedListener.onFinished(userResponse);
-                }
-                Log.d(TAG, "Response code : " + response.code() + "----" + response.body().getMessage());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
-                Log.d(TAG, "Error : " + t.getMessage());
-                onFinishedListener.onFailure(t);
-            }
-        });
-
+        onUserCallback(call, onFinishedListener);
     }
 
     @Override
     public void getRegister(OnFinishedListener onFinishedListener, User user) {
         Call<UserResponse> call = apiInterface.register_user(user);
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
-                if (response.body() != null && response.isSuccessful()) {
-                    Log.d(TAG, "Register Succes");
-                    onFinishedListener.onFinished(response.body());
-                }
-
-                Log.d(TAG, "Response code : " + response.code() + "----" + response.body().getMessage());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
-                onFinishedListener.onFailure(t);
-                Log.d(TAG, "Error : " + t.getMessage());
-            }
-        });
+        onUserCallback(call, onFinishedListener);
     }
 
     @Override
     public void checkExitsUser(OnFinishedListener onFinishedListener, String phone) {
         Call<UserResponse> call = apiInterface.check_user_exits(phone);
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
-                if (response.body() != null && response.isSuccessful()) {
-                    Log.d(TAG, "Response code : " + response.code() + "----" + response.body().getMessage());
-                    onFinishedListener.onFinished(response.body());
-                }
-                Log.d(TAG, "Response code : " + response.code() + "----" + response.body().getMessage());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
-                onFinishedListener.onFailure(t);
-                Log.d(TAG, "Error : " + t.getMessage());
-            }
-        });
+        onUserCallback(call, onFinishedListener);
     }
 
     @Override
     public void changePassword(OnFinishedListener onFinishedListener, String phone, String newPassword, String password) {
         Call<UserResponse> call = apiInterface.change_user_password(phone, newPassword, null);
-        Log.d(TAG,phone + "  " + newPassword);
+        onUserCallback(call, onFinishedListener);
+    }
+
+    @Override
+    public void updateUser(OnFinishedListener onFinishedListener, String param, String value, String userId) {
+        Call<UserResponse> call = apiInterface.update_info(param, value, userId);
+        onUserCallback(call, onFinishedListener);
+    }
+    @Override
+    public void getUserAddress(OnAddressFinished onAddressFinished, String userId) {
+        Call<AddressResponse> call = apiInterface.get_user_address(userId);
+        onAddressCallback(call,onAddressFinished);
+    }
+
+    @Override
+    public void addAddress(OnAddressFinished onAddressFinished, UserAddress userAddress) {
+        Call<AddressResponse> call = apiInterface.insert_address(userAddress);
+        onAddressCallback(call,onAddressFinished);
+    }
+    private void onAddressCallback(Call<AddressResponse> call , OnAddressFinished onAddressFinished){
+        call.enqueue(new Callback<AddressResponse>() {
+            @Override
+            public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
+                if (response.body() != null && response.isSuccessful()) {
+                    Log.d(TAG, "Response code : " + response.code() + "----" + response.body().getMessage());
+                    onAddressFinished.onAddressSuccess(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddressResponse> call, Throwable t) {
+                onAddressFinished.onAddressFailure(t);
+                Log.d(TAG, "Error : " + t.getMessage());
+            }
+        });
+    }
+    private void onUserCallback(Call<UserResponse> call, OnFinishedListener onFinishedListener) {
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                 if (response.body() != null && response.isSuccessful()) {
                     Log.d(TAG, "Response code : " + response.code() + "----" + response.body().getMessage());
                     onFinishedListener.onFinished(response.body());
+                    Log.d(TAG, response.body().getData().get(0).getFirstName() + "");
                 }
-                Log.d(TAG, "Response code : " + response.code() + "----" + response.body().getMessage());
             }
 
             @Override
@@ -106,7 +98,8 @@ public class UserService implements UserContract.Model {
                 Log.d(TAG, "Error : " + t.getMessage());
             }
         });
-
     }
+
+
 
 }

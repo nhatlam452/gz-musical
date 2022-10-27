@@ -24,16 +24,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AppUtil {
+
+
+
     public static String formatPhoneNumber(String phoneNumber) {
         return String.format("%s %s %s",phoneNumber.subSequence(0,3),"****",phoneNumber.subSequence(7,10));
-    }
-
-    public static User getUserInfo(Context context) {
-        SharedPreferences mPrefs = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = mPrefs.getString("UserInfo", "");
-        Log.d("==>", json);
-        return gson.fromJson(json, User.class);
     }
 
     public static boolean isNetworkAvailable(Context context) {

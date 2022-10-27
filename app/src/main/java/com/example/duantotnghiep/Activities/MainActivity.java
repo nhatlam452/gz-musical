@@ -29,45 +29,37 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.duantotnghiep.Adapter.ChangeFragmentAdapter;
+import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
+import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;
+import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class MainActivity extends AppCompatActivity  {
     private RelativeLayout layoutSetting;
     private ViewPager2 vpMainActivity;
     private BottomNavigationView bottomNavigationMain;
     private long backPressTime;
+    private ImageView imgClose;
+    private CircleImageView cimgAvtSetting;
     private Uri uri;
-    private final StorageReference reference = FirebaseStorage.getInstance().getReference();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        vpMainActivity = findViewById(R.id.vpMainActivity);
-        bottomNavigationMain = findViewById(R.id.bottomNavigationMain);
-        TextView tvUserName = findViewById(R.id.tvUserNameSetting);
-        TextView tvEmail = findViewById(R.id.tvEmailSetting);
-        layoutSetting = findViewById(R.id.layoutSetting);
-        ImageView imgClose = findViewById(R.id.imgClose);
-        setUpViewPager();
-        User user = AppUtil.getUserInfo(this);
-        if (user != null) {
-            tvUserName.setText(user.getFirstName() + " " + user.getLastName());
-            if (user.getEmail() != null) {
-                tvEmail.setText(user.getEmail());
-            } else {
-                tvEmail.setText("Phone number : " + AppUtil.formatPhoneNumber(user.getPhoneNumber()));
-            }
-        }
+        initUi();
         imgClose.setOnClickListener(v -> {
             Transition transition = new Slide(Gravity.END);
             transition.setDuration(600);
@@ -81,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.tvPrivacyPolice).setOnClickListener(v -> startWebView("https://vietthuong.vn/chinh-sach-thanh-toan-va-bao-mat"));
         findViewById(R.id.tvTOS).setOnClickListener(v -> startWebView("https://vietthuong.vn/dieu-khoan-su-dung-website"));
         findViewById(R.id.tvContactUsSetting).setOnClickListener(v -> {
-                openDialogContact();
+            openDialogContact();
         });
         findViewById(R.id.tvLogOut).setOnClickListener(v -> {
             SharedPreferences sharedPreferences = getSharedPreferences("USER_INFO", MODE_PRIVATE);
@@ -99,11 +91,32 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.imgChangeUserInfo).setOnClickListener(v ->
                 {
                     startActivity(new Intent(this, UserInfoActivity.class));
-                    overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+                    overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
                 }
 
         );
 
+    }
+
+    private void initUi() {
+        vpMainActivity = findViewById(R.id.vpMainActivity);
+        cimgAvtSetting = findViewById(R.id.cimgAvtSetting);
+        bottomNavigationMain = findViewById(R.id.bottomNavigationMain);
+        TextView tvUserName = findViewById(R.id.tvUserNameSetting);
+        TextView tvEmail = findViewById(R.id.tvEmailSetting);
+        layoutSetting = findViewById(R.id.layoutSetting);
+        imgClose = findViewById(R.id.imgClose);
+        setUpViewPager();
+        User user = LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo();
+        if (user != null) {
+            tvUserName.setText(user.getFirstName() + " " + user.getLastName());
+            if (user.getEmail() != null) {
+                tvEmail.setText(user.getEmail());
+            } else {
+                tvEmail.setText("Phone number : " + AppUtil.formatPhoneNumber(user.getPhoneNumber()));
+            }
+            Glide.with(this).load(user.getAvt()).into(cimgAvtSetting);
+        }
     }
 
     private void openDialogContact() {
@@ -183,13 +196,13 @@ public class MainActivity extends AppCompatActivity {
 //        startActivityForResult(i,2);
 //    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
-            uri = data.getData();
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+//            uri = data.getData();
+//        }
+//    }
 
     private void startWebView(String url) {
         Intent i = new Intent(this, WebViewActivity.class);
@@ -268,5 +281,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
         }
         backPressTime = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 }

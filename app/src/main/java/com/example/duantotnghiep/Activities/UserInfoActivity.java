@@ -4,12 +4,14 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -19,29 +21,41 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
+import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;
-
-
+import com.example.duantotnghiep.Utilities.LocalStorage;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserInfoActivity extends AppCompatActivity {
+public class UserInfoActivity extends AppCompatActivity implements UserContract.View {
+    private final static int MY_REQUEST_CODE = 1;
     private Button btnChangeInfo;
     private Uri uri;
+    private String userId;
+    private UserPresenter userPresenter;
     private CircleImageView civAvt;
+    private final StorageReference reference = FirebaseStorage.getInstance().getReference();
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -52,13 +66,13 @@ public class UserInfoActivity extends AppCompatActivity {
                         if (data != null) {
                             uri = data.getData();
                             civAvt.setImageURI(uri);
+                            btnChangeInfo.setVisibility(View.VISIBLE);
                         }
                     }
 
                 }
             });
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +86,15 @@ public class UserInfoActivity extends AppCompatActivity {
         EditText edtBirthday = findViewById(R.id.edtDOBInfo);
         ImageView imgBackInfo = findViewById(R.id.imgBackInfo);
         btnChangeInfo = findViewById(R.id.btnUpdateUser);
-        User user = AppUtil.getUserInfo(this);
+        userPresenter = new UserPresenter(this);
+        User user = LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo();
         String phoneNumber = user.getPhoneNumber();
         String email = user.getEmail();
         String salutation = user.getSalutation();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
+        userId = user.getUserId();
+        Toast.makeText(this, ""+userId, Toast.LENGTH_SHORT).show();
         edtPhone.setText(phoneNumber);
         if (email != null) {
             edtEmail.setText(email);
@@ -95,37 +112,64 @@ public class UserInfoActivity extends AppCompatActivity {
         onTextChange(edtSalutation, salutation);
 
         civAvt.setOnClickListener(v -> {
-            if (!checkCameraPermission()){
-                requestCameraPermission();
-            }else {
-                if (user.getAvt() == null) {
-                    clickOpenGallery();
-                } else {
-                    openAvtOptionDialog();
-                }
-            }
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                        clickOpenGallery();
+                        return;
+                    }
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        if (user.getAvt() == null) {
+                            clickOpenGallery();
+                        } else {
+                            openAvtOptionDialog();
+                        }
+                    } else {
+                        String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                        requestPermissions(permission, MY_REQUEST_CODE);
+                    }
 
+                }
+
+        );
+        btnChangeInfo.setOnClickListener(v -> {
+            AppUtil.showDialog.show(this);
+            if (uri != null) {
+                uploadtoFireBase(uri);
+            }
+            if (!edtEmail.getText().toString().equals(email)) {
+//               userPresenter.onUpdateInfo("EMAIL",);
+            }
+            if (!edtSalutation.getText().toString().equals(salutation)) {
+                userPresenter.onUpdateInfo("SALUTATION", edtSalutation.getText().toString(), userId);
+            }
+            if (!edtFirstName.getText().toString().equals(firstName)) {
+                String name = edtFirstName.getText().toString();
+                userPresenter.onUpdateInfo("FIRSTNAME", name, "6");
+
+            }
+            if (!edtLastName.getText().toString().equals(lastName)) {
+                String name = edtLastName.getText().toString();
+
+                userPresenter.onUpdateInfo("LASTNAME", name, userId);
+
+            }
         });
 
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    clickOpenGallery();
+                } else {
+                    Toast.makeText(this, "Please access permission to open your galley", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestStoragePermission(){
-        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},100);
 
-    }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestCameraPermission(){
-        requestPermissions(new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},100);
-    }
-    private boolean checkStoragePermission(){
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED;
-    }
-    private boolean checkCameraPermission(){
-        boolean res1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED;
-        boolean res2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED;
-        return res1 && res2;
-    }
     private void openAvtOptionDialog() {
         Dialog avtDialog = new Dialog(this);
         avtDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -150,6 +194,7 @@ public class UserInfoActivity extends AppCompatActivity {
         civ2.setImageResource(R.drawable.ic_baseline_person_pin_24);
         tv1.setText("Change your Avatar");
         tvTitle.setText("Choose your Options");
+
         tv2.setText("View your Avatar");
         tv1.setOnClickListener(v -> clickOpenGallery());
         avtDialog.show();
@@ -182,6 +227,43 @@ public class UserInfoActivity extends AppCompatActivity {
         Toast.makeText(this, msg + " can not be changed", Toast.LENGTH_SHORT).show();
     }
 
+    private void uploadtoFireBase(Uri uri) {
+        StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
+        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                userPresenter.onUpdateInfo("AVATAR", uri.toString(), userId);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                AppUtil.showDialog.dismiss();
+                                Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                ;
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("====>", e + "");
+
+                Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
     private void clickOpenGallery() {
         Intent i = new Intent();
         i.setAction(Intent.ACTION_GET_CONTENT);
@@ -195,5 +277,30 @@ public class UserInfoActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+    }
+
+    @Override
+    public void onSuccess(User user) {
+        AppUtil.showDialog.dismiss();
+        Log.d("service",user.getPhoneNumber()+"asdfs");
+        LocalStorage.getInstance(UserInfoActivity.this).getLocalStorageManager().setUserInfo(user);
+        Toast.makeText(this, "Your Info have been updated", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this,MainActivity.class));
+        finish();
+        overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+    }
+
+    @Override
+    public void onFail(String msg) {
+        AppUtil.showDialog.dismiss();
+
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResponseFail(Throwable t) {
+        AppUtil.showDialog.dismiss();
+        Log.d("User Info Actitvity", t.getMessage());
+
     }
 }

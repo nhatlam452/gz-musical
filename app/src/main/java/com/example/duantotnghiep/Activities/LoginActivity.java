@@ -24,6 +24,7 @@ import com.example.duantotnghiep.Presenter.NewsPresenter;
 import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;
+import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.example.duantotnghiep.Utilities.SnapHelperOneByOne;
 import com.google.gson.Gson;
 
@@ -70,10 +71,6 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
         });
         btnLogin.setOnClickListener(v -> {
             AppUtil.showDialog.show(this);
-            if (cbKeepLogged.isChecked()) {
-                mEditor.putBoolean(String.valueOf(R.string.isLogin), true);
-                mEditor.apply();
-            }
             String phoneNumber = edtPhoneNumberLogin.getText().toString().trim();
             String password = edtPasswordLogin.getText().toString().trim();
             userPresenter.onLogin(phoneNumber, password);
@@ -134,14 +131,12 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     @Override
     public void onSuccess(User user) {
         AppUtil.showDialog.dismiss();
-        SharedPreferences mPrefs = getSharedPreferences("USER_INFO",MODE_PRIVATE);
-        SharedPreferences.Editor mPrefEditor = mPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-        mPrefEditor.putString("UserInfo",json);
-        Log.d("====> ", "User : " + json);
-        mPrefEditor.apply();
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        if (cbKeepLogged.isChecked()) {
+            mEditor.putBoolean(String.valueOf(R.string.isLogin), true);
+            mEditor.apply();
+        }
+        LocalStorage.getInstance(this).getLocalStorageManager().setUserInfo(user);
+        startActivity(new Intent(this,MainActivity.class));
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         finish();
     }

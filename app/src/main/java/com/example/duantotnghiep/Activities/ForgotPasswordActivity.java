@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
+import com.example.duantotnghiep.Model.UserAddress;
 import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.Contract.VerifyOtpInterface;
 import com.example.duantotnghiep.Presenter.VerifyOtpPresenter;
@@ -74,7 +75,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserCon
 
     @Override
     public void onSuccess(User user) {
-       verifyOtpPresenter.sendOtp(edtPhoneNumberForgotPassword.getText().toString(),this,null);
+       verifyOtpPresenter.sendOtp(this,user);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserCon
     }
 
     @Override
-    public void onSendOtpSuccess(User user, String id) {
+    public void onSendOtpSuccess(User user,String id) {
         AppUtil.showDialog.dismiss();
         Intent i = new Intent(this,OtpVerifyActivity.class);
         i.putExtra("isForgotPassword",true);

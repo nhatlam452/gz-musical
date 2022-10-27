@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.duantotnghiep.Contract.VerifyOtpInterface;
 import com.example.duantotnghiep.Model.User;
+import com.example.duantotnghiep.Model.UserAddress;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -25,12 +26,12 @@ public class VerifyOtpPresenter  {
         this.verifyOtpInterface = verifyOtpInterface;
     }
 
-    public void sendOtp(String phoneNumber, Activity activity, User user) {
+    public void sendOtp(Activity activity, User user) {
         if (activity == null) {
             return;
         }
         mAuth = FirebaseAuth.getInstance();
-        String phone = "+84" + phoneNumber;
+        String phone = "+84" + user.getPhoneNumber();
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                 .setPhoneNumber(phone)
                 .setTimeout(60L, TimeUnit.SECONDS)
@@ -60,7 +61,7 @@ public class VerifyOtpPresenter  {
         mAuth.signInWithCredential(phoneAuthCredential)
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
-                        verifyOtpInterface.onSendOtpSuccess(user, "");
+                        verifyOtpInterface.onSendOtpSuccess(user,"");
                     } else {
                         Log.d("====>", task.getException() + "");
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
