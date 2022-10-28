@@ -141,7 +141,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
                     isNoti = "0";
                 }
                 AppUtil.showDialog.show(this);
-                User user = new User(address,city,district,ward,null,null,phoneNumber,null,null,null,firstName,lastName,password,dob,salutation,isNoti,"0");
+                User user = new User(address,city,district,ward,"NULL",null,phoneNumber,null,null,null,firstName,lastName,password,dob,salutation,isNoti,"0");
                 verifyOtpPresenter.sendOtp(this,user);
             }
         });
@@ -253,6 +253,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
     }
 
     private void openDialog(List<String> mList, EditText editText, String title) {
+
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_spinner);

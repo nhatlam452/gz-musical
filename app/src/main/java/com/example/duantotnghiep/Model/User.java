@@ -5,7 +5,7 @@ package com.example.duantotnghiep.Model;
 import java.io.Serializable;
 
 public class User extends UserAddress implements Serializable {
-    private String userId;
+    private  String userId;
     private String phoneNumber;
     private String fbId;
     private String email;
@@ -17,9 +17,6 @@ public class User extends UserAddress implements Serializable {
     private String salutation;
     private String notification;
     private String role;
-
-    public User() {
-    }
 
     public User(String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, String notification, String role) {
         this.userId = userId;
@@ -36,9 +33,9 @@ public class User extends UserAddress implements Serializable {
         this.role = role;
     }
 
-    public User(String location, String ward, String district, String city, String addressName, String userId1, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, String notification, String role) {
-        super(location, ward, district, city, addressName);
-        this.userId = userId1;
+    public User(String address, String ward, String district, String city, String addressName, String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, String notification, String role) {
+        super(address, ward, district, city, addressName);
+        this.userId = userId;
         this.phoneNumber = phoneNumber;
         this.fbId = fbId;
         this.email = email;
@@ -51,8 +48,6 @@ public class User extends UserAddress implements Serializable {
         this.notification = notification;
         this.role = role;
     }
-
-
 
     public String getAvt() {
         return avt;

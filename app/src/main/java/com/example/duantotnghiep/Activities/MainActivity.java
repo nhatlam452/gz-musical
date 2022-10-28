@@ -47,7 +47,7 @@ import com.google.gson.Gson;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
     private RelativeLayout layoutSetting;
     private ViewPager2 vpMainActivity;
     private BottomNavigationView bottomNavigationMain;
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity  {
     private ImageView imgClose;
     private CircleImageView cimgAvtSetting;
     private Uri uri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +96,10 @@ public class MainActivity extends AppCompatActivity  {
                 }
 
         );
+        findViewById(R.id.tvSavedAddress).setOnClickListener(v -> {
+            startActivity(new Intent(this, SavedAddressActivity.class));
+            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+        });
 
     }
 

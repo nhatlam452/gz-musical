@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -33,6 +35,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.duantotnghiep.Adapter.SpinnerAdapter;
 import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.UserPresenter;
@@ -46,6 +50,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserInfoActivity extends AppCompatActivity implements UserContract.View {
@@ -54,6 +61,7 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
     private Uri uri;
     private String userId;
     private UserPresenter userPresenter;
+    private final User user = LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo();
     private CircleImageView civAvt;
     private final StorageReference reference = FirebaseStorage.getInstance().getReference();
     private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
@@ -87,15 +95,17 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         ImageView imgBackInfo = findViewById(R.id.imgBackInfo);
         btnChangeInfo = findViewById(R.id.btnUpdateUser);
         userPresenter = new UserPresenter(this);
-        User user = LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo();
         String phoneNumber = user.getPhoneNumber();
         String email = user.getEmail();
         String salutation = user.getSalutation();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         userId = user.getUserId();
-        Toast.makeText(this, ""+userId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "" + userId, Toast.LENGTH_SHORT).show();
         edtPhone.setText(phoneNumber);
+        if (user.getAvt() != null) {
+            Glide.with(this).load(user.getAvt()).into(civAvt);
+        }
         if (email != null) {
             edtEmail.setText(email);
         }
@@ -110,6 +120,40 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         onTextChange(edtFirstName, firstName);
         onTextChange(edtLastName, lastName);
         onTextChange(edtSalutation, salutation);
+
+        edtSalutation.setOnClickListener(v -> {
+            List<String> mList = new ArrayList<>();
+            mList.add("Mr.");
+            mList.add("Mrs.");
+            mList.add("My Friend ");
+            mList.add("Sir ");
+            final Dialog dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.layout_dialog_spinner);
+            Window window = dialog.getWindow();
+            if (window == null) {
+                return;
+            }
+
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            WindowManager.LayoutParams windowAttributes = window.getAttributes();
+            windowAttributes.gravity = Gravity.CENTER;
+            window.setAttributes(windowAttributes);
+
+            TextView tvTitle = dialog.findViewById(R.id.tvSpinnerTitle);
+            RecyclerView rcvSpinner = dialog.findViewById(R.id.rcvSpinner);
+
+            tvTitle.setText("YOUR SALUTATION");
+            SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this, mList, s -> {
+                edtSalutation.setText(s);
+                dialog.dismiss();
+            });
+            rcvSpinner.setLayoutManager(new LinearLayoutManager(this));
+            rcvSpinner.setAdapter(spinnerAdapter);
+            dialog.show();
+        });
 
         civAvt.setOnClickListener(v -> {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -194,9 +238,19 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         civ2.setImageResource(R.drawable.ic_baseline_person_pin_24);
         tv1.setText("Change your Avatar");
         tvTitle.setText("Choose your Options");
-
         tv2.setText("View your Avatar");
-        tv1.setOnClickListener(v -> clickOpenGallery());
+        tv2.setOnClickListener(v -> {
+            Intent i = new Intent(this, ViewImageActivity.class);
+            i.putExtra("ViewImage", user.getAvt());
+            startActivity(i);
+            avtDialog.dismiss();
+
+        });
+        tv1.setOnClickListener(v -> {
+                    clickOpenGallery();
+                    avtDialog.dismiss();
+                }
+        );
         avtDialog.show();
     }
 
@@ -282,12 +336,12 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
     @Override
     public void onSuccess(User user) {
         AppUtil.showDialog.dismiss();
-        Log.d("service",user.getPhoneNumber()+"asdfs");
+        Log.d("service", user.getPhoneNumber() + "asdfs");
         LocalStorage.getInstance(UserInfoActivity.this).getLocalStorageManager().setUserInfo(user);
         Toast.makeText(this, "Your Info have been updated", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this,MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
         finish();
-        overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
     }
 
     @Override

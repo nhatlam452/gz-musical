@@ -88,7 +88,6 @@ public class UserService implements UserContract.Model, AddressContact.AddressMo
                 if (response.body() != null && response.isSuccessful()) {
                     Log.d(TAG, "Response code : " + response.code() + "----" + response.body().getMessage());
                     onFinishedListener.onFinished(response.body());
-                    Log.d(TAG, response.body().getData().get(0).getFirstName() + "");
                 }
             }
 

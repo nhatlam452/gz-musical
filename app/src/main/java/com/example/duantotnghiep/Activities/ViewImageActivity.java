@@ -20,4 +20,10 @@ public class ViewImageActivity extends AppCompatActivity {
         String url = i.getStringExtra("ViewImage");
         Glide.with(this).load(url).into(imgViewImage);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+    }
 }

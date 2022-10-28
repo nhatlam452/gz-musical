@@ -20,7 +20,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".SavedAddressActivity"
+            android:name=".Activities.SavedAddressActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.UserInfoActivity"

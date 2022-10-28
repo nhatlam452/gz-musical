@@ -1,5 +1,7 @@
 package com.example.duantotnghiep.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class UserAddress implements Serializable {
@@ -8,8 +10,8 @@ public class UserAddress implements Serializable {
     private String ward;
     private String district;
     private String city;
-    private transient String userId;
     private String  addressName;
+    private String uId;
 
     public String getAddressId() {
         return addressId;
@@ -51,13 +53,7 @@ public class UserAddress implements Serializable {
         this.city = city;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getAddressName() {
         return addressName;
@@ -81,7 +77,7 @@ public class UserAddress implements Serializable {
         this.ward = ward;
         this.district = district;
         this.city = city;
-        this.userId = userId;
+        this.uId = userId;
         this.addressName = addressName;
     }
 

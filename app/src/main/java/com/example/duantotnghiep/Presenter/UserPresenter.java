@@ -79,7 +79,13 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
     @Override
     public void onFinished(UserResponse userResponse) {
         if (userResponse.getResponseCode() == 1) {
-            mView.onSuccess(userResponse.getData().get(0));
+            {
+                if (userResponse.getData() != null){
+                    mView.onSuccess(userResponse.getData().get(0));
+                }else {
+                    mView.onSuccess(null);
+                }
+            }
             Log.d(TAG,userResponse.getMessage()+"");
         }
         else {

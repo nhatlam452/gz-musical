@@ -20,6 +20,7 @@ import com.example.duantotnghiep.Utilities.AppUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.gson.Gson;
 
 public class OtpVerifyActivity extends AppCompatActivity implements UserContract.View {
     private EditText edtOTP1, edtOTP2, edtOTP3, edtOTP4, edtOTP5, edtOTP6;
@@ -49,6 +50,9 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, OTP);
                 signInWithPhoneAuthCredential(credential);
             } else {
+                Gson gson = new Gson();
+                String json = gson.toJson(user);
+                Log.d("OTP ===>", "User : " + json);
                 userPresenter.onRegister(user, OTP, verificationId, this);
             }
 
