@@ -3,10 +3,8 @@ package com.example.duantotnghiep.Contract;
 
 import android.app.Activity;
 
-import com.example.duantotnghiep.Model.Response.AddressResponse;
 import com.example.duantotnghiep.Model.Response.UserResponse;
 import com.example.duantotnghiep.Model.User;
-import com.example.duantotnghiep.Model.UserAddress;
 
 public interface UserContract {
     interface Model {
@@ -19,6 +17,8 @@ public interface UserContract {
         void getLogin(OnFinishedListener onFinishedListener, String phone, String password);
 
         void getRegister(OnFinishedListener onFinishedListener, User user);
+
+        void getSocialRegister(OnFinishedListener onFinishedListener, User user);
 
         void checkExitsUser(OnFinishedListener onFinishedListener, String phone);
 
@@ -40,6 +40,9 @@ public interface UserContract {
         void onLogin(String phone, String password);
 
         void onRegister(User user, String otp, String id, Activity activity);
+
+        void onSocialRegister(User user,Activity activity);
+
 
         void onCheckExits(String phone);
 

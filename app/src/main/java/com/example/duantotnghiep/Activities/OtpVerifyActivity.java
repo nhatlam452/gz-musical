@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
-import com.example.duantotnghiep.Model.UserAddress;
 import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;
@@ -33,7 +32,6 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
         setContentView(R.layout.activity_otp_verify);
         initUI();
         User user = (User) getIntent().getSerializableExtra("UserRegister");
-        UserAddress address = (UserAddress) getIntent().getSerializableExtra("Address");
 
         String verificationId = getIntent().getStringExtra("verificationId");
 

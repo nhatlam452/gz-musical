@@ -242,18 +242,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-
+                android:id="@+id/imgFb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_contact_fb"
                 />
             <ImageView
+                android:id="@+id/imgInsta"
                 android:layout_marginStart="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_contact_ins"
                 />
             <ImageView
+                android:id="@+id/imgYoutube"
                 android:layout_marginStart="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

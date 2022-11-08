@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
-import com.example.duantotnghiep.Model.UserAddress;
 import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.Contract.VerifyOtpInterface;
 import com.example.duantotnghiep.Presenter.VerifyOtpPresenter;
@@ -27,7 +26,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserCon
     Button btnResetPassword;
     EditText edtPhoneNumberForgotPassword;
     UserPresenter userPresenter;
-    private final String TAG = "FORGOT_PASSWORD";
+    private String phoneNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +46,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserCon
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
         btnResetPassword.setOnClickListener(v -> {
-            String phoneNumber = edtPhoneNumberForgotPassword.getText().toString().trim();
+            phoneNumber = edtPhoneNumberForgotPassword.getText().toString().trim();
             if (AppUtil.ValidateInput.isValidPhoneNumber(phoneNumber)){
                 AppUtil.showDialog.show(this);
                 userPresenter.onCheckExits(phoneNumber);
@@ -75,7 +75,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserCon
 
     @Override
     public void onSuccess(User user) {
-       verifyOtpPresenter.sendOtp(this,user);
+        User user1 = new User (phoneNumber);
+       verifyOtpPresenter.sendOtp(this,user1);
     }
 
     @Override
@@ -88,6 +89,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements UserCon
     public void onResponseFail(Throwable t) {
         AppUtil.showDialog.dismiss();
         Toast.makeText(this, "Unknown Error", Toast.LENGTH_SHORT).show();
+        String TAG = "FORGOT_PASSWORD";
         Log.d(TAG,"Error : " +t.getMessage());
     }
 

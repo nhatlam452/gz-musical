@@ -1,9 +1,13 @@
 package com.example.duantotnghiep.Fragments;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.duantotnghiep.Activities.LoginActivity;
 import com.example.duantotnghiep.Activities.MainActivity;
 import com.example.duantotnghiep.Adapter.LoginPromotionAdapter;
 import com.example.duantotnghiep.Contract.NewsInterface;
@@ -30,7 +35,11 @@ import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.example.duantotnghiep.Utilities.SnapHelperOneByOne;
 import com.example.duantotnghiep.Utilities.TranslateAnimation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YoutubePlayerSupportFragmentX;
+import androidx.fragment.app.Fragment;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +52,21 @@ import me.relex.circleindicator.CircleIndicator2;
 
 
 public class HomeFragment extends Fragment implements NewsInterface {
+    private FragmentActivity myContext;
     private RecyclerView rcvPromotionHome, rcvNewsHome;
     private CircleIndicator2 circleIndicator2;
     private TextView tvGreetingHome;
     private ImageView imgOpen;
-    private CircleImageView cimgAvt;
-    private ImageView imgNotification;
-    private RecyclerView rcvNotifications;
-    private final int time = 1;
+    private YouTubePlayer youTubePlayer;
+    private YouTubePlayerView ypvHome;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        if(context instanceof FragmentActivity){
+            myContext = (FragmentActivity) context;
+        }
+        super.onAttach(context);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +75,7 @@ public class HomeFragment extends Fragment implements NewsInterface {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         //initUI
         initUI(view);
-
+        initYoutubePlayer(view);
 
         MainActivity activity = (MainActivity) getActivity();
         imgOpen.setOnClickListener(v -> {
@@ -68,21 +83,44 @@ public class HomeFragment extends Fragment implements NewsInterface {
                 activity.OpenDrawer();
             }
         });
-
-
         return view;
+    }
+
+    private void initYoutubePlayer(View view) {
+        YoutubePlayerSupportFragmentX youTubePlayerSupportFragment = YoutubePlayerSupportFragmentX.newInstance();
+        if (youTubePlayerSupportFragment == null)
+            return;
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.vpYPVHome, youTubePlayerSupportFragment).commit();
+        youTubePlayerSupportFragment.initialize("AIzaSyDPUEvuC6Anbi2Ywg12BM6vl41d8yIxtsw", new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean b) {
+                if (!b){
+
+                    youTubePlayer = player;
+                    youTubePlayer.loadVideo("T9PV_nC_JdE");
+                    youTubePlayer.play();
+                }
+            }
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+                Toast.makeText(getContext(), "Please install Youtube App to load video", Toast.LENGTH_SHORT).show();
+                Log.d("",youTubeInitializationResult.toString());
+            }
+        });
+
     }
 
     private void initUI(View view) {
         imgOpen = view.findViewById(R.id.imgHomeOpenSetting);
-        cimgAvt = view.findViewById(R.id.cimgAvt);
+        ypvHome = view.findViewById(R.id.ypvHome);
+        CircleImageView cimgAvt = view.findViewById(R.id.cimgAvt);
         tvGreetingHome = view.findViewById(R.id.tvGreetingHome);
         TextView tvUserName = view.findViewById(R.id.tvUserName);
         rcvPromotionHome = view.findViewById(R.id.rcvPromotionHome);
         ScrollView svHome = view.findViewById(R.id.svHome);
         rcvNewsHome = view.findViewById(R.id.rcvNewsHome);
         circleIndicator2 = view.findViewById(R.id.ciPromotionHome);
-        imgNotification = view.findViewById(R.id.imgNotificationHome);
         NewsPresenter newsPresenter = new NewsPresenter(this);
 
         User user = LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo();
@@ -106,9 +144,9 @@ public class HomeFragment extends Fragment implements NewsInterface {
             public void run() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     int hour = LocalTime.now().getHour();
-                    if (hour >= 5 && hour <= 12) {
+                    if (hour >= 5 && hour < 12) {
                         tvGreetingHome.setText("Good morning");
-                    } else if (hour >= 13 && hour <= 18) {
+                    } else if (hour >= 13 && hour < 18) {
                         tvGreetingHome.setText("Good afternoon");
                     } else {
                         tvGreetingHome.setText("Good Evening");

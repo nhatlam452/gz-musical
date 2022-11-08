@@ -1,5 +1,8 @@
 package com.example.duantotnghiep.Activities;
 
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
@@ -26,9 +29,21 @@ import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.example.duantotnghiep.Utilities.SnapHelperOneByOne;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,6 +52,7 @@ import me.relex.circleindicator.CircleIndicator2;
 
 public class LoginActivity extends AppCompatActivity implements UserContract.View, NewsInterface {
     private RecyclerView rcvPromotion;
+    private CallbackManager callbackManager;
     private CircleIndicator2 ciPromotion;
     private LoginPromotionAdapter promotionAdapter;
     private Button btnLogin;
@@ -47,12 +63,14 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     private NewsPresenter newsPresenter;
     private SharedPreferences.Editor mEditor;
     private long backPressTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         SharedPreferences mSharePrefer = getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), 0);
         mEditor = mSharePrefer.edit();
+        callbackManager = CallbackManager.Factory.create();
         boolean isLogin = mSharePrefer.getBoolean(String.valueOf(R.string.isLogin), false);
         if (isLogin) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -74,6 +92,55 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
             String phoneNumber = edtPhoneNumberLogin.getText().toString().trim();
             String password = edtPasswordLogin.getText().toString().trim();
             userPresenter.onLogin(phoneNumber, password);
+        });
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+                GraphRequest request = GraphRequest.newMeRequest(accessToken, (jsonObject, graphResponse) -> {
+                    try {
+                        AppUtil.showDialog.show(LoginActivity.this);
+                        String fbId = jsonObject.getString("id");
+                        String fName = jsonObject.getString("first_name");
+                        String lName = jsonObject.getString("last_name");
+                        User user = new User(fbId,"","",fName,lName,"");
+                        Log.d("FBLogin","Object " + jsonObject.toString());
+                        Log.d("FBLogin",fbId + fName + lName);
+                        Gson gson = new Gson();
+                        String json = gson.toJson(user);
+                        Log.d("FBLogin",json);
+                        userPresenter.onSocialRegister(user,LoginActivity.this);
+                    }catch (Exception e){
+                        Log.d("FBLogin",e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+                Log.d("LoginActivity","thanh cong");
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,birthday,first_name,last_name,link");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(LoginActivity.this, "Huy", Toast.LENGTH_SHORT).show();
+                Log.d("LoginActivity","huy");
+
+
+            }
+
+            @Override
+            public void onError(@NonNull FacebookException e) {
+                Log.d("LoginActivity",e.getMessage());
+                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        findViewById(R.id.btnFbLogin).setOnClickListener(v ->{
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         });
 
     }
@@ -130,7 +197,6 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
 
     @Override
     public void onSuccess(User user) {
-        AppUtil.showDialog.dismiss();
         if (cbKeepLogged.isChecked()) {
             mEditor.putBoolean(String.valueOf(R.string.isLogin), true);
             mEditor.apply();
@@ -139,6 +205,8 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
         startActivity(new Intent(this,MainActivity.class));
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         finish();
+        AppUtil.showDialog.dismiss();
+
     }
 
     @Override
@@ -148,10 +216,16 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onResponseFail(Throwable t) {
-        AppUtil.showDialog.dismiss();
         Toast.makeText(this, t.getMessage(), Toast.LENGTH_SHORT).show();
         Log.d("=== Error : ", t.getMessage());
+        AppUtil.showDialog.dismiss();
     }
 
     @Override

@@ -1,16 +1,5 @@
 package com.example.duantotnghiep.Activities;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentResolver;
@@ -35,6 +24,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.duantotnghiep.Adapter.SpinnerAdapter;
 import com.example.duantotnghiep.Contract.UserContract;
@@ -48,7 +46,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,14 +200,12 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    clickOpenGallery();
-                } else {
-                    Toast.makeText(this, "Please access permission to open your galley", Toast.LENGTH_SHORT).show();
-                }
-                break;
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                clickOpenGallery();
+            } else {
+                Toast.makeText(this, "Please access permission to open your galley", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -223,7 +218,7 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
             return;
         }
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = Gravity.BOTTOM;
@@ -283,33 +278,15 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
 
     private void uploadtoFireBase(Uri uri) {
         StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
-        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                userPresenter.onUpdateInfo("AVATAR", uri.toString(), userId);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                AppUtil.showDialog.dismiss();
-                                Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                ;
+        fileRef.putFile(uri).addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri1 -> userPresenter.onUpdateInfo("AVATAR", uri1.toString(), userId))
+                .addOnFailureListener(e -> {
+                    AppUtil.showDialog.dismiss();
+                    Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
+                })).addOnFailureListener(e -> {
+                    Log.d("====>", e + "");
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("====>", e + "");
-
-                Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private String getFileExtension(Uri uri) {

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.ProductDetailActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/imgBackProductDetail"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="left"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/img_back" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_logo_green" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvProductDetailName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="Siren Order"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpProductDetailImage"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+    <TextView
+        android:id="@+id/tvDescriptionDetail"
+        android:layout_gravity="center"
+        android:textSize="12dp"
+        android:textColor="@color/textColor"
+        android:lineHeight="18.2dp"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:text="We add freshly steamed milk and cinnamon dolce- flavored syrup to our classic espresso, topped with sweetened whipped cream and a cinnamon..."
+        />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tlProductDetail"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <ScrollView
+        android:id="@+id/svProductDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:paddingVertical="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:id="@+id/vpProductDetail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </ScrollView>
+</LinearLayout>

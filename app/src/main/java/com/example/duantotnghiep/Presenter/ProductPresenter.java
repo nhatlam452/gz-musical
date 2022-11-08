@@ -6,10 +6,10 @@ import com.example.duantotnghiep.Contract.ProductContract;
 import com.example.duantotnghiep.Model.Response.ProductListResponse;
 import com.example.duantotnghiep.Service.ProductService;
 
-public class ProductPresenter implements ProductContract.Presenter,ProductContract.Model.OnFinishedListener {
+public class ProductPresenter implements ProductContract.Presenter, ProductContract.Model.OnFinishedListener {
     private final String TAG = "PRODUCT PRESENTER";
-    private ProductContract.View productView;
-    private ProductContract.Model model;
+    private final ProductContract.View productView;
+    private final ProductContract.Model model;
 
     public ProductPresenter(ProductContract.View productView) {
         this.productView = productView;
@@ -26,8 +26,8 @@ public class ProductPresenter implements ProductContract.Presenter,ProductContra
     @Override
     public void onFailure(Throwable t) {
         productView.onResponseFail(t);
-        if (productView != null){
-            Log.d(TAG,t.getMessage());
+        if (productView != null) {
+            Log.d(TAG, t.getMessage());
         }
     }
 
@@ -35,4 +35,9 @@ public class ProductPresenter implements ProductContract.Presenter,ProductContra
     public void getProduct() {
         model.getAllProduct(this);
     }
-}
+
+    @Override
+    public void onGetProductByPrice(float fPrice, float sPrice, String brandName,String order, String sortType) {
+        model.getProductByPrice(this, fPrice, sPrice, brandName,order, sortType);
+    }
+    }

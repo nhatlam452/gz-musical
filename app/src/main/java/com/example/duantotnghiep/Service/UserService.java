@@ -37,6 +37,12 @@ public class UserService implements UserContract.Model, AddressContact.AddressMo
     }
 
     @Override
+    public void getSocialRegister(OnFinishedListener onFinishedListener, User user) {
+        Call<UserResponse> call = apiInterface.social_login(user);
+        onUserCallback(call,onFinishedListener);
+    }
+
+    @Override
     public void checkExitsUser(OnFinishedListener onFinishedListener, String phone) {
         Call<UserResponse> call = apiInterface.check_user_exits(phone);
         onUserCallback(call, onFinishedListener);
@@ -67,7 +73,7 @@ public class UserService implements UserContract.Model, AddressContact.AddressMo
     private void onAddressCallback(Call<AddressResponse> call , OnAddressFinished onAddressFinished){
         call.enqueue(new Callback<AddressResponse>() {
             @Override
-            public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
+            public void onResponse(@NonNull Call<AddressResponse> call, @NonNull Response<AddressResponse> response) {
                 if (response.body() != null && response.isSuccessful()) {
                     Log.d(TAG, "Response code : " + response.code() + "----" + response.body().getMessage());
                     onAddressFinished.onAddressSuccess(response.body());
@@ -75,7 +81,7 @@ public class UserService implements UserContract.Model, AddressContact.AddressMo
             }
 
             @Override
-            public void onFailure(Call<AddressResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<AddressResponse> call, @NonNull Throwable t) {
                 onAddressFinished.onAddressFailure(t);
                 Log.d(TAG, "Error : " + t.getMessage());
             }

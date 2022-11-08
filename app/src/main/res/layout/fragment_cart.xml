@@ -246,21 +246,22 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="10dp"
-                android:layout_marginTop="5dp"
+                android:id="@+id/rcvCartFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/custom_rcv_border"
-                />
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="10dp" />
+
             <TextView
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_gravity="left"
                 android:layout_width="137dp"
                 android:layout_height="23dp"
                 android:layout_centerVertical="true"
+                android:layout_gravity="left"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/custom_button_oval"
                 android:gravity="center"
                 android:lineHeight="20dp"
@@ -268,19 +269,141 @@
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:textStyle="bold" />
-                <View
-                    android:layout_marginHorizontal="20dp"
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="10dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvCardPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/imgPaymentMethod"
+                        android:layout_width="109dp"
+                        android:layout_height="58dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img_momo" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tvPaymentMethodName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/cvCardPayment"
+                    android:lineHeight="20dp"
+                    android:text="Thanh toán bằng ví Momo"
+                    android:textColor="@color/black"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNameCartPayemnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvPaymentMethodName"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/cvCardPayment"
+                    android:lineHeight="20dp"
+                    android:text="Nguyen Nhat Lam"
+                    android:textColor="@color/textColor"
+                    android:textSize="10dp"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/imgPricePaymentMethod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvNameCartPayemnt"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/cvCardPayment"
+                    android:lineHeight="20dp"
+                    android:text="$ 256.40"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12dp"
+                    android:textStyle="italic" />
+
+                <ImageView
+                    android:id="@+id/imgChangePaymentMethod"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_baseline_navigate_next_24"
+                    app:tint="#00623B" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginHorizontal="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/cvCardPayment"
+                    android:drawableStart="@drawable/ic_voucher"
+                    android:gravity="center"
+                    android:text="Voucher"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="13dp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:background="@drawable/ic_logo_green"
-                    />
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/cvCardPayment"
+                    android:gravity="right|center_vertical"
+                    android:text="Choose"
+                    android:textColor="#D9D07E"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="25dp"
+
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cvCardPayment"
+                    android:drawableLeft="@drawable/ic_shipping"
+                    android:gravity="center"
+                    android:paddingStart="4dp"
+                    android:text="Shipping time"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="13dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/cvCardPayment"
+                    android:gravity="right|center_vertical"
+                    android:text="Now"
+                    android:textColor="#D9D07E"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
             <TextView
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_gravity="left"
                 android:layout_width="137dp"
                 android:layout_height="23dp"
                 android:layout_centerVertical="true"
+                android:layout_gravity="left"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/custom_button_oval"
                 android:gravity="center"
                 android:lineHeight="20dp"
@@ -288,6 +411,94 @@
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cvCardPayment"
+                    android:gravity="center"
+                    android:text="Price"
+                    android:textColor="@color/textColor"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cvCardPayment"
+                    android:gravity="right"
+                    android:text="$ 0.0"
+                    android:textColor="#D9D07E"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cvCardPayment"
+                    android:gravity="center"
+                    android:text="Shipping Charges"
+                    android:textColor="@color/textColor"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cvCardPayment"
+                    android:gravity="right"
+                    android:text="$ 2.0"
+                    android:textColor="#D9D07E"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cvCardPayment"
+                    android:gravity="center"
+                    android:text="Total"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cvCardPayment"
+                    android:gravity="right"
+                    android:text="$ 0.0"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <Button
+                android:layout_marginTop="10dp"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:background="@drawable/custom_button_oval"
+                android:text="Pay now"
+                android:layout_width="113dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginEnd="20dp"
+                />
         </LinearLayout>
 
     </ScrollView>

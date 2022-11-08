@@ -27,10 +27,10 @@ import com.example.duantotnghiep.Presenter.LocationPresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
+import com.example.duantotnghiep.Utilities.TranslateAnimation;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -52,6 +52,7 @@ public class SavedAddressActivity extends AppCompatActivity implements AddressCo
         AppUtil.showDialog.show(this);
         presenter.onGetAddress(userId);
         findViewById(R.id.btnAddAddress).setOnClickListener(v -> openDialogAddAddress());
+        rcvAddress.setOnTouchListener(new TranslateAnimation(this, findViewById(R.id.btnAddAddress)));
     }
 
     private void openDialogAddAddress() {

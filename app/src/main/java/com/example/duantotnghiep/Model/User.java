@@ -1,14 +1,16 @@
 package com.example.duantotnghiep.Model;
 
 
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 public class User extends UserAddress implements Serializable {
-    private  String userId;
+    private String userId;
     private String phoneNumber;
     private String fbId;
     private String email;
+    @SerializedName("avatar")
     private String avt;
     private String firstName;
     private String lastName;
@@ -33,6 +35,15 @@ public class User extends UserAddress implements Serializable {
         this.role = role;
     }
 
+    public User(String fbId, String email, String avt, String firstName, String lastName, String dob) {
+        this.fbId = fbId;
+        this.email = email;
+        this.avt = avt;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+    }
+
     public User(String address, String ward, String district, String city, String addressName, String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, String notification, String role) {
         super(address, ward, district, city, addressName);
         this.userId = userId;
@@ -47,6 +58,10 @@ public class User extends UserAddress implements Serializable {
         this.salutation = salutation;
         this.notification = notification;
         this.role = role;
+    }
+
+    public User(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getAvt() {

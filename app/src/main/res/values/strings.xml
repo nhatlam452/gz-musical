@@ -9,4 +9,9 @@
     <string name="CHECK_FIRST_INSTALL">CHECK_FIRST_INSTALL</string>
     <string name="REMEMBER_LOGIN">REMEMBER_LOGIN</string>
     <string name="isLogin">isLogin</string>
+    <string name="facebook_app_id">701803981309122</string>
+    <string name="fb_login_protocol_scheme">fb701803981309122</string>
+    <string name="facebook_client_token">efa9cd0ffcc533827c283b4b0127c1f0</string>
+
+
 </resources>

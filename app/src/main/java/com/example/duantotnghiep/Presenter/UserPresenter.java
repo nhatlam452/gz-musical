@@ -49,6 +49,15 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
     }
 
     @Override
+    public void onSocialRegister(User user, Activity activity) {
+        if (user == null){
+            mView.onFail("Please try again");
+            return;
+        }
+        model.getSocialRegister(this,user);
+    }
+
+    @Override
     public void onCheckExits(String phone) {
         if (phone == null) {
             mView.onFail("Please check your input");

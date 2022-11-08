@@ -1,9 +1,12 @@
 package com.example.duantotnghiep.Retrofit;
 
 
+import com.example.duantotnghiep.Model.Products;
 import com.example.duantotnghiep.Model.Response.AddressResponse;
+import com.example.duantotnghiep.Model.Response.CartResponse;
 import com.example.duantotnghiep.Model.Response.LocationResponse;
 import com.example.duantotnghiep.Model.Response.NewsResponse;
+import com.example.duantotnghiep.Model.Response.ProductDetailResponse;
 import com.example.duantotnghiep.Model.Response.ProductListResponse;
 import com.example.duantotnghiep.Model.Response.UserResponse;
 import com.example.duantotnghiep.Model.User;
@@ -18,6 +21,17 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
+    //Cart Api
+    @FormUrlEncoded
+    @POST("views/get-cart-by.php")
+    Call<CartResponse> get_all_cart(@Field("userId") int userId
+    );
+    @FormUrlEncoded
+    @POST("views/add-to-cart.php")
+    Call<CartResponse> add_to_cart(@Field("userId") int userId,
+                                   @Field("productId") int productId,
+                                   @Field("quantity") int quantity
+    );
     //User Api
     @FormUrlEncoded
     @POST("views/check-login.php")
@@ -43,6 +57,8 @@ public interface ApiInterface {
     );
     @POST("views/insert-user.php")
     Call<UserResponse> register_user(@Body User user);
+    @POST("views/social-login.php")
+    Call<UserResponse> social_login(@Body User user);
     //Address Api
     @FormUrlEncoded
     @POST("views/get-all-address.php")
@@ -53,6 +69,19 @@ public interface ApiInterface {
     //Product Api
     @GET("views/get-all-product.php")
     Call<ProductListResponse> get_all_product();
+    @FormUrlEncoded
+    @POST("views/get-product-detail.php")
+    Call<ProductDetailResponse> get_product_detail(@Field("productId") int productId);
+
+
+    @FormUrlEncoded
+    @POST("views/get-product-by-price.php")
+    Call<ProductListResponse> get_product_by_price(@Field("fPrice")Float fPrice,
+                                                   @Field("sPrice")Float sPrice,
+                                                   @Field("brandName")String brand,
+                                                   @Field("order")String order,
+                                                   @Field("sortType")String type
+                                                   );
     //News Api
     @GET("views/get-all-news.php")
     Call<NewsResponse> get_all_news();

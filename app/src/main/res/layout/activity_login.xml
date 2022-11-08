@@ -9,8 +9,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
         <TextView
             android:gravity="center_vertical"
             android:layout_marginStart="20dp"
@@ -208,6 +206,7 @@
                     />
             </LinearLayout>
             <ImageView
+                android:id="@+id/btnFbLogin"
                 android:src="@drawable/img_login_with_fb"
                 android:layout_width="295dp"
                 android:layout_height="50dp"

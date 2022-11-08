@@ -10,6 +10,7 @@ import com.example.duantotnghiep.Fragments.CartFragment;
 import com.example.duantotnghiep.Fragments.HomeFragment;
 import com.example.duantotnghiep.Fragments.PaymentFragment;
 import com.example.duantotnghiep.Fragments.StoreFragment;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 public class ChangeFragmentAdapter extends FragmentStateAdapter {
     public ChangeFragmentAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -29,7 +30,7 @@ public class ChangeFragmentAdapter extends FragmentStateAdapter {
             case 4:
                 return new StoreFragment();
             default:
-                return new HomeFragment();
+                return new  HomeFragment();
         }
     }
 

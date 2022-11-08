@@ -17,14 +17,12 @@ import java.util.List;
 
 public class SpinnerLocationAdapter extends RecyclerView.Adapter<SpinnerLocationAdapter.SpinnerViewHolder>{
     private final List<Location> mList;
-    private final Context context;
     private final OnClickSetText onClickSetText;
     public interface OnClickSetText{
          void onClickSetText(String s,String code);
     }
     public SpinnerLocationAdapter(Context context, List<Location> mList, OnClickSetText onClickSetText) {
         this.mList = mList;
-        this.context = context;
         this.onClickSetText = onClickSetText;
     }
 

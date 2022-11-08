@@ -1,7 +1,5 @@
 package com.example.duantotnghiep.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.transition.Slide;
 import androidx.transition.Transition;
@@ -10,20 +8,17 @@ import androidx.viewpager2.widget.ViewPager2;
 
 
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,19 +26,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.duantotnghiep.Adapter.ChangeFragmentAdapter;
-import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.User;
-import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.google.gson.Gson;
+
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -53,29 +44,33 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationMain;
     private long backPressTime;
     private ImageView imgClose;
-    private CircleImageView cimgAvtSetting;
-    private Uri uri;
+    private ShareDialog shareDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUi();
-        imgClose.setOnClickListener(v -> {
-            Transition transition = new Slide(Gravity.END);
-            transition.setDuration(600);
-            transition.addTarget(R.id.layoutSetting);
+        imgClose.setOnClickListener(v -> closeDrawer());
+        findViewById(R.id.tvAU).setOnClickListener(v -> {
+            startWebView("https://vietthuong.vn/gioi-thieu.html");
+            closeDrawer();
+        });
+        findViewById(R.id.tvHelp).setOnClickListener(v -> {
+            startWebView("https://vietthuong.vn/huong-dan-mua-hang");
+            closeDrawer();
 
-            TransitionManager.beginDelayedTransition((ViewGroup) getWindow().getDecorView().getRootView(), transition);
-            layoutSetting.setVisibility(View.GONE);
         });
-        findViewById(R.id.tvAU).setOnClickListener(v -> startWebView("https://vietthuong.vn/gioi-thieu.html"));
-        findViewById(R.id.tvHelp).setOnClickListener(v -> startWebView("https://vietthuong.vn/huong-dan-mua-hang"));
-        findViewById(R.id.tvPrivacyPolice).setOnClickListener(v -> startWebView("https://vietthuong.vn/chinh-sach-thanh-toan-va-bao-mat"));
-        findViewById(R.id.tvTOS).setOnClickListener(v -> startWebView("https://vietthuong.vn/dieu-khoan-su-dung-website"));
-        findViewById(R.id.tvContactUsSetting).setOnClickListener(v -> {
-            openDialogContact();
+        findViewById(R.id.tvPrivacyPolice).setOnClickListener(v -> {
+            startWebView("https://vietthuong.vn/chinh-sach-thanh-toan-va-bao-mat");
+            closeDrawer();
+
         });
+        findViewById(R.id.tvTOS).setOnClickListener(v -> {
+            startWebView("https://vietthuong.vn/dieu-khoan-su-dung-website");
+            closeDrawer();
+        });
+        findViewById(R.id.tvContactUsSetting).setOnClickListener(v -> openDialogContact());
         findViewById(R.id.tvLogOut).setOnClickListener(v -> {
             SharedPreferences sharedPreferences = getSharedPreferences("USER_INFO", MODE_PRIVATE);
             SharedPreferences.Editor mEditor = sharedPreferences.edit();
@@ -93,19 +88,48 @@ public class MainActivity extends AppCompatActivity {
                 {
                     startActivity(new Intent(this, UserInfoActivity.class));
                     overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+                    closeDrawer();
+
                 }
 
         );
         findViewById(R.id.tvSavedAddress).setOnClickListener(v -> {
             startActivity(new Intent(this, SavedAddressActivity.class));
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
-        });
+            closeDrawer();
 
+        });
+        findViewById(R.id.tvTellYourFiend).setOnClickListener(v->{
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setQuote("Gz Musical")
+                    .setContentUrl(Uri.parse("https://youtube.com"))
+                    .build();
+            shareDialog.show(linkContent);
+        });
+        findViewById(R.id.imgYoutube).setOnClickListener(v-> goToUrl("https://www.youtube.com/channel/UCR_v4LC7mFpxZow1uWxognw"));
+        findViewById(R.id.imgFb).setOnClickListener(v-> goToUrl("https://www.facebook.com/profile.php?id=100008612558105"));
+        findViewById(R.id.imgInsta).setOnClickListener(v-> goToUrl("https://www.instagram.com/nhatlam_isme/"));
+    }
+
+    private void goToUrl(String url) {
+        Uri uri = Uri.parse(url);
+        startActivity(new Intent(Intent.ACTION_VIEW,uri));
+    }
+
+    private void closeDrawer() {
+        Transition transition = new Slide(Gravity.END);
+        transition.setDuration(600);
+        transition.addTarget(R.id.layoutSetting);
+
+        TransitionManager.beginDelayedTransition((ViewGroup) getWindow().getDecorView().getRootView(), transition);
+        layoutSetting.setVisibility(View.GONE);
     }
 
     private void initUi() {
+        shareDialog = new ShareDialog(this);
+
         vpMainActivity = findViewById(R.id.vpMainActivity);
-        cimgAvtSetting = findViewById(R.id.cimgAvtSetting);
+        CircleImageView cimgAvtSetting = findViewById(R.id.cimgAvtSetting);
         bottomNavigationMain = findViewById(R.id.bottomNavigationMain);
         TextView tvUserName = findViewById(R.id.tvUserNameSetting);
         TextView tvEmail = findViewById(R.id.tvEmailSetting);
@@ -133,16 +157,17 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         WindowManager.LayoutParams windowAttributes = window.getAttributes();
         windowAttributes.gravity = Gravity.BOTTOM;
         window.setAttributes(windowAttributes);
         window.findViewById(R.id.tvHotline).setOnClickListener(v1 -> {
-            String phone = "19000000";
+            String phone = "0909916020";
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + phone));
             startActivity(intent);
+            closeDrawer();
         });
         window.findViewById(R.id.tvEmailUS).setOnClickListener(v1 -> {
             Intent i = new Intent(Intent.ACTION_SEND);
@@ -153,61 +178,11 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Toast.makeText(this, e + "", Toast.LENGTH_SHORT).show();
             }
+            closeDrawer();
         });
 
         contactDialog.show();
     }
-//    private void clickAddItem() {
-//        if (uri != null){
-//            uploadtoFireBase(uri);
-//        }else {
-//            Toast.makeText(this, "Pleas select image", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//
-//    private void uploadtoFireBase(Uri uri) {
-//        StorageReference fileRef  = reference.child(System.currentTimeMillis()+"." + getFileExtension(uri));
-//        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        //Call api upload image
-//                    }
-//                });
-//
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.d("====>",e+"");
-//
-//                Toast.makeText(MainActivity.this, e + "", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-//
-//    private String getFileExtension(Uri uri) {
-//        ContentResolver contentResolver = getContentResolver();
-//        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-//        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-//    }
-//
-//    private void clickOpenGallery() {
-//        Intent i = new Intent();
-//        i.setAction(Intent.ACTION_GET_CONTENT);
-//        i.setType("image/*");
-//        startActivityForResult(i,2);
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
-//            uri = data.getData();
-//        }
-//    }
 
     private void startWebView(String url) {
         Intent i = new Intent(this, WebViewActivity.class);
@@ -293,4 +268,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
     }
+
+
 }

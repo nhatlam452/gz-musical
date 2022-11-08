@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duantotnghiep.R;
@@ -17,11 +18,13 @@ import java.util.List;
 public class SpinnerAdapter extends RecyclerView.Adapter<SpinnerAdapter.SpinnerViewHolder>{
     private final List<String> mList;
     private final OnClickSetText onClickSetText;
+    private Context context;
     public interface OnClickSetText{
          void onClickSetText(String s);
     }
     public SpinnerAdapter(Context context, List<String> mList,OnClickSetText onClickSetText) {
         this.mList = mList;
+        this.context = context;
         this.onClickSetText = onClickSetText;
     }
 
@@ -39,7 +42,10 @@ public class SpinnerAdapter extends RecyclerView.Adapter<SpinnerAdapter.SpinnerV
             return;
         }
         holder.tvItem.setText(s);
-        holder.tvItem.setOnClickListener(v -> onClickSetText.onClickSetText(s));
+        holder.tvItem.setOnClickListener(v -> {
+
+            onClickSetText.onClickSetText(s);
+        });
     }
 
     @Override
