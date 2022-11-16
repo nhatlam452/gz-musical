@@ -10,9 +10,10 @@ public class ProductDetail {
     private String fingerBoard;
     private String bridge;
     private String origin;
+    private String video;
     private List<Images> listImage;
 
-    public ProductDetail(int productDetailId, String top, String back, String neck, String fingerBoard, String bridge, String origin, List<Images> listImage) {
+    public ProductDetail(int productDetailId, String top, String back, String neck, String fingerBoard, String bridge, String origin, String video, List<Images> listImage) {
         this.productDetailId = productDetailId;
         this.top = top;
         this.back = back;
@@ -20,7 +21,16 @@ public class ProductDetail {
         this.fingerBoard = fingerBoard;
         this.bridge = bridge;
         this.origin = origin;
+        this.video = video;
         this.listImage = listImage;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     public int getProductDetailId() {

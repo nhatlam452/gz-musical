@@ -72,6 +72,7 @@ public class HomeFragment extends Fragment implements NewsInterface {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         //initUI
         initUI(view);
@@ -96,10 +97,11 @@ public class HomeFragment extends Fragment implements NewsInterface {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean b) {
                 if (!b){
-
                     youTubePlayer = player;
                     youTubePlayer.loadVideo("T9PV_nC_JdE");
                     youTubePlayer.play();
+                    youTubePlayer.setShowFullscreenButton(false);
+
                 }
             }
             @Override

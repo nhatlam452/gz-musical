@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/custom_border_top_shape"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tvTitlePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Options"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/colorPrimary"
+        />
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitlePicture"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/imgOpenCamera"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_camera_alt_24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgOpenCamera"
+            android:text="Open Camera"
+            android:textColor="@color/colorPrimary" />
+
+        <ImageView
+            android:layout_marginEnd="25dp"
+            android:id="@+id/imgOpenGallery"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_image_24"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgOpenGallery"
+            android:layout_alignParentRight="true"
+            android:text="Choose from gallery"
+            android:textColor="@color/colorPrimary" />
+    </RelativeLayout>
+
+</RelativeLayout>

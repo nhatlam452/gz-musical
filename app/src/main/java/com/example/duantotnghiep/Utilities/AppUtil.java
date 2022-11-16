@@ -20,13 +20,18 @@ import com.example.duantotnghiep.R;
 import com.google.gson.Gson;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AppUtil {
 
 
-
+    public static String formatDate(String date){
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        return dateFormat.format(date);
+    }
     public static String formatPhoneNumber(String phoneNumber) {
         return String.format("%s %s %s",phoneNumber.subSequence(0,3),"****",phoneNumber.subSequence(7,10));
     }

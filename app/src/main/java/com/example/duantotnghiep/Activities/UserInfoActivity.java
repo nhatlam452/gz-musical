@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -81,6 +82,8 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_user_info);
         civAvt = findViewById(R.id.imgChangeAvt);
         EditText edtPhone = findViewById(R.id.edtPhoneNumberInfo);
@@ -189,9 +192,7 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
             }
             if (!edtLastName.getText().toString().equals(lastName)) {
                 String name = edtLastName.getText().toString();
-
                 userPresenter.onUpdateInfo("LASTNAME", name, userId);
-
             }
         });
 
@@ -278,15 +279,16 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
 
     private void uploadtoFireBase(Uri uri) {
         StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
-        fileRef.putFile(uri).addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri1 -> userPresenter.onUpdateInfo("AVATAR", uri1.toString(), userId))
+        fileRef.putFile(uri).addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri1 ->
+                        userPresenter.onUpdateInfo("AVATAR", uri1.toString(), userId))
                 .addOnFailureListener(e -> {
                     AppUtil.showDialog.dismiss();
                     Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
                 })).addOnFailureListener(e -> {
-                    Log.d("====>", e + "");
+            Log.d("====>", e + "");
 
-                    Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
-                });
+            Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private String getFileExtension(Uri uri) {

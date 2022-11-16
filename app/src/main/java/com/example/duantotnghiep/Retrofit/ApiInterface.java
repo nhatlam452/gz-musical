@@ -1,9 +1,11 @@
 package com.example.duantotnghiep.Retrofit;
 
 
+import com.example.duantotnghiep.Model.Comment;
 import com.example.duantotnghiep.Model.Products;
 import com.example.duantotnghiep.Model.Response.AddressResponse;
 import com.example.duantotnghiep.Model.Response.CartResponse;
+import com.example.duantotnghiep.Model.Response.CommentResponse;
 import com.example.duantotnghiep.Model.Response.LocationResponse;
 import com.example.duantotnghiep.Model.Response.NewsResponse;
 import com.example.duantotnghiep.Model.Response.ProductDetailResponse;
@@ -21,29 +23,41 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
+    //Comment Api
+    @FormUrlEncoded
+    @POST("views/get-all-comment.php")
+    Call<CommentResponse> get_all_comment(@Field("productId") int productId);
+
+    @POST("views/add-comment.php")
+    Call<CommentResponse> add_comment(@Body Comment comment);
+
     //Cart Api
     @FormUrlEncoded
     @POST("views/get-cart-by.php")
     Call<CartResponse> get_all_cart(@Field("userId") int userId
     );
+
     @FormUrlEncoded
     @POST("views/add-to-cart.php")
     Call<CartResponse> add_to_cart(@Field("userId") int userId,
                                    @Field("productId") int productId,
                                    @Field("quantity") int quantity
     );
+
     //User Api
     @FormUrlEncoded
     @POST("views/check-login.php")
     Call<UserResponse> check_login(@Field("phoneNumber") String phoneNumber,
                                    @Field("password") String password
     );
+
     @FormUrlEncoded
     @POST("views/update-user.php")
     Call<UserResponse> update_info(@Field("param") String param,
                                    @Field("value") String value,
                                    @Field("userId") String userId
     );
+
     @FormUrlEncoded
     @POST("views/check-user-exits.php")
     Call<UserResponse> check_user_exits(@Field("phoneNumber") String phoneNumber);
@@ -55,20 +69,26 @@ public interface ApiInterface {
                                             @Field("password") String password
 
     );
+
     @POST("views/insert-user.php")
     Call<UserResponse> register_user(@Body User user);
+
     @POST("views/social-login.php")
     Call<UserResponse> social_login(@Body User user);
+
     //Address Api
     @FormUrlEncoded
     @POST("views/get-all-address.php")
     Call<AddressResponse> get_user_address(@Field("userId") String userId
     );
+
     @POST("views/insert-address.php")
     Call<AddressResponse> insert_address(@Body UserAddress address);
+
     //Product Api
     @GET("views/get-all-product.php")
     Call<ProductListResponse> get_all_product();
+
     @FormUrlEncoded
     @POST("views/get-product-detail.php")
     Call<ProductDetailResponse> get_product_detail(@Field("productId") int productId);
@@ -76,15 +96,17 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("views/get-product-by-price.php")
-    Call<ProductListResponse> get_product_by_price(@Field("fPrice")Float fPrice,
-                                                   @Field("sPrice")Float sPrice,
-                                                   @Field("brandName")String brand,
-                                                   @Field("order")String order,
-                                                   @Field("sortType")String type
-                                                   );
+    Call<ProductListResponse> get_product_by_price(@Field("fPrice") Float fPrice,
+                                                   @Field("sPrice") Float sPrice,
+                                                   @Field("brandName") String brand,
+                                                   @Field("order") String order,
+                                                   @Field("sortType") String type
+    );
+
     //News Api
     @GET("views/get-all-news.php")
     Call<NewsResponse> get_all_news();
+
     //Location Api
     @GET("province")
     Call<LocationResponse> getCity();

@@ -1,7 +1,9 @@
 package com.example.duantotnghiep.Adapter;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.duantotnghiep.Activities.ViewImageActivity;
 import com.example.duantotnghiep.Model.Images;
 import com.example.duantotnghiep.Model.Photo;
 import com.example.duantotnghiep.R;
@@ -44,7 +47,12 @@ public class ProductDetailImageAdapter extends RecyclerView.Adapter<ProductDetai
             return;
         }
         Glide.with(context).load(photo.getUrl()).into(holder.circleImageView);
-
+        holder.circleImageView.setOnClickListener(v->{
+            Intent i = new Intent(context, ViewImageActivity.class);
+            i.putExtra("ViewImage",photo.getUrl());
+            context.startActivity(i);
+            ((Activity) context).overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadein);
+        });
     }
 
     @Override
@@ -56,7 +64,7 @@ public class ProductDetailImageAdapter extends RecyclerView.Adapter<ProductDetai
     }
 
     public static class OnBoardingViewHolder extends RecyclerView.ViewHolder {
-        CircleImageView circleImageView;
+        ImageView circleImageView;
         public OnBoardingViewHolder(@NonNull View itemView) {
             super(itemView);
             circleImageView = itemView.findViewById(R.id.imgProductDetail);

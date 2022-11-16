@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.duantotnghiep">
-
+    <uses-feature android:name="android.hardware.screen.portrait"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
@@ -28,9 +29,12 @@
         android:theme="@style/Theme.DuAnTotNghiep"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
             android:name=".Activities.ProductDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateHidden|adjustPan"
+            />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -88,7 +92,10 @@
         </activity>
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="fullSensor"
+            />
+
     </application>
 
 </manifest>

@@ -1,14 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".Fragments.CommentFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvComment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_above="@+id/layoutCmt"
+        />
 
-</FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/layoutCmt"
+        android:background="#373636" />
+
+    <RelativeLayout
+        android:id="@+id/layoutCmt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingVertical="5dp">
+
+        <RelativeLayout
+            android:id="@+id/layoutComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edtContent"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="10dp"
+                android:layout_toStartOf="@id/imgSelectPicture"
+                android:background="@drawable/custom_rcv_border"
+                android:hint="Write Comment ..."
+                android:maxHeight="100dp"
+                android:maxLength="255"
+                android:padding="10dp"
+                android:textColor="@color/textColor"
+                android:textSize="13dp" />
+
+
+            <ImageView
+                android:id="@+id/imgSelectPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="5dp"
+                android:layout_toStartOf="@id/imgSendCmt"
+                android:src="@drawable/ic_baseline_camera_enhance_24"
+                app:tint="@color/colorPrimary" />
+
+            <ImageView
+                android:id="@+id/imgSendCmt"
+                app:tint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="5dp"
+                android:src="@drawable/ic_baseline_send_24" />
+        </RelativeLayout>
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+            android:id="@+id/layoutPictureComment"
+            android:layout_below="@id/layoutComment"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_margin="5dp"
+                android:id="@+id/imgCommentPicture"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_11"
+                android:layout_width="70dp"
+                android:layout_height="70dp"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+
+                android:id="@+id/imgRemovePicture"
+                app:layout_anchor="@id/imgCommentPicture"
+                app:layout_anchorGravity="right|top"
+                android:layout_width="10dp"
+                android:alpha="0.7"
+                android:layout_height="10dp"
+                android:background="@drawable/custom_button_oval"
+                android:backgroundTint="@color/red"
+                android:src="@drawable/ic_baseline_remove_24"
+                />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

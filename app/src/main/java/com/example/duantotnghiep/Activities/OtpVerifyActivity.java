@@ -3,6 +3,7 @@ package com.example.duantotnghiep.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,6 +30,8 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_otp_verify);
         initUI();
         User user = (User) getIntent().getSerializableExtra("UserRegister");

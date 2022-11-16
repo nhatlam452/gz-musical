@@ -45,7 +45,6 @@ public class CartFragment extends Fragment implements CartContact.View {
 
     @Override
     public void onCartSuccess(List<Cart> cartList) {
-        Toast.makeText(getContext(), "Thanh cong", Toast.LENGTH_SHORT).show();
         CartAdapter cartAdapter = new CartAdapter(getContext(),cartList);
         rcvCartFragment.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvCartFragment.setAdapter(cartAdapter);

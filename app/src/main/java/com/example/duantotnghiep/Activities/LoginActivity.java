@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -67,6 +68,8 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_login);
         SharedPreferences mSharePrefer = getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), 0);
         mEditor = mSharePrefer.edit();

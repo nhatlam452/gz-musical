@@ -39,6 +39,8 @@
         android:textStyle="bold" />
 
     <androidx.viewpager2.widget.ViewPager2
+        android:paddingStart="80dp"
+        android:paddingEnd="80dp"
         android:id="@+id/vpProductDetailImage"
         android:layout_width="match_parent"
         android:layout_height="300dp" />
@@ -58,10 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 
-    <ScrollView
-        android:id="@+id/svProductDetail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
 
         <androidx.viewpager2.widget.ViewPager2
             android:paddingVertical="10dp"
@@ -70,5 +69,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </ScrollView>
+
 </LinearLayout>
