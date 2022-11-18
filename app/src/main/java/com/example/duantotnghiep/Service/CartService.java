@@ -32,6 +32,12 @@ public class CartService implements CartContact.CartModel {
 
     }
 
+    @Override
+    public void removeCart(OnCartFinishedListener onCartFinishedListener, int cartId) {
+        Call<CartResponse> call = apiInterface.remove_cart(cartId);
+        onCartCallback(call,onCartFinishedListener);
+    }
+
     private void onCartCallback (Call < CartResponse > call, OnCartFinishedListener onFinished){
         call.enqueue(new Callback<CartResponse>() {
             @Override

@@ -56,6 +56,12 @@ public class Products  {
         this.quantity = quantity;
     }
 
+    public Products(float price,String productName, String description) {
+        this.productName = productName;
+        this.price = price;
+        this.description = description;
+    }
+
     public Products(int productID, String productName, float price, String url, int discount, String description, int available, int quantity, int typeDisplay) {
         this.productID = productID;
         this.productName = productName;

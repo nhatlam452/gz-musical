@@ -8,8 +8,9 @@ public class Cart {
     private int quantity;
     private String url;
     private float price;
+    private double discount;
 
-    public Cart(int cartId, int userId, int productId, String productName, int quantity, String url, float price) {
+    public Cart(int cartId, int userId, int productId, String productName, int quantity, String url, float price, double discount) {
         this.cartId = cartId;
         this.userId = userId;
         this.productId = productId;
@@ -17,6 +18,11 @@ public class Cart {
         this.quantity = quantity;
         this.url = url;
         this.price = price;
+        this.discount = discount;
+    }
+
+    public double getDiscount() {
+        return discount;
     }
 
     public int getCartId() {

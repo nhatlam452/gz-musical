@@ -2,7 +2,7 @@ package com.example.duantotnghiep.Model;
 
 import java.util.List;
 
-public class ProductDetail {
+public class ProductDetail  extends Products{
     private int productDetailId;
     private String top;
     private String back;
@@ -14,6 +14,19 @@ public class ProductDetail {
     private List<Images> listImage;
 
     public ProductDetail(int productDetailId, String top, String back, String neck, String fingerBoard, String bridge, String origin, String video, List<Images> listImage) {
+        this.productDetailId = productDetailId;
+        this.top = top;
+        this.back = back;
+        this.neck = neck;
+        this.fingerBoard = fingerBoard;
+        this.bridge = bridge;
+        this.origin = origin;
+        this.video = video;
+        this.listImage = listImage;
+    }
+
+    public ProductDetail(float price,String productName, String description, int productDetailId, String top, String back, String neck, String fingerBoard, String bridge, String origin, String video, List<Images> listImage) {
+        super(price,productName, description);
         this.productDetailId = productDetailId;
         this.top = top;
         this.back = back;

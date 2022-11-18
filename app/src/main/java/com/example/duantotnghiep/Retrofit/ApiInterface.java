@@ -10,6 +10,7 @@ import com.example.duantotnghiep.Model.Response.LocationResponse;
 import com.example.duantotnghiep.Model.Response.NewsResponse;
 import com.example.duantotnghiep.Model.Response.ProductDetailResponse;
 import com.example.duantotnghiep.Model.Response.ProductListResponse;
+import com.example.duantotnghiep.Model.Response.StoreResponse;
 import com.example.duantotnghiep.Model.Response.UserResponse;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Model.UserAddress;
@@ -23,6 +24,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
+    //Store Api
+    @GET("views/get-all-store.php")
+    Call<StoreResponse> get_all_store();
     //Comment Api
     @FormUrlEncoded
     @POST("views/get-all-comment.php")
@@ -36,7 +40,10 @@ public interface ApiInterface {
     @POST("views/get-cart-by.php")
     Call<CartResponse> get_all_cart(@Field("userId") int userId
     );
-
+    @FormUrlEncoded
+    @POST("views/remove-cart.php")
+    Call<CartResponse> remove_cart(@Field("cartId") int cartId
+    );
     @FormUrlEncoded
     @POST("views/add-to-cart.php")
     Call<CartResponse> add_to_cart(@Field("userId") int userId,

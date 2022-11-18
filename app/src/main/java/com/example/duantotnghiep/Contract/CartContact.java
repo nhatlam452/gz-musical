@@ -15,6 +15,7 @@ public interface CartContact {
         }
         void addToCart(OnCartFinishedListener onCartFinishedListener,int userId,int productId,int quantity);
         void getAllCart(OnCartFinishedListener onCartFinishedListener,int userId);
+        void removeCart(OnCartFinishedListener onCartFinishedListener,int cartId);
     }
     interface View{
         void onCartSuccess(List<Cart> cartList);
@@ -25,5 +26,6 @@ public interface CartContact {
     interface Presenter {
         void onGetCart(int userId);
         void onAddToCart(int userId,int productId,int quantity);
+        void onRemoveCart(int cartId);
     }
 }

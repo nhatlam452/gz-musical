@@ -31,9 +31,11 @@ import java.util.List;
 public class ProductDetailActivity extends AppCompatActivity implements DetailContract.View {
     private ViewPager2 vpProductDetailImage, vpProductDetail;
     private TabLayout tlProductDetail;
-    private Products products;
     private ProductDetail productDetail;
+    private TextView tvDescriptionDetail, tvProductDetailName;
     private ProductDetailPresenter detailPresenter;
+    private int productId;
+    public static int quantity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,26 +44,17 @@ public class ProductDetailActivity extends AppCompatActivity implements DetailCo
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_product_detail);
         detailPresenter = new ProductDetailPresenter(this);
-        Gson gson = new Gson();
-        String json = getIntent().getStringExtra("product");
-        products = gson.fromJson(json, Products.class);
-        Log.d("Product Detail ", json);
         initUi();
-        detailPresenter.onGetProductDetail(products.getProductID());
-        findViewById(R.id.imgBackProductDetail).setOnClickListener(v->{
+        productId = getIntent().getIntExtra("productId", 0);
+        quantity = getIntent().getIntExtra("quantity", 1);
+
+        detailPresenter.onGetProductDetail(productId);
+        findViewById(R.id.imgBackProductDetail).setOnClickListener(v -> {
             onBackPressed();
-            overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
-        findViewById(R.id.imgBackProductDetail).setOnClickListener(v->onBackPressed());
+        findViewById(R.id.imgBackProductDetail).setOnClickListener(v -> onBackPressed());
 
-
-    }
-
-    public Products getProduct() {
-        return products;
-    }
-
-    public void setUpImageViewPage(List<Images> mList) {
 
     }
 
@@ -85,21 +78,22 @@ public class ProductDetailActivity extends AppCompatActivity implements DetailCo
     }
 
     private void initUi() {
-
-
-        TextView tvProductDetailName = findViewById(R.id.tvProductDetailName);
+        tvDescriptionDetail = findViewById(R.id.tvDescriptionDetail);
+        tvProductDetailName = findViewById(R.id.tvProductDetailName);
         vpProductDetailImage = findViewById(R.id.vpProductDetailImage);
         vpProductDetail = findViewById(R.id.vpProductDetail);
         tlProductDetail = findViewById(R.id.tlProductDetail);
-        TextView tvDescriptionDetail = findViewById(R.id.tvDescriptionDetail);
-        tvProductDetailName.setText(products.getProductName());
-        tvDescriptionDetail.setText(products.getDescription());
+
 
     }
+
+    public int getProductId() {
+        return productId;
+    }
+
     public ProductDetail getDetail() {
         return productDetail;
     }
-
 
     @Override
     public void getProductDetailSuccess(ProductDetail productDetails) {
@@ -117,6 +111,8 @@ public class ProductDetailActivity extends AppCompatActivity implements DetailCo
         vpProductDetailImage.setPageTransformer(compositePageTransformer);
         ProductDetailImageAdapter productDetailImageAdapter = new ProductDetailImageAdapter(productDetails.getListImage(), this);
         vpProductDetailImage.setAdapter(productDetailImageAdapter);
+        tvProductDetailName.setText(productDetail.getProductName());
+        tvDescriptionDetail.setText(productDetail.getDescription());
         AppUtil.showDialog.dismiss();
 
     }
@@ -127,8 +123,6 @@ public class ProductDetailActivity extends AppCompatActivity implements DetailCo
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         AppUtil.showDialog.dismiss();
         Log.d("Product Detail Fragment", "Error : " + msg);
-
-
     }
 
     @Override
@@ -142,6 +136,6 @@ public class ProductDetailActivity extends AppCompatActivity implements DetailCo
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
     }
 }

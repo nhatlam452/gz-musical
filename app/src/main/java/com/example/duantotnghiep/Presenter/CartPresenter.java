@@ -46,4 +46,9 @@ public class CartPresenter implements CartContact.Presenter, CartContact.CartMod
     public void onAddToCart(int userId, int productId, int quantity) {
         mCartModel.addToCart(this,userId,productId,quantity);
     }
+
+    @Override
+    public void onRemoveCart(int cartId) {
+        mCartModel.removeCart(this,cartId);
+    }
 }

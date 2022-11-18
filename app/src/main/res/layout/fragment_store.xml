@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.StoreFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/rltSearchStore"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_height="50dp"
+        android:background="@color/white"
+        >
+        <ImageView
+            android:id="@+id/imgLogoStore"
+            android:scaleType="centerCrop"
+            android:layout_alignParentLeft="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_logo_green"
+            />
+        <EditText
+            android:textCursorDrawable="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimary"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/imgLogoStore"
+            android:layout_toLeftOf="@id/imgFindStore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Find a store"
+            />
+        <ImageView
+            android:layout_centerVertical="true"
+            android:id="@+id/imgFindStore"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:tint="@color/colorPrimary"
+            android:src="@drawable/ic_baseline_search_24"
+            tools:ignore="UseAppTint" />
+    </RelativeLayout>
+    <fragment
+        android:layout_below="@id/rltSearchStore"
+        android:layout_above="@id/rcvStore"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/mvStore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:padding="10dp"
+        android:id="@+id/rcvStore"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

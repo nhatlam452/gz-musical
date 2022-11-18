@@ -33,7 +33,8 @@ public class ProductDetailFragment extends Fragment implements CartContact.View 
     int productId;
     private CartPresenter cartPresenter;
     private TextView tvTop, tvBack, tvNeck, tvFingerBoard, tvBridge, tvOrigin,tvQuantity,tvPriceDetail;
-    private int q =1;
+    private int q ;
+    private float price;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,6 +47,9 @@ public class ProductDetailFragment extends Fragment implements CartContact.View 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ProductDetailActivity productDetailActivity = (ProductDetailActivity) getActivity();
         super.onViewCreated(view, savedInstanceState);
+        q = productDetailActivity.quantity;
+        price = (float) (productDetailActivity.getDetail().getPrice() * (100-productDetailActivity.getDetail().getDiscount())/100);
+        Toast.makeText(productDetailActivity, ""+productDetailActivity.getDetail().getDiscount(), Toast.LENGTH_SHORT).show();
         cartPresenter = new CartPresenter(this);
         tvTop = view.findViewById(R.id.tvTop);
         tvBack = view.findViewById(R.id.tvBack);
@@ -55,7 +59,7 @@ public class ProductDetailFragment extends Fragment implements CartContact.View 
         tvOrigin = view.findViewById(R.id.tvOrigin);
         tvQuantity = view.findViewById(R.id.tvQuantity);
         tvPriceDetail = view.findViewById(R.id.tvPriceProductDetail);
-        tvPriceDetail.setText("$ " + NumberFormat.getInstance().format(productDetailActivity.getProduct().getPrice()));
+        tvPriceDetail.setText("$ " + NumberFormat.getInstance().format(price*q));
         tvQuantity.setText(q+"");
         ProductDetail productDetails = productDetailActivity.getDetail();
         tvTop.setText(productDetails.getTop());
@@ -69,7 +73,7 @@ public class ProductDetailFragment extends Fragment implements CartContact.View 
                 return;
             q --;
             tvQuantity.setText(q+"");
-            tvPriceDetail.setText("$ " + NumberFormat.getInstance().format(productDetailActivity.getProduct().getPrice()*q));
+            tvPriceDetail.setText("$ " + NumberFormat.getInstance().format(price*q));
 
 
         });
@@ -78,17 +82,17 @@ public class ProductDetailFragment extends Fragment implements CartContact.View 
                 return;
             q ++;
             tvQuantity.setText(q+"");
-            tvPriceDetail.setText("$ " + NumberFormat.getInstance().format(productDetailActivity.getProduct().getPrice()*q));
+            tvPriceDetail.setText("$ " + NumberFormat.getInstance().format(price*q));
 
 
         });
 
         view.findViewById(R.id.btnAddToCart).setOnClickListener(v->{
             Log.d("Api put ==>","userID : " + Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId())
-                    + "productId : " +  productDetailActivity.getProduct().getProductID()
+                    + "productId : " +  productDetailActivity.getProductId()
                     + "quantity : " + Integer.parseInt(tvQuantity.getText().toString())
             );
-            cartPresenter.onAddToCart(Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId()),productDetailActivity.getProduct().getProductID(),Integer.parseInt(tvQuantity.getText().toString()));
+            cartPresenter.onAddToCart(Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId()),productDetailActivity.getProductId(),Integer.parseInt(tvQuantity.getText().toString()));
         });
     }
 
@@ -98,7 +102,6 @@ public class ProductDetailFragment extends Fragment implements CartContact.View 
     @Override
     public void onCartSuccess(List<Cart> cartList) {
         Toast.makeText(getContext(),tvQuantity.getText().toString() + " products have been add to cart", Toast.LENGTH_SHORT).show();
-        getActivity().onBackPressed();
     }
 
     @Override

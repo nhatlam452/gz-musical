@@ -128,7 +128,7 @@ public class CommentFragment extends Fragment implements CommentContact.View {
 
         commentPresenter = new CommentPresenter(this);
         AppUtil.showDialog.show(getContext());
-        commentPresenter.onGetComment(productDetailActivity.getProduct().getProductID());
+        commentPresenter.onGetComment(productDetailActivity.getProductId());
         if (uri != null || bitmap != null) {
             imgCommentPicture.setVisibility(View.VISIBLE);
         }
@@ -171,7 +171,7 @@ public class CommentFragment extends Fragment implements CommentContact.View {
                 Date date = new Date();
                 String time = format.format(date);
                 Comment comment = new Comment(Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId()),
-                        productDetailActivity.getProduct().getProductID(), edtComment.getText().toString().trim(), time, "");
+                        productDetailActivity.getProductId(), edtComment.getText().toString().trim(), time, "");
                 commentPresenter.onAddComment(comment);
 
             }
@@ -198,7 +198,7 @@ public class CommentFragment extends Fragment implements CommentContact.View {
                             Date date = new Date();
                             String time = format.format(date);
                             Comment comment = new Comment(Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId()),
-                                    productDetailActivity.getProduct().getProductID(), edtComment.getText().toString().trim(), time, uri1.toString());
+                                    productDetailActivity.getProductId(), edtComment.getText().toString().trim(), time, uri1.toString());
                             commentPresenter.onAddComment(comment);
                         }
                 )
@@ -259,7 +259,7 @@ public class CommentFragment extends Fragment implements CommentContact.View {
         uri = null;
         edtComment.setText("");
         if (userAddressList == null) {
-            commentPresenter.onGetComment(productDetailActivity.getProduct().getProductID());
+            commentPresenter.onGetComment(productDetailActivity.getProductId());
         }
         CommentAdapter adapter = new CommentAdapter(getContext(), userAddressList);
         rcvComment.setLayoutManager(new LinearLayoutManager(getContext()));

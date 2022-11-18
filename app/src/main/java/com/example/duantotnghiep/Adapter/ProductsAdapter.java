@@ -63,10 +63,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         holder.tvPriceDiscount.setText(NumberFormat.getInstance().format(products.getPrice() * (100 - products.getDiscount()) / 100) + " đ");
         holder.tvProductName.setText(products.getProductName() + "");
         holder.imgProduct.setOnClickListener(v->{
-            Gson gson = new Gson();
-            String json = gson.toJson(products);
             Intent i  = new Intent(context,ProductDetailActivity.class);
-            i.putExtra("product",json);
+            i.putExtra("productId",products.getProductID());
             context.startActivity(i);
             Activity activity = (Activity) context;
             activity.overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
