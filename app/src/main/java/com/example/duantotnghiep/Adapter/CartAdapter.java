@@ -28,10 +28,14 @@ import java.util.List;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> implements View.OnClickListener {
     private final List<Cart> mListCart;
     private final Context context;
-
-    public CartAdapter(Context context, List<Cart> mListCart) {
+    private OnClickListener onClickListener;
+    public interface OnClickListener{
+        void onClick(int productId,int quantity);
+    }
+    public CartAdapter(Context context, List<Cart> mListCart,OnClickListener onClickListener) {
         this.mListCart = mListCart;
         this.context = context;
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
@@ -58,11 +62,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         float totalPrice = (float) (cart.getPrice() * (100-cart.getDiscount())/100);
         holder.tvCartItemTotalPrice.setText("Total : "+NumberFormat.getInstance().format(totalPrice * cart.getQuantity()) +"VND");
         holder.itemCartLayout.setOnClickListener(v->{
-            Intent i = new Intent(context, ProductDetailActivity.class);
-            i.putExtra("productId",cart.getProductId());
-            i.putExtra("quantity",cart.getQuantity());
-            context.startActivity(i);
-            ((Activity)context).overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+           onClickListener.onClick(cart.getProductId(),cart.getQuantity());
         });
     }
 

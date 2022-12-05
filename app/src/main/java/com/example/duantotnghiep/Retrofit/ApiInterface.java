@@ -2,12 +2,14 @@ package com.example.duantotnghiep.Retrofit;
 
 
 import com.example.duantotnghiep.Model.Comment;
+import com.example.duantotnghiep.Model.Order;
 import com.example.duantotnghiep.Model.Products;
 import com.example.duantotnghiep.Model.Response.AddressResponse;
 import com.example.duantotnghiep.Model.Response.CartResponse;
 import com.example.duantotnghiep.Model.Response.CommentResponse;
 import com.example.duantotnghiep.Model.Response.LocationResponse;
 import com.example.duantotnghiep.Model.Response.NewsResponse;
+import com.example.duantotnghiep.Model.Response.OrderResponse;
 import com.example.duantotnghiep.Model.Response.ProductDetailResponse;
 import com.example.duantotnghiep.Model.Response.ProductListResponse;
 import com.example.duantotnghiep.Model.Response.StoreResponse;
@@ -24,6 +26,12 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
+    //Order Api
+    @POST("views/insert-order.php")
+    Call<OrderResponse> new_order(@Body Order order);
+    @FormUrlEncoded
+    @POST("views/get-order-by-user.php")
+    Call<OrderResponse> get_all_order(@Field("userId") int userId);
     //Store Api
     @GET("views/get-all-store.php")
     Call<StoreResponse> get_all_store();

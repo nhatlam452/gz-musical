@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.InboxFragment">
+    <ImageView
+        android:alpha="0.2"
+        android:scaleType="centerCrop"
+        android:layout_above="@id/layoutInbox"
+        android:src="@drawable/ic_logo_green"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:padding="10dp"
+        android:id="@+id/rcvInbox"
+        android:layout_above="@id/layoutInbox"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/layoutInbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:textCursorDrawable="@color/colorPrimary"
+            android:id="@+id/edtInbox"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="10dp"
+            android:layout_toStartOf="@id/imgSendImage"
+            android:background="@drawable/custom_rcv_border"
+            android:hint="Write Something ..."
+            android:maxHeight="100dp"
+            android:maxLength="255"
+            android:padding="10dp"
+            android:textColor="@color/textColor"
+            android:textSize="13dp" />
+
+
+        <ImageView
+            android:id="@+id/imgSendImage"
+            android:tint="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="5dp"
+            android:layout_toStartOf="@id/imgSendChat"
+            android:src="@drawable/ic_baseline_camera_enhance_24"
+            tools:ignore="UseAppTint" />
+
+        <ImageView
+            android:id="@+id/imgSendChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="5dp"
+            android:src="@drawable/ic_baseline_send_24"
+            android:tint="@color/colorPrimary"
+            tools:ignore="UseAppTint" />
+    </RelativeLayout>
+</RelativeLayout>

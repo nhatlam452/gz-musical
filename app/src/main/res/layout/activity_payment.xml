@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".Activities.PaymentActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <ImageView
+            android:id="@+id/imgBackPC"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/img_back" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_logo_green" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:lineHeight="24dp"
+        android:text="Payment Confirm"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_marginBottom="5dp"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btnPay"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvYO"
+                    android:layout_width="137dp"
+                    android:layout_height="23dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_button_oval"
+                    android:gravity="center"
+                    android:lineHeight="20dp"
+                    android:text="Payment Info"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/custom_rcv_border">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="7dp"
+                        >
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_call_fill0_wght400_grad0_opsz48"
+                            android:gravity="center"
+                            android:paddingStart="4dp"
+                            android:text=" Phone Number"
+                            android:drawableTint="@color/colorPrimary"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:hint="Please enter your Phone Number"
+                            android:background="@color/white"
+                            android:id="@+id/tvPhonePaymentConfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="right|center_vertical"
+                            android:textColorHint="#D9D07E"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="7dp"
+                        >
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_local_shipping_fill0_wght100_grad_25_opsz24"
+                            android:gravity="center"
+                            android:paddingStart="4dp"
+                            android:text=" Delivery Method"
+                            android:drawableTint="@color/colorPrimary"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvDeliveryMethodPaymentConfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="right|center_vertical"
+                            android:text="Go to Store"
+                            android:textColor="#D9D07E"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="7dp"
+                        >
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_pin_drop_fill0_wght100_grad_25_opsz24"
+                            android:gravity="center"
+                            android:paddingStart="4dp"
+                            android:text="Pick up at"
+                            android:drawableTint="@color/colorPrimary"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvStorePaymentConfirm"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="right|center_vertical"
+                            android:text="Gz Musical CMT8"
+                            android:textColor="#D9D07E"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="7dp"
+                        >
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_near_me_fill0_wght100_grad_25_opsz24"
+                            android:gravity="center"
+                            android:paddingStart="4dp"
+                            android:text="Delivery to"
+                            android:drawableTint="@color/colorPrimary"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvAddressPaymentConfirm"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="right|center_vertical"
+                            android:text="202/22 Tô Hiệu , Phường Hiệp Tân,
+                            Quận Tân Phú , Thành Phố Hồ Chí Minh "
+                            android:ellipsize="marquee"
+                            android:textColor="#D9D07E"
+                            android:textSize="12dp"
+                            android:textStyle="bold"
+                            android:singleLine="true" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="7dp"
+                        >
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_credit_card_fill0_wght100_grad_25_opsz24"
+                            android:gravity="center"
+                            android:paddingStart="4dp"
+                            android:text="Payment Method"
+                            android:drawableTint="@color/colorPrimary"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvPaymentMethodPaymentConfirm"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="right|center_vertical"
+                            android:text="Thanh toán bằng Momo"
+                            android:ellipsize="marquee"
+                            android:textColor="#D9D07E"
+                            android:textSize="12dp"
+                            android:textStyle="bold"
+                            android:singleLine="true" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="7dp"
+                        >
+
+                        <TextView
+                            android:layout_marginEnd="20dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_edit_note_fill0_wght100_grad_25_opsz24"
+                            android:gravity="center"
+                            android:paddingStart="4dp"
+                            android:text="Note"
+                            android:drawableTint="@color/colorPrimary"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvNotePaymentConfirm"
+                            android:lines="3"
+                            android:ellipsize="end"
+                            android:maxHeight="50dp"
+                            android:maxLength="244"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right|center_vertical"
+                            android:text="Bỏ qua mọi định kiến trước thì đây chính xác là tiết mục đỉnh cao nhất vòng Collab. Choi luôn giữ được phong độ và biết hạ cái tôi của mình xuống, không bao giờ là sai khi nói Choi là ứng cử viên sáng giá cho chức vô địch. Gizmo có một bước tiến dài và phối hợp ăn ý với đối thủ mà trước đây có xích mích không nhỏ. Nể chú Hồ Hòa Anh thật sự khi mang những dòng nhạc tưởng chừng như không thể kết hợp với rap lại với nhau và góp phần không nhỏ tạo ra 10 stage đỉnh cao khiến khán giả đi hết từ bất ngờ này đến bất ngờ khác ở vòng Collab. Ca sĩ khách mời từ những nghệ sĩ gạo cội đến những ca sĩ nổi tiếng hoặc ít được biết đến đều làm tốt vai trò của mình nhưng không quá lấn lướt spotlight của thí sinh. Hiệu ứng sân khấu cũng được cải thiện đáng kế. Trang phục thí sinh, khách mời và cả MC đều phù hợp. Giám khảo vẫn có những khoảnh khắc khiến khán giả bật cười hay lặng người nhưng không lố lăng. Nói chung KOR dạo này cứ hơi bị đỉnh. Càng đỉnh hơn vì tuần sau mời cả thầy Cao và Lão Cửu"
+                            android:textColor="#D9D07E"
+                            android:textSize="12dp"
+                            android:textStyle="bold"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="137dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/custom_button_oval"
+                        android:gravity="center"
+                        android:lineHeight="20dp"
+                        android:text="Your Item(s)"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvPaymentConfirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/custom_rcv_border"
+                        android:hint="Write your note for Us"
+                        android:maxHeight="150dp"
+                        android:maxLength="254"
+                        android:minHeight="50dp"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:textCursorDrawable="@color/colorPrimary"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="137dp"
+                        android:layout_height="23dp"
+                        android:layout_gravity="left"
+                        android:background="@drawable/custom_button_oval"
+                        android:gravity="center"
+                        android:lineHeight="20dp"
+                        android:text="Total Price"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="4dp"
+                        android:text="* Prices includes 8% VAT, applicable from 01/02/2022 to 31/12/2022"
+                        android:textColor="@color/red"
+                        android:textSize="12dp"
+                        android:textStyle="italic" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="5dp">
+
+                        <TextView
+                            android:id="@+id/tvTotalPriceItemPaymentConfirm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_baseline_money_24"
+                            android:gravity="center"
+                            android:paddingStart="4dp"
+                            android:text=" Total (1 item(s))"
+                            android:drawableTint="@color/colorPrimary"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvTotalPricePaymentConfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/cvCardPayment"
+                            android:gravity="right|center_vertical"
+                            android:text="23.000.000 VND"
+                            android:textColor="#D9D07E"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btnPay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/custom_button_oval"
+            android:text="Pay : 23.000.000 VND" />
+    </RelativeLayout>
+</LinearLayout>

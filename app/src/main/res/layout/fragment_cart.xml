@@ -39,6 +39,7 @@
         android:weightSum="2">
 
         <TextView
+            android:id="@+id/tvDelivery"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -51,6 +52,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tvGoToStore"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -76,148 +78,143 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
+
+                <LinearLayout
+                    android:padding="5dp"
+                    android:background="@drawable/inner_shadow"
+                    android:layout_width="367dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    app:cardCornerRadius="10dp">
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="367dp"
-                        android:layout_height="164dp"
-                        android:background="@drawable/img_19"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:weightSum="2">
+                    <RelativeLayout
+                        android:gravity="center_vertical"
+                        android:id="@+id/rltStore"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:paddingStart="20dp">
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:paddingStart="20dp">
+                        <ImageView
+                            android:id="@+id/imgPin"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/img_20" />
 
-                            <ImageView
-                                android:id="@+id/imgPin"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/img_20" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_toRightOf="@id/imgPin"
+                            android:orientation="vertical">
 
-                            <LinearLayout
+                            <TextView
+                                android:id="@+id/tvStoreNameCart"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginStart="20dp"
-                                android:layout_toRightOf="@id/imgPin"
-                                android:orientation="vertical">
+                                android:lineHeight="20dp"
+                                android:text="Gz Musical CMT8"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:lineHeight="20dp"
-                                    android:text="Gz Musical CMT8"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="16dp"
-                                    android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/tvStoreAddressCart"
+                                android:maxLines="2"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:lineHeight="20dp"
+                                android:text="241 Xuan Thuy, Dich Vong Hau, Cau Giay, Hanoi"
+                                android:textColor="@color/textColor"
+                                android:textSize="12dp" />
+                        </LinearLayout>
 
-                                <TextView
-                                    android:layout_width="200dp"
-                                    android:layout_height="wrap_content"
-                                    android:lineHeight="20dp"
-                                    android:text="241 Xuan Thuy, Dich Vong Hau, Cau Giay, Hanoi"
-                                    android:textColor="@color/textColor"
-                                    android:textSize="12dp" />
-                            </LinearLayout>
+                        <ImageView
 
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerInParent="true"
-                                android:layout_marginEnd="30dp"
-                                android:src="@drawable/ic_edit_location" />
-                        </RelativeLayout>
+                            android:id="@+id/imgChooseStore"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="30dp"
+                            android:src="@drawable/ic_edit_location"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:gravity="center_vertical"
+                        android:id="@+id/rlCustomer"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:paddingStart="20dp">
+                        <View
+                            android:layout_centerHorizontal="true"
+                            android:layout_width="200dp"
+                            android:background="#4D000000"
+                            android:layout_height="1dp"
+                            />
+                        <ImageView
+                            android:id="@+id/imgTo"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/img_21" />
 
-                        <RelativeLayout
-                            android:id="@+id/rlCustomer"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:paddingStart="20dp">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="20dp"
+                            android:layout_toRightOf="@id/imgTo"
+                            android:orientation="vertical">
 
-                            <View
-                                android:layout_width="279dp"
-                                android:layout_height="1dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginEnd="25dp"
-                                android:background="#33000000" />
-
-                            <LinearLayout
-                                android:id="@+id/view"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_centerVertical="true"
-                                android:gravity="center">
-
-                                <View
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp"
-                                    android:background="@drawable/custom_eslipe" />
-                            </LinearLayout>
-
-
-                            <LinearLayout
-
+                            <TextView
+                                android:id="@+id/tvAddressCustomerName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginStart="20dp"
-                                android:layout_toRightOf="@id/view"
-                                android:orientation="vertical">
+                                android:lineHeight="20dp"
+                                android:text="Gz Musical CMT8"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:maxLines="2"
+                                android:id="@+id/tvAddressCustomer"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:lineHeight="20dp"
+                                android:text="241 Xuan Thuy, Dich Vong Hau, Cau Giay, Hanoi"
+                                android:textColor="@color/textColor"
+                                android:textSize="12dp" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:lineHeight="20dp"
-                                    android:text="Hanoi University"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="16dp"
-                                    android:textStyle="bold" />
+                        </LinearLayout>
 
-                                <TextView
-                                    android:layout_width="200dp"
-                                    android:layout_height="wrap_content"
-                                    android:lineHeight="20dp"
-                                    android:text="Km9, Nguyen Trai Street, Nam Tu Liem, Hanoi"
-                                    android:textColor="@color/textColor"
-                                    android:textSize="12dp" />
-                            </LinearLayout>
+                        <ImageView
+                            android:id="@+id/imgChooseAddress"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:layout_marginEnd="30dp"
+                            android:src="@drawable/ic_edit_location"
+                            android:visibility="visible" />
+                    </RelativeLayout>
 
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerInParent="true"
-                                android:layout_marginEnd="30dp"
-                                android:src="@drawable/ic_edit_location" />
-                        </RelativeLayout>
 
-                    </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
-
-            </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:paddingStart="20dp">
+
                 <TextView
                     android:id="@+id/tvYO"
                     android:layout_width="137dp"
@@ -231,29 +228,18 @@
                     android:textSize="14dp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="23dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="25dp"
-                    android:gravity="center"
-                    android:lineHeight="20dp"
-                    android:text="add more"
-                    android:textColor="#DE8737"
-                    android:textSize="12dp"
-                    android:textStyle="bold" />
             </RelativeLayout>
+
             <TextView
-                android:textSize="12dp"
-                android:textColor="#97D50000"
-                android:textStyle="italic"
-                android:layout_marginHorizontal="30dp"
+                android:id="@+id/tvNotificationCart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:text="* Swipe to left to delete item"
-                />
+                android:textColor="#97D50000"
+                android:textSize="12dp"
+                android:textStyle="italic" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvCartFragment"
                 android:layout_width="match_parent"
@@ -262,6 +248,36 @@
                 android:background="@drawable/custom_rcv_border"
                 android:paddingHorizontal="5dp"
                 android:paddingVertical="10dp" />
+            <TextView
+                android:layout_width="137dp"
+                android:layout_height="23dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="left"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_button_oval"
+                android:gravity="center"
+                android:lineHeight="20dp"
+                android:text="Note"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtNoteOrder"
+                android:layout_marginHorizontal="20dp"
+                android:maxHeight="150dp"
+                android:textSize="15dp"
+                android:padding="10dp"
+                android:hint="Write your note for Us"
+                android:maxLength="254"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:textCursorDrawable="@color/colorPrimary"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_rcv_border"
+                android:minHeight="50dp"
+                />
             <TextView
                 android:layout_width="137dp"
                 android:layout_height="23dp"
@@ -295,23 +311,24 @@
                         android:layout_width="109dp"
                         android:layout_height="58dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/img_momo" />
+                        android:src="@drawable/img_cod" />
 
                 </androidx.cardview.widget.CardView>
 
                 <TextView
+
                     android:id="@+id/tvPaymentMethodName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/cvCardPayment"
                     android:lineHeight="20dp"
-                    android:text="Thanh toán bằng ví Momo"
-                    android:textColor="@color/black"
+                    android:text="Thanh toán khi nhận hàng"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="12dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvNameCartPayemnt"
+                    android:id="@+id/tvNameCartPayment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvPaymentMethodName"
@@ -327,7 +344,7 @@
                     android:id="@+id/imgPricePaymentMethod"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvNameCartPayemnt"
+                    android:layout_below="@id/tvNameCartPayment"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/cvCardPayment"
                     android:lineHeight="20dp"
@@ -347,38 +364,12 @@
                     app:tint="#00623B" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginHorizontal="30dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/cvCardPayment"
-                    android:drawableStart="@drawable/ic_voucher"
-                    android:gravity="center"
-                    android:text="Voucher"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="13dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/cvCardPayment"
-                    android:gravity="right|center_vertical"
-                    android:text="Choose"
-                    android:textColor="#D9D07E"
-                    android:textSize="12dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
             <LinearLayout
-                android:layout_height="25dp"
-
                 android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_height="25dp"
                 android:layout_marginHorizontal="30dp">
 
                 <TextView
@@ -460,6 +451,7 @@
                     android:textSize="12dp" />
 
                 <TextView
+                    android:id="@+id/tvShippingPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cvCardPayment"
@@ -496,19 +488,22 @@
                     android:textSize="12dp"
                     android:textStyle="bold" />
             </LinearLayout>
+
             <Button
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
-                android:background="@drawable/custom_button_oval"
-                android:text="Pay now"
+                android:id="@+id/btnPayment"
                 android:layout_width="113dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
-                />
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/custom_button_oval"
+                android:text="Pay now"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+
         </LinearLayout>
 
     </ScrollView>

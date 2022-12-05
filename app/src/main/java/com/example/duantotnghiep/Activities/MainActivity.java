@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
@@ -8,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.duantotnghiep.Adapter.ChangeFragmentAdapter;
+import com.example.duantotnghiep.Fragments.CartFragment;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;
@@ -270,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
     }
+
 
 
 }

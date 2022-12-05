@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rltChooseAddress"
+    android:paddingVertical="10dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/custom_button_oval"
+        android:padding="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_baseline_my_location_24" />
+
+    <TextView
+        android:layout_toLeftOf="@id/img1"
+        android:id="@+id/tvAddressNameChooseAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@id/img"
+        android:text="202/22 Too Hieu"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_toLeftOf="@id/img1"
+        android:lines="1"
+        android:id="@+id/tvAddressInfoChooseAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvAddressNameChooseAddress"
+        android:layout_toRightOf="@id/img"
+        android:text="202/22 Too Hieu"
+        android:textStyle="italic" />
+
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:padding="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_bookmarks_fill0_wght400_grad0_opsz48" />
+</RelativeLayout>

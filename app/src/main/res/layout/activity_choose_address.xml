@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A000000"
+    android:orientation="vertical"
+    tools:context=".Activities.ChooseAddressActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imgBackChooseAddress"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/img_back" />
+
+            <AutoCompleteTextView
+                android:id="@+id/edtSearchAddress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/custom_rcv_border"
+                android:backgroundTint="#1A000000"
+                android:completionThreshold="1"
+                android:drawableStart="@drawable/ic_baseline_location_on_24"
+                android:drawableTint="@color/red"
+                android:hint="Current Location"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:textAlignment="center"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@color/colorPrimary"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <TextView
+        android:id="@+id/tvYourLocation"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginVertical="10dp"
+        android:background="@color/white"
+        android:drawableStart="@drawable/ic_baseline_my_location_24"
+        android:drawableEnd="@drawable/img_21"
+        android:drawableTint="@color/colorPrimary"
+        android:gravity="left|center"
+        android:padding="10dp"
+        android:text="    Sử dụng vị trí hiện tại của tôi"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/tvChooseFromMaps"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginVertical="10dp"
+        android:background="@color/white"
+        android:drawableStart="@drawable/ic_baseline_location_on_24"
+        android:drawableEnd="@drawable/img_21"
+        android:drawableTint="@color/red"
+        android:gravity="left|center"
+        android:padding="10dp"
+        android:text="    Chọn từ bản đồ"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:text="Vị trí đã lưu"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvChooseAddress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>

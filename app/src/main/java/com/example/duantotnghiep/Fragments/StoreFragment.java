@@ -3,6 +3,7 @@ package com.example.duantotnghiep.Fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,8 +19,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duantotnghiep.Activities.ChooseStoreActivity;
+import com.example.duantotnghiep.Activities.StoreInfoActivity;
 import com.example.duantotnghiep.Adapter.StoreAdapter;
 import com.example.duantotnghiep.Contract.StoreContact;
 import com.example.duantotnghiep.Model.Store;
@@ -27,16 +31,24 @@ import com.example.duantotnghiep.Presenter.StorePresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.TranslateAnimation;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -50,10 +62,11 @@ import java.util.List;
 
 public class StoreFragment extends Fragment implements StoreContact.View {
     boolean isPermissionGranted;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    SupportMapFragment supportMapFragment;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private SupportMapFragment supportMapFragment;
     private StorePresenter storePresenter;
     private RecyclerView rcvStore;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,22 +128,49 @@ public class StoreFragment extends Fragment implements StoreContact.View {
             @Override
             public void onSuccess(Location location) {
                 supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                    @SuppressLint("MissingPermission")
                     @Override
                     public void onMapReady(@NonNull GoogleMap googleMap) {
+                        googleMap.setMyLocationEnabled(true);
+                        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
                         StoreAdapter storeAdapter = new StoreAdapter(getContext(), mListStore, new StoreAdapter.OnClickListener() {
                             @Override
+                            public void onCLickChooseStore(String storeName, String storeAddress) {
+                                Intent i = new Intent(getContext(),StoreInfoActivity.class);
+
+                                i.putExtra("isChooseStore",false);
+                                i.putExtra("storeName",storeName);
+                                i.putExtra("storeAddress",storeAddress);
+                                startActivity(i);
+                                getActivity().overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+                            }
+
+                            @Override
                             public void onClickListener(double latitude, double longitude) {
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 20));
+                                LatLng latLng = new LatLng(latitude, longitude);
+                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,15);
+                                googleMap.animateCamera(cameraUpdate);
+                            }
+                            @Override
+                            public void onGetDistance(TextView textView, double latitude, double longitude) {
+                                float[] result = new float[10];
+                                Location.distanceBetween(location.getLatitude(), location.getLongitude(),latitude,longitude,result);
+                                String s = String.format("%.1f",result[0] / 1000);
+                                textView.setText(s + "km away from you");
                             }
                         });
+
                         rcvStore.setLayoutManager(new LinearLayoutManager(getContext()));
                         rcvStore.setAdapter(storeAdapter);
                         for (int i = 0; i < mListStore.size(); i++) {
                             googleMap.addMarker(new MarkerOptions().position(new LatLng(mListStore.get(i).getLatitude(), mListStore.get(i).getLongitude())));
                         }
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        googleMap.addMarker(new MarkerOptions().position(latLng).title("Your Location"));
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,15);
+                        googleMap.animateCamera(cameraUpdate);
+
+
                     }
                 });
             }
@@ -147,6 +187,8 @@ public class StoreFragment extends Fragment implements StoreContact.View {
 
     @Override
     public void onResponseFail(Throwable t) {
-        Log.d("StoreFragment",t.getMessage());
+        Toast.makeText(getContext(), "Unknown Error. Please check your location", Toast.LENGTH_SHORT).show();
+        Log.d("StoreFragment", t.getMessage());
     }
+
 }

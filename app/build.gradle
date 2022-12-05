@@ -31,12 +31,15 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-storage:20.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.1.0'
+    implementation 'com.google.firebase:firebase-firestore:24.4.1'
+    implementation fileTree(dir: 'C:\\Users\\nhatl\\Downloads\\zalopay', include: ['*.aar', '*.jar'], exclude: [])
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     implementation 'me.relex:circleindicator:2.1.6'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
@@ -49,7 +52,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.4.1')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'androidx.browser:browser:1.4.0'
-    implementation 'com.google.android.gms:play-services-auth:20.3.0'
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
     implementation 'com.airbnb.android:lottie:5.2.0'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
     implementation 'com.facebook.android:facebook-login:latest.release'
@@ -57,5 +60,8 @@ dependencies {
     implementation 'com.karumi:dexter:6.2.3'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
+    implementation 'com.google.android.libraries.places:places:2.7.0'
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
+    implementation("commons-codec:commons-codec:1.14")
 
 }

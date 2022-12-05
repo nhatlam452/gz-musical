@@ -2,14 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.duantotnghiep">
-    <uses-feature android:name="android.hardware.screen.portrait"/>
+
+    <uses-feature android:name="android.hardware.screen.portrait" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="remove" />
@@ -31,12 +33,25 @@
         android:theme="@style/Theme.DuAnTotNghiep"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Activities.PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.StoreInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ChooseStoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ChooseFromMapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ChooseAddressActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.ProductDetailActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize|stateHidden|adjustPan"
-            />
+            android:windowSoftInputMode="adjustResize|stateHidden|adjustPan" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -44,6 +59,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBiebu4Qm95Q67dubdDb2Bn6XqGnliFXB4" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -101,9 +117,7 @@
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor"
-            />
-
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

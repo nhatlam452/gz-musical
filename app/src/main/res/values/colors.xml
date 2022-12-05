@@ -11,5 +11,7 @@
     <color name="textColor">#A6000000</color>
     <color name="cartTabColor">#D9D07E</color>
     <color name="red">#D50000</color>
+    <color name="zaloColor">#0091EA</color>
+    <color name="momoColor">#C51162</color>
 
 </resources>

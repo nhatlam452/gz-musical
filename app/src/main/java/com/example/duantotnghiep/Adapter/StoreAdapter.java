@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.duantotnghiep.Activities.ProductDetailActivity;
+import com.example.duantotnghiep.Activities.StoreInfoActivity;
 import com.example.duantotnghiep.Model.Cart;
 import com.example.duantotnghiep.Model.Store;
 import com.example.duantotnghiep.R;
@@ -30,7 +31,9 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
     private final OnClickListener onClickListener;
 
     public interface OnClickListener {
+        void onCLickChooseStore(String storeName,String storeAddress);
         void onClickListener(double latitude, double longitude);
+        void onGetDistance(TextView textView,double latitude, double longitude);
     }
 
     public StoreAdapter(Context context, List<Store> mListStore, OnClickListener onClickListener) {
@@ -51,10 +54,12 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
         Store store = mListStore.get(position);
         holder.tvStoreAddress.setText(store.getStoreAddress());
         holder.tvStoreName.setText(store.getStoreName());
-        holder.itemView.findViewById(R.id.imgStoreInfo).setOnClickListener(v->{
+        onClickListener.onGetDistance(holder.tvDistance,store.getLatitude(), store.getLongitude());
 
-        });
         holder.layoutStore.setOnClickListener(v -> onClickListener.onClickListener(store.getLatitude(), store.getLongitude()));
+        holder.itemView.findViewById(R.id.imgStoreInfo).setOnClickListener(v->{
+            onClickListener.onCLickChooseStore(store.getStoreName(),store.getStoreAddress());
+        });
     }
 
     @Override
@@ -71,13 +76,13 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
     }
 
     public static class StoreViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvStoreName;
-        private final TextView tvStoreAddress;
+        private  TextView tvStoreAddress,tvDistance,tvStoreName;
         private final RelativeLayout layoutStore;
 
         public StoreViewHolder(@NonNull View itemView) {
             super(itemView);
             tvStoreAddress = itemView.findViewById(R.id.tvStoreAddress);
+            tvDistance = itemView.findViewById(R.id.tvDistance);
             tvStoreName = itemView.findViewById(R.id.tvStoreName);
             layoutStore = itemView.findViewById(R.id.layoutStore);
 

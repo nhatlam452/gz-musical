@@ -13,6 +13,7 @@ import com.example.duantotnghiep.R;
 public class SuccessActivity extends AppCompatActivity {
     Button btnRegisterSuccess;
     TextView tvNoti;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +25,11 @@ public class SuccessActivity extends AppCompatActivity {
         tvNoti = findViewById(R.id.tvNoti);
         tvNoti.setText(getIntent().getStringExtra("Notification"));
         btnRegisterSuccess.setOnClickListener(v -> {
-            startActivity(new Intent(SuccessActivity.this,LoginActivity.class));
+            if (getIntent().getBooleanExtra("isInMain", false)) {
+                startActivity(new Intent(SuccessActivity.this, MainActivity.class));
+            } else {
+                startActivity(new Intent(SuccessActivity.this, LoginActivity.class));
+            }
             finish();
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });

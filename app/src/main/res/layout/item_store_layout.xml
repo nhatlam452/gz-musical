@@ -26,13 +26,27 @@
         android:layout_height="wrap_content"
         android:text="357 Đ. Cộng Hòa, Phường 13, Tân Bình, Thành phố Hồ Chí Minh 700000, Việt Nam"
         />
+    <TextView
+
+        android:gravity="center_vertical"
+        android:textStyle="italic"
+        android:lines="1"
+        android:textSize="10dp"
+        android:layout_below="@id/tvStoreAddress"
+        android:id="@+id/tvDistance"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="357 Đ. Cộng Hòa, Phường 13, Tân Bình, Thành phố Hồ Chí Minh 700000, Việt Nam"
+        />
+
     <ImageView
         android:id="@+id/imgStoreInfo"
-        android:layout_alignParentRight="true"
-        android:tint="@color/colorPrimary"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_baseline_info_24"
+        android:tint="@color/colorPrimary"
         tools:ignore="UseAppTint" />
 </RelativeLayout>

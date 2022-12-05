@@ -49,7 +49,6 @@ public class ProductDetailFragment extends Fragment implements CartContact.View 
         super.onViewCreated(view, savedInstanceState);
         q = productDetailActivity.quantity;
         price = (float) (productDetailActivity.getDetail().getPrice() * (100-productDetailActivity.getDetail().getDiscount())/100);
-        Toast.makeText(productDetailActivity, ""+productDetailActivity.getDetail().getDiscount(), Toast.LENGTH_SHORT).show();
         cartPresenter = new CartPresenter(this);
         tvTop = view.findViewById(R.id.tvTop);
         tvBack = view.findViewById(R.id.tvBack);
@@ -102,6 +101,8 @@ public class ProductDetailFragment extends Fragment implements CartContact.View 
     @Override
     public void onCartSuccess(List<Cart> cartList) {
         Toast.makeText(getContext(),tvQuantity.getText().toString() + " products have been add to cart", Toast.LENGTH_SHORT).show();
+        getActivity().onBackPressed();
+        getActivity().overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
     }
 
     @Override
