@@ -9,6 +9,7 @@ import com.example.duantotnghiep.Model.Response.CartResponse;
 import com.example.duantotnghiep.Model.Response.CommentResponse;
 import com.example.duantotnghiep.Model.Response.LocationResponse;
 import com.example.duantotnghiep.Model.Response.NewsResponse;
+import com.example.duantotnghiep.Model.Response.OrderDetailResponse;
 import com.example.duantotnghiep.Model.Response.OrderResponse;
 import com.example.duantotnghiep.Model.Response.ProductDetailResponse;
 import com.example.duantotnghiep.Model.Response.ProductListResponse;
@@ -26,6 +27,10 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
+    //Order Detail Api
+    @FormUrlEncoded
+    @POST("views/get-order-detail.php")
+    Call<OrderDetailResponse> get_order_detail(@Field("orderId") int orderId);
     //Order Api
     @POST("views/insert-order.php")
     Call<OrderResponse> new_order(@Body Order order);

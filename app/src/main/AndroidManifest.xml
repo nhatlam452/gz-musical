@@ -21,6 +21,11 @@
             <action android:name="com.google.android.youtube.api.service.START" />
         </intent>
     </queries>
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -34,8 +39,23 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.PaymentActivity"
+            android:name=".Activities.OrderDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".Activities.PaymentActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="app"
+                    android:scheme="demozpdk" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Activities.StoreInfoActivity"
             android:exported="false" />

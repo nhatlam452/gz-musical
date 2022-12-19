@@ -201,7 +201,8 @@ public class CartFragment extends Fragment implements CartContact.View {
             if (rlCustomer.getVisibility() == View.GONE) {
                 orderMethod = 1;
             }
-            Order order = new Order(userId, 0, mSum, note, time, orderMethod, storeName,
+
+            Order order = new Order(userId,LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getPhoneNumber(), 0, mSum, note, time, orderMethod, storeName,
                     customerAddress, tvPaymentMethodName.getText().toString(), mList);
             Gson gson = new Gson();
             String json = gson.toJson(order);

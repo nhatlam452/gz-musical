@@ -21,6 +21,15 @@ public class Cart {
         this.discount = discount;
     }
 
+    public Cart(int productId, String productName, int quantity, String url, float price, double discount) {
+        this.productId = productId;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.url = url;
+        this.price = price;
+        this.discount = discount;
+    }
+
     public double getDiscount() {
         return discount;
     }

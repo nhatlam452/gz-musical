@@ -3,6 +3,7 @@ package com.example.duantotnghiep.Fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duantotnghiep.Activities.ChooseStoreActivity;
+import com.example.duantotnghiep.Activities.LoginActivity;
+import com.example.duantotnghiep.Activities.MainActivity;
 import com.example.duantotnghiep.Activities.StoreInfoActivity;
 import com.example.duantotnghiep.Adapter.StoreAdapter;
 import com.example.duantotnghiep.Contract.StoreContact;
@@ -30,6 +33,7 @@ import com.example.duantotnghiep.Model.Store;
 import com.example.duantotnghiep.Presenter.StorePresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.TranslateAnimation;
+import com.facebook.CallbackManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -61,11 +65,12 @@ import java.util.List;
 
 
 public class StoreFragment extends Fragment implements StoreContact.View {
-    boolean isPermissionGranted;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private SupportMapFragment supportMapFragment;
     private StorePresenter storePresenter;
     private RecyclerView rcvStore;
+    private SharedPreferences.Editor mEditor;
+
 
 
     @Override
@@ -79,6 +84,9 @@ public class StoreFragment extends Fragment implements StoreContact.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rcvStore = view.findViewById(R.id.rcvStore);
+        SharedPreferences mSharePrefer = getContext().getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), 0);
+        boolean isPermissionGranted = mSharePrefer.getBoolean(String.valueOf(R.string.iSLocationPermissionRequest), false);
+        mEditor = mSharePrefer.edit();
 
         if (getActivity() != null) {
             BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationMain);
@@ -87,10 +95,11 @@ public class StoreFragment extends Fragment implements StoreContact.View {
         }
         storePresenter = new StorePresenter(this);
 
-        checkMyPermission();
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mvStore);
         if (isPermissionGranted) {
             storePresenter.getProduct();
+        }else {
+            checkMyPermission();
         }
     }
 
@@ -99,16 +108,12 @@ public class StoreFragment extends Fragment implements StoreContact.View {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                 storePresenter.getProduct();
-                isPermissionGranted = true;
+                mEditor.putBoolean(getString(R.string.iSLocationPermissionRequest), true);
             }
 
             @Override
             public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", getActivity().getPackageName(), "");
-                intent.setData(uri);
-                getContext().startActivity(intent);
+                Toast.makeText(getContext() , "Please Granted Permission in your Setting", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -190,5 +195,4 @@ public class StoreFragment extends Fragment implements StoreContact.View {
         Toast.makeText(getContext(), "Unknown Error. Please check your location", Toast.LENGTH_SHORT).show();
         Log.d("StoreFragment", t.getMessage());
     }
-
 }

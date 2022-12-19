@@ -1,6 +1,10 @@
 package com.example.duantotnghiep.Activities;
 
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,13 +39,17 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,6 +72,21 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     private NewsPresenter newsPresenter;
     private SharedPreferences.Editor mEditor;
     private long backPressTime;
+    private GoogleSignInClient mGoogleSignInClient;
+    private final ActivityResultLauncher<Intent> ggLoginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+
+                        Intent data = result.getData();
+                        // The Task returned from this call is always completed, no need to attach
+                        // a listener.
+                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                        handleSignInResult(task);
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,29 +122,24 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
                 AccessToken accessToken = AccessToken.getCurrentAccessToken();
-
                 GraphRequest request = GraphRequest.newMeRequest(accessToken, (jsonObject, graphResponse) -> {
                     try {
                         AppUtil.showDialog.show(LoginActivity.this);
                         String fbId = jsonObject.getString("id");
                         String fName = jsonObject.getString("first_name");
                         String lName = jsonObject.getString("last_name");
-                        User user = new User(fbId,"","",fName,lName,"");
-                        Log.d("FBLogin","Object " + jsonObject.toString());
-                        Log.d("FBLogin",fbId + fName + lName);
-                        Gson gson = new Gson();
-                        String json = gson.toJson(user);
-                        Log.d("FBLogin",json);
-                        userPresenter.onSocialRegister(user,LoginActivity.this);
-                    }catch (Exception e){
-                        Log.d("FBLogin",e.getMessage());
+
+                        User user = new User(fbId, null, null, fName, lName, null);
+                        cbKeepLogged.setChecked(true);
+                        userPresenter.onSocialRegister(user, LoginActivity.this);
+                    } catch (Exception e) {
+                        Log.d("FBLogin", e.getMessage());
                         e.printStackTrace();
                     }
                 });
 
-                Log.d("LoginActivity","thanh cong");
+                Log.d("LoginActivity", "thanh cong");
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id,birthday,first_name,last_name,link");
                 request.setParameters(parameters);
@@ -131,34 +149,60 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
             @Override
             public void onCancel() {
                 Toast.makeText(LoginActivity.this, "Huy", Toast.LENGTH_SHORT).show();
-                Log.d("LoginActivity","huy");
+                Log.d("LoginActivity", "huy");
 
 
             }
 
             @Override
             public void onError(@NonNull FacebookException e) {
-                Log.d("LoginActivity",e.getMessage());
+                Log.d("LoginActivity", e.getMessage());
                 Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        findViewById(R.id.btnFbLogin).setOnClickListener(v ->{
+        findViewById(R.id.btnFbLogin).setOnClickListener(v -> {
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         });
-
+        findViewById(R.id.btnGGLogin).setOnClickListener(v -> {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            ggLoginLauncher.launch(signInIntent);
+        });
     }
 
 
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            AppUtil.showDialog.show(LoginActivity.this);
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            String fbId = account.getEmail();
+            String fName = account.getDisplayName();
 
+            User user = new User(null, fbId, null, fName, null, null);
+            // Signed in successfully, show authenticated UI.
+            cbKeepLogged.setChecked(true);
+
+            userPresenter.onSocialRegister(user, LoginActivity.this);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("LoginGGFailed", "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 
     private void setRecycleView(List<News> mListNews) {
         List<News> mList = new ArrayList<>();
-        for (int i = 0;i < mListNews.size();i++){
-            if (mListNews.get(i).getType() == 0){
+        for (int i = 0; i < mListNews.size(); i++) {
+            if (mListNews.get(i).getType() == 0) {
                 mList.add(mListNews.get(i));
             }
         }
-        promotionAdapter = new LoginPromotionAdapter(mList,this);
+        promotionAdapter = new LoginPromotionAdapter(mList, this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(LoginActivity.this, LinearLayoutManager.HORIZONTAL, false);
         rcvPromotion.setLayoutManager(linearLayoutManager);
         LinearSnapHelper linearSnapHelper = new SnapHelperOneByOne();
@@ -193,9 +237,12 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         userPresenter = new UserPresenter(this);
         newsPresenter = new NewsPresenter(this);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
     }
-
-
 
 
     @Override
@@ -205,7 +252,7 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
             mEditor.apply();
         }
         LocalStorage.getInstance(this).getLocalStorageManager().setUserInfo(user);
-        startActivity(new Intent(this,MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         finish();
         AppUtil.showDialog.dismiss();
@@ -218,11 +265,6 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void onResponseFail(Throwable t) {
@@ -238,14 +280,15 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
 
     @Override
     public void onNewsFailure(Throwable t) {
-        Log.d("LoginActivity","Error : " + t);
+        Log.d("LoginActivity", "Error : " + t);
     }
+
     @Override
     public void onBackPressed() {
-        if (backPressTime + 2000 > System.currentTimeMillis()){
+        if (backPressTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
             return;
-        }else {
+        } else {
             Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
         }
         backPressTime = System.currentTimeMillis();

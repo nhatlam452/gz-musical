@@ -127,6 +127,10 @@ public class ChooseAddressActivity extends AppCompatActivity implements AddressC
             Intent i = new Intent(this, ChooseFromMapActivity.class);
             launchChooseAddress.launch(i);
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);        });
+        findViewById(R.id.imgBackChooseAddress).setOnClickListener(v->{
+            onBackPressed();
+            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+        });
     }
 
     @Override

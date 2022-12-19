@@ -16,13 +16,15 @@ import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppUtil;
+import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class ChangePasswordActivity extends AppCompatActivity implements UserContract.View {
     private Button btnConfirmPassword;
     private UserPresenter userPresenter;
-    private EditText edtPassword,edtNewPassword,edtConfirmNewPassword;
-    private TextInputLayout tipOldPassword,tipNewPassword,tipConfirmNewPassword;
+    private EditText edtPassword, edtNewPassword, edtConfirmNewPassword;
+    private TextInputLayout tipOldPassword, tipNewPassword, tipConfirmNewPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -31,44 +33,50 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCon
 
         setContentView(R.layout.activity_change_password);
         initUI();
-        boolean isChangedPassword = getIntent().getBooleanExtra("isChangePassword",false);
-        if (isChangedPassword){
+        boolean isChangedPassword = getIntent().getBooleanExtra("isChangePassword", false);
+        if (isChangedPassword) {
             tipOldPassword.setVisibility(View.VISIBLE);
         }
-        btnConfirmPassword.setOnClickListener(v->{
+        btnConfirmPassword.setOnClickListener(v -> {
             String password = edtPassword.getText().toString().trim();
             String newPassword = edtNewPassword.getText().toString().trim();
             String confirmNewPassword = edtConfirmNewPassword.getText().toString().trim();
             boolean isValidNewPassword = AppUtil.ValidateInput.isValidPassword(newPassword);
-            boolean isValidOldPassword = AppUtil.ValidateInput.isValidPassword(password);
-            if (newPassword.isEmpty()){
+            if (newPassword.isEmpty()) {
                 tipNewPassword.setError("Please enter your new Password");
-            }else {
+                return;
+            } else {
                 tipNewPassword.setError(null);
             }
-            if (!newPassword.equals(confirmNewPassword)){
+            if (!newPassword.equals(confirmNewPassword)) {
                 tipConfirmNewPassword.setError("Your password does not matched");
-            }else {
+                return;
+            } else {
                 tipConfirmNewPassword.setError(null);
 
             }
-            if (isValidNewPassword){
+            if (isValidNewPassword) {
                 tipNewPassword.setError(null);
-            }else {
+            } else {
                 tipNewPassword.setError("Invalid password");
+                return;
             }
-            if (!isChangedPassword){
-                if (!newPassword.isEmpty() && confirmNewPassword.equals(newPassword) && isValidNewPassword ){
+            boolean b = !newPassword.isEmpty() && confirmNewPassword.equals(newPassword) && isValidNewPassword;
+            if (!isChangedPassword) {
+                if (b) {
                     String phoneNumber = getIntent().getStringExtra("userPhone");
-                    if (phoneNumber == null){
+                    if (phoneNumber == null) {
                         Toast.makeText(this, "Unknown  a Error", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     AppUtil.showDialog.show(this);
-                    userPresenter.onChangePassword(phoneNumber,newPassword,null);
+                    userPresenter.onChangePassword(phoneNumber, newPassword, null);
                 }
-            }else {
-                Toast.makeText(this, "Change Password", Toast.LENGTH_SHORT).show();
+            } else {
+                if (b) {
+                    AppUtil.showDialog.show(this);
+                    userPresenter.onChangePassword(LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo().getPhoneNumber(), newPassword, password);
+                }
             }
         });
     }
@@ -87,7 +95,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCon
     @Override
     public void onSuccess(User user) {
         Intent i = new Intent(this, SuccessActivity.class);
-        i.putExtra("Notification","Your password has been changed. Now you are ready for an enjoyable moment.");
+        i.putExtra("Notification", "Your password has been changed. Now you are ready for an enjoyable moment.");
         startActivity(i);
         finish();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
@@ -104,6 +112,6 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCon
     public void onResponseFail(Throwable t) {
         AppUtil.showDialog.dismiss();
         Toast.makeText(this, "Unknown  Error", Toast.LENGTH_SHORT).show();
-        Log.d("ChangePasswordActivity",t.getMessage());
+        Log.d("ChangePasswordActivity", t.getMessage());
     }
 }

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/border_button_cancel.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/contact_dialog.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_avt_shape.xml" value="0.1635" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/custom_avt_shape_black.xml" value="0.179" />
@@ -23,9 +24,12 @@
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_baseline_my_location_24.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_baseline_person_pin_24.xml" value="0.124" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_baseline_remove_24.xml" value="0.124" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_baseline_shopping_cart_24.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_call_fill0_wght400_grad0_opsz48.xml" value="0.179" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_hourglass_empty_fill0_wght400_grad0_opsz48.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1635" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/ic_local_shipping_fill0_wght100_grad_25_opsz24.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/inner_shadow.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/drawable/outer_shadow.xml" value="0.179" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_change_password.xml" value="0.264" />
@@ -36,6 +40,7 @@
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_on_boarding_screen.xml" value="0.264" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_order_detail.xml" value="0.536" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_otp_verify.xml" value="0.264" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_payment.xml" value="0.264" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/activity_product_detail.xml" value="0.25416666666666665" />
@@ -51,7 +56,7 @@
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/contact_dialog.xml" value="0.4" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/dialog_add_address.xml" value="0.264" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/dialog_chooose_picture.xml" value="0.253125" />
-        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/fragment_buy.xml" value="0.264" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/fragment_buy.xml" value="0.4" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/fragment_cart.xml" value="0.264" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/fragment_comment.xml" value="0.2891566265060241" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/fragment_home.xml" value="0.264" />
@@ -73,6 +78,7 @@
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_product_detail_image.xml" value="0.2" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_product_layout.xml" value="0.264" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_product_layout_grid.xml" value="0.4" />
+        <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_product_search.xml" value="0.25416666666666665" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_promotion_login_screen.xml" value="0.536" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_receive_inbox.xml" value="0.6" />
         <entry key="..\:/Code/Android/Github/DuAnTotNghiep/DuAnTotNghiep/app/src/main/res/layout/item_send_inbox.xml" value="0.5777777777777777" />

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -48,6 +49,12 @@ import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -71,6 +78,7 @@ public class CommentFragment extends Fragment implements CommentContact.View {
     private CircleImageView imgRemove;
     private CoordinatorLayout coordinatorLayout;
     private Bitmap bitmap;
+    private SharedPreferences.Editor mEditor;
     private final ActivityResultLauncher<Intent> activityResultLauncherCamera = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -128,25 +136,22 @@ public class CommentFragment extends Fragment implements CommentContact.View {
 
         commentPresenter = new CommentPresenter(this);
         AppUtil.showDialog.show(getContext());
+        SharedPreferences mSharePrefer = getContext().getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), 0);
+        boolean isCameraPermissionGranted = mSharePrefer.getBoolean(String.valueOf(R.string.isCameraPermissionRequest), false);
+        boolean isReadPermissionGranted = mSharePrefer.getBoolean(String.valueOf(R.string.isWritePermissionRequest), false);
+        mEditor = mSharePrefer.edit();
         commentPresenter.onGetComment(productDetailActivity.getProductId());
         if (uri != null || bitmap != null) {
             imgCommentPicture.setVisibility(View.VISIBLE);
         }
         view.findViewById(R.id.imgSelectPicture).setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (isCameraPermissionGranted && isCameraPermissionGranted) {
                 openDialogPicture();
-                return;
+            }else {
+                checkMyCameraPermission();
+                checkReadPermission();
             }
 
-            if (getContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    &&
-                    getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-            ) {
-                openDialogPicture();
-            } else {
-                String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-                requestPermissions(permission, 1);
-            }
         });
         view.findViewById(R.id.imgRemovePicture).setOnClickListener(v -> {
             uri = null;
@@ -178,16 +183,42 @@ public class CommentFragment extends Fragment implements CommentContact.View {
         });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openDialogPicture();
-            } else {
-                Toast.makeText(getContext(), "Please access permission to open your galley", Toast.LENGTH_SHORT).show();
+    private void checkMyCameraPermission() {
+        Dexter.withContext(getContext()).withPermission(Manifest.permission.CAMERA).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                mEditor.putBoolean(getString(R.string.isCameraPermissionRequest), true);
             }
-        }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                Toast.makeText(getContext(), "Please Granted Permission in your Setting", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+            }
+        }).check();
+    }
+
+    private void checkReadPermission() {
+        Dexter.withContext(getContext()).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                mEditor.putBoolean(getString(R.string.isWritePermissionRequest), true);
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                Toast.makeText(getContext(), "Please Granted Permission in your Setting", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+            }
+        }).check();
     }
 
     private void uploadtoFireBase(Uri uri) {

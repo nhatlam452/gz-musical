@@ -13,7 +13,6 @@
         android:textSize="18dp"
         />
     <androidx.recyclerview.widget.RecyclerView
-        android:padding="10dp"
         android:id="@+id/rcvOrderHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

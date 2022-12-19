@@ -139,6 +139,7 @@
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/llStorePC"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="15dp"
@@ -152,7 +153,7 @@
                             android:drawableLeft="@drawable/ic_pin_drop_fill0_wght100_grad_25_opsz24"
                             android:gravity="center"
                             android:paddingStart="4dp"
-                            android:text="Pick up at"
+                            android:text="Received at"
                             android:drawableTint="@color/colorPrimary"
                             android:textColor="@color/colorPrimary"
                             android:textSize="13dp"
@@ -169,6 +170,8 @@
                             android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/llUserAddressPC"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="15dp"
@@ -176,7 +179,7 @@
                         >
 
                         <TextView
-
+                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/ic_near_me_fill0_wght100_grad_25_opsz24"
@@ -189,9 +192,9 @@
                             android:textStyle="bold" />
                         <TextView
                             android:id="@+id/tvAddressPaymentConfirm"
-
+                            android:layout_marginStart="10dp"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="right|center_vertical"
                             android:text="202/22 Tô Hiệu , Phường Hiệp Tân,
                             Quận Tân Phú , Thành Phố Hồ Chí Minh "
@@ -199,7 +202,7 @@
                             android:textColor="#D9D07E"
                             android:textSize="12dp"
                             android:textStyle="bold"
-                            android:singleLine="true" />
+                             />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -234,6 +237,7 @@
                             android:singleLine="true" />
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/llNotePC"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="15dp"

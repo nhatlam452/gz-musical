@@ -102,6 +102,7 @@ public class ChooseFromMapActivity extends AppCompatActivity {
             setResult(RESULT_OK,intent);
             finish();
         });
+
     }
 
     @Override

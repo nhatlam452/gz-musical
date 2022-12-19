@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="10dp"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:background="@color/white"
     android:layout_height="match_parent"
     tools:context=".Fragments.BuyFragment">
 
-
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <ImageView
             android:layout_gravity="center"
             android:layout_width="100dp"
@@ -27,79 +29,135 @@
             android:layout_height="wrap_content"
             android:text="The Best Guitar For The Best You"
             />
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="24dp">
+
+            <ImageView
+                android:id="@+id/imgOpenSearch"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_filter" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/imgTypeDisplay"
+                android:layout_toRightOf="@id/imgOpenSearch"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/tvPriceFilter"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lineHeight="11dp"
+                    android:text="Price"
+                    android:lines="1"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/tvTypeFilter"
+                    android:gravity="center"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lineHeight="11dp"
+                    android:text="Brand"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:layout_marginEnd="5dp"
+                    android:gravity="center"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    android:id="@+id/tvSort"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lineHeight="11dp"
+                    android:text="List"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imgTypeDisplay"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_baseline_list_24" />
+        </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvProducts"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
     <RelativeLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="25dp"
-        android:layout_width="match_parent"
-        android:layout_height="24dp">
+        android:id="@+id/layoutSearch"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/transparent"
+        android:visibility="gone">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#D900623B" />
         <ImageView
-            android:id="@+id/imgFilter"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_filter" />
-
+            android:layout_margin="10dp"
+            android:layout_alignParentRight="true"
+            android:id="@+id/imgCloseSearch"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_close" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/imgTypeDisplay"
-            android:layout_toRightOf="@id/imgFilter"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvPriceFilter"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:lineHeight="11dp"
-                android:text="Price"
-                android:lines="1"
-                android:gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14dp" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="50dp"
+                app:cardCornerRadius="8dp">
 
-            <TextView
-                android:id="@+id/tvTypeFilter"
-                android:gravity="center"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:lineHeight="11dp"
-                android:text="Brand"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14dp" />
+                <EditText
+                    android:id="@+id/edtSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:drawableEnd="@drawable/ic_baseline_search_24"
+                    android:hint="Search"
+                    android:paddingHorizontal="10dp"
+                    android:textCursorDrawable="@color/colorPrimary"
+                    android:textSize="12dp" />
 
-            <TextView
-                android:layout_marginEnd="5dp"
-                android:gravity="center"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                android:id="@+id/tvSort"
-                android:layout_width="0dp"
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvSearch"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:lineHeight="11dp"
-                android:text="List"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14dp" />
+                android:layout_marginTop="30dp"
+                android:padding="10dp"
+                android:visibility="gone" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imgTypeDisplay"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentRight="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_baseline_list_24" />
     </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvProducts"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+</RelativeLayout>

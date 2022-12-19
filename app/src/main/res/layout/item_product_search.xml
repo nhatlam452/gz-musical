@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginVertical="5dp"
+    android:id="@+id/itemSearchLayout"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_margin="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp">
+
+            <ImageView
+                android:id="@+id/imgSearchItem"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                />
+        </androidx.cardview.widget.CardView>
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvItemSearchName"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:lines="2"
+                android:text="Guitar Acoutics"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvPriceSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_below="@id/tvItemSearchName"
+                android:gravity="center_vertical"
+                android:text="12.000.000 "
+                android:textStyle="italic"
+                android:textColor="#A6000000"
+                android:textSize="16dp" />
+            <TextView
+                android:id="@+id/tvPriceDiscountSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvPriceSearch"
+                android:text="24.000.000"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+</LinearLayout>

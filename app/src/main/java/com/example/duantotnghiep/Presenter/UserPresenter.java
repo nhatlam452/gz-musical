@@ -54,6 +54,7 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
             mView.onFail("Please try again");
             return;
         }
+
         model.getSocialRegister(this,user);
     }
 

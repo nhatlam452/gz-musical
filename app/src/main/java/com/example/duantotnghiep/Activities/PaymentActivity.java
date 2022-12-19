@@ -11,8 +11,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,12 +25,14 @@ import com.example.duantotnghiep.Model.Order;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.OrderPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppInfo;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -44,6 +48,7 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
     private RecyclerView rcvPaymentConfirm;
     private Order order;
     private OrderPresenter orderPresenter = new OrderPresenter(this);
+    private LinearLayout llUserAddressPC,llStorePC,llNotePC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,36 +58,61 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
+        findViewById(R.id.imgBackPC).setOnClickListener(v->{
+            onBackPressed();
+            overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+        });
         // ZaloPay SDK Init
         ZaloPaySDK.init(2553, Environment.SANDBOX);
         btnPay.setOnClickListener(v->{
+            String contact;
+            Order orderConfirm = null;
+            if (!AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString()) && !AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getHint().toString())){
+                Toast.makeText(this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
+                return;
+            }else if (AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getHint().toString())){
+                if (tvPhonePaymentConfirm.getText().toString().trim().isEmpty()){
+                    orderConfirm = order;
+                }else if (!AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString())){
+                    Toast.makeText(this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if (AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString())){
+                    orderConfirm = new Order(order.getUserId(),tvPhonePaymentConfirm.getText().toString(),
+                            order.getStatus(),order.getTotal(),orderConfirm.getNote(),order.getCreateDate(),
+                            order.getOrderMethod(),order.getdFrom(),order.getdTo(),order.getPaymentMethod(),order.getmList()
+                            );
+                }
+            }
             switch (order.getPaymentMethod()){
                 case "Thanh toán bằng ví Zalo Pay" :
                     CreateOrder orderApi = new CreateOrder();
                     try {
-                        JSONObject data = orderApi.createOrder("100000");
+                        DecimalFormat format = new DecimalFormat("0.#");
+                        Log.d("Zalo Failed ",format.format(order.getTotal())+"");
+                        JSONObject data = orderApi.createOrder(format.format(order.getTotal()));
                         String code = data.getString("return_code");
                         if (code.equals("1")) {
                             String token = data.getString("zp_trans_token");
+                            Order finalOrderConfirm = orderConfirm;
                             ZaloPaySDK.getInstance().payOrder(this, token, "demozpdk://app", new PayOrderListener() {
                                 @Override
                                 public void onPaymentSucceeded(String s, String s1, String s2) {
-
+                                    orderPresenter.onNewOrder(finalOrderConfirm);
                                 }
 
                                 @Override
                                 public void onPaymentCanceled(String s, String s1) {
-
+                                    Toast.makeText(PaymentActivity.this, "Payment has been canceled", Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
-
+                                    Toast.makeText(PaymentActivity.this, ""+zaloPayError.toString(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
                     } catch (Exception e) {
+                        Log.d("Zalo Failed ", e.getMessage());
                         e.printStackTrace();
                     }
                     break;
@@ -90,7 +120,7 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
                     //Momo Api
                     break;
                 default:
-                    orderPresenter.onNewOrder(order);
+                    orderPresenter.onNewOrder(orderConfirm);
                     break;
             }
 
@@ -99,6 +129,9 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
 
     private void initUI() {
         tvPhonePaymentConfirm = findViewById(R.id.tvPhonePaymentConfirm);
+        llStorePC = findViewById(R.id.llStorePC);
+        llUserAddressPC = findViewById(R.id.llUserAddressPC);
+        llNotePC = findViewById(R.id.llNotePC);
         tvDeliveryMethodPaymentConfirm = findViewById(R.id.tvDeliveryMethodPaymentConfirm);
         tvStorePaymentConfirm = findViewById(R.id.tvStorePaymentConfirm);
         tvPaymentMethodPaymentConfirm = findViewById(R.id.tvPaymentMethodPaymentConfirm);
@@ -110,21 +143,23 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
         rcvPaymentConfirm = findViewById(R.id.rcvPaymentConfirm);
         String orderJson = getIntent().getStringExtra("OrderInfo");
         Gson gson = new Gson();
-         order = gson.fromJson(orderJson, Order.class);
+        order = gson.fromJson(orderJson, Order.class);
         if (LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo().getPhoneNumber() != null) {
             tvPhonePaymentConfirm.setHint(LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo().getPhoneNumber());
         }
         if (order.getOrderMethod() == 0) {
             tvDeliveryMethodPaymentConfirm.setText("Delivery");
+            llStorePC.setVisibility(View.GONE);
         } else {
             tvDeliveryMethodPaymentConfirm.setText("Go to Store");
+            llUserAddressPC.setVisibility(View.GONE);
 
         }
         tvStorePaymentConfirm.setText(order.getdFrom());
         tvAddressPaymentConfirm.setText(order.getdTo());
         tvPaymentMethodPaymentConfirm.setText(order.getPaymentMethod());
         if (order.getNote().isEmpty() || order.getNote() == null) {
-            tvNotePaymentConfirm.setText("Null");
+            llNotePC.setVisibility(View.GONE);
         } else {
             tvNotePaymentConfirm.setText(order.getNote());
         }
@@ -150,7 +185,7 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
     public void onOrderSuccess(List<Order> cartList) {
         Intent i = new Intent(this,SuccessActivity.class);
         i.putExtra("isInMain",true);
-        i.putExtra("Notification","Your order has been received. We will contact to you to confirm once again . Thank you for choosing Gz Musical");
+        i.putExtra("Notification","Your order has been received. We will contact to you to confirm once again soon. Thank you for choosing Gz Musical");
         startActivity(i);
         overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
         finish();

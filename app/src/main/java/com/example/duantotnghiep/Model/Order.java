@@ -5,6 +5,7 @@ import java.util.List;
 public class Order {
     private int orderId;
     private int userId;
+    private String contact;
     /*
     * status :
     * 0 : đang chờ xác nhận
@@ -23,8 +24,9 @@ public class Order {
     private String paymentMethod;
     private List<Cart> listCart;
 
-    public Order(int userId, int status, double total, String note, String createDate, int orderMethod, String dFrom, String dTo, String paymentMethod, List<Cart> listCart) {
+    public Order(int userId,String contact, int status, double total, String note, String createDate, int orderMethod, String dFrom, String dTo, String paymentMethod, List<Cart> listCart) {
         this.userId = userId;
+        this.contact = contact;
         this.status = status;
         this.total = total;
         this.note = note;
@@ -48,6 +50,14 @@ public class Order {
         this.dTo = dTo;
         this.paymentMethod = paymentMethod;
         this.listCart = listCart;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public int getOrderId() {
@@ -133,6 +143,8 @@ public class Order {
     public List<Cart> getmList() {
         return listCart;
     }
+
+
 
     public void setmList(List<Cart> listCart) {
         this.listCart = listCart;

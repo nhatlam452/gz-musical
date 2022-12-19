@@ -11,7 +11,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Slide;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,10 +24,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.duantotnghiep.Adapter.ProductsAdapter;
+import com.example.duantotnghiep.Adapter.SearchAdapter;
 import com.example.duantotnghiep.Adapter.SpinnerAdapter;
 import com.example.duantotnghiep.Contract.ProductContract;
 import com.example.duantotnghiep.Model.Products;
@@ -34,10 +43,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class BuyFragment extends Fragment implements ProductContract.View {
-    private RecyclerView rcvProducts;
+    private RecyclerView rcvProducts, rcvSearch;
+    private EditText edtSearch;
+    private RelativeLayout layoutSearch;
     private ProductPresenter presenter;
     private final String TAG = "BUY_FRAGMENT";
     private List<Products> mList;
@@ -47,6 +59,8 @@ public class BuyFragment extends Fragment implements ProductContract.View {
     private String brandName = "null";
     private String order = "null";
     private String sortType = "";
+    private SearchAdapter searchAdapter;
+
     private float fPrice = 0, sPrice = 1000000000;
 
     @Override
@@ -55,6 +69,9 @@ public class BuyFragment extends Fragment implements ProductContract.View {
         mList = new ArrayList<>();
         rcvProducts = view.findViewById(R.id.rcvProducts);
         imgTypeDisplay = view.findViewById(R.id.imgTypeDisplay);
+        edtSearch = view.findViewById(R.id.edtSearch);
+        rcvSearch = view.findViewById(R.id.rcvSearch);
+        layoutSearch = view.findViewById(R.id.layoutSearch);
         presenter = new ProductPresenter(this);
         AppUtil.showDialog.show(getContext());
         presenter.getProduct();
@@ -77,6 +94,23 @@ public class BuyFragment extends Fragment implements ProductContract.View {
             }
             adapter.notifyDataSetChanged();
         });
+        view.findViewById(R.id.imgOpenSearch).setOnClickListener(v->{
+            Transition transition = new Slide(Gravity.START);
+            transition.setDuration(600);
+            transition.addTarget(R.id.layoutSearch);
+
+            TransitionManager.beginDelayedTransition((ViewGroup) view.getRootView(), transition);
+            layoutSearch.setVisibility(View.VISIBLE);
+        });
+        view.findViewById(R.id.imgCloseSearch).setOnClickListener(v->{
+            Transition transition = new Slide(Gravity.START);
+            transition.setDuration(600);
+            transition.addTarget(R.id.layoutSearch);
+
+            TransitionManager.beginDelayedTransition((ViewGroup) view.getRootView(), transition);
+            layoutSearch.setVisibility(View.GONE);
+        });
+
         view.findViewById(R.id.tvPriceFilter).setOnClickListener(v -> {
             List<String> mList = new ArrayList<>();
             mList.add("Tất cả");
@@ -136,7 +170,7 @@ public class BuyFragment extends Fragment implements ProductContract.View {
                         sPrice = 1000000000;
                         break;
                 }
-                presenter.onGetProductByPrice(fPrice, sPrice,  brandName , order, sortType);
+                presenter.onGetProductByPrice(fPrice, sPrice, brandName, order, sortType);
                 Log.d("product ===>", fPrice + "" + sPrice + "" + "'" + brandName + "'" + "" + order + "" + sortType);
                 AppUtil.showDialog.show(getContext());
                 dialog.dismiss();
@@ -182,23 +216,23 @@ public class BuyFragment extends Fragment implements ProductContract.View {
                         brandName = "null";
                         break;
                     case "Yamaha":
-                        brandName = "'" + "Yamaha" +"'";
+                        brandName = "'" + "Yamaha" + "'";
                         break;
                     case "Martin":
-                        brandName = "'" +"Martin"+"'";
+                        brandName = "'" + "Martin" + "'";
                         break;
                     case "Cordoba":
-                        brandName = "'" +"Cordoba"+"'";
+                        brandName = "'" + "Cordoba" + "'";
                         break;
                     case "Taylor":
-                        brandName = "'" +"Taylor"+"'";
+                        brandName = "'" + "Taylor" + "'";
                         break;
                     case "Enya":
-                        brandName = "'" +"Enya"+"'";
+                        brandName = "'" + "Enya" + "'";
                         break;
 
                 }
-                presenter.onGetProductByPrice(fPrice, sPrice,  brandName , order, sortType);
+                presenter.onGetProductByPrice(fPrice, sPrice, brandName, order, sortType);
                 Log.d("product ===>", fPrice + "" + sPrice + "" + "'" + brandName + "'" + "" + order + "" + sortType);
 
                 AppUtil.showDialog.show(getContext());
@@ -267,7 +301,7 @@ public class BuyFragment extends Fragment implements ProductContract.View {
                         break;
 
                 }
-                presenter.onGetProductByPrice(fPrice, sPrice,  brandName, order, sortType);
+                presenter.onGetProductByPrice(fPrice, sPrice, brandName, order, sortType);
                 AppUtil.showDialog.show(getContext());
                 dialog.dismiss();
                 TextView tv = view.findViewById(R.id.tvSort);
@@ -299,6 +333,37 @@ public class BuyFragment extends Fragment implements ProductContract.View {
         rcvProducts.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvProducts.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<Products> sList = new ArrayList<>();
+                if (s.toString().isEmpty()) {
+                    rcvSearch.setVisibility(View.GONE);
+                } else {
+                    rcvSearch.setVisibility(View.VISIBLE);
+
+                    for (Products products : mListProduct) {
+                        if (products.getProductName().toLowerCase().trim().contains(s.toString().toLowerCase().trim())) {
+                            sList.add(products);
+                        }
+                    }
+                    searchAdapter = new SearchAdapter(getContext(), sList);
+                    rcvSearch.setLayoutManager(new LinearLayoutManager(getContext()));
+                    rcvSearch.setAdapter(searchAdapter);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         AppUtil.showDialog.dismiss();
 
     }

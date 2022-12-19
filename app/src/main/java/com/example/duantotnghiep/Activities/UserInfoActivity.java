@@ -22,6 +22,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,6 +94,7 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         EditText edtLastName = findViewById(R.id.edtLastNameInfo);
         EditText edtBirthday = findViewById(R.id.edtDOBInfo);
         ImageView imgBackInfo = findViewById(R.id.imgBackInfo);
+        RelativeLayout relativeLayout = findViewById(R.id.rltUserPassword);
         btnChangeInfo = findViewById(R.id.btnUpdateUser);
         userPresenter = new UserPresenter(this);
         String phoneNumber = user.getPhoneNumber();
@@ -103,6 +105,7 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         userId = user.getUserId();
         Toast.makeText(this, "" + userId, Toast.LENGTH_SHORT).show();
         edtPhone.setText(phoneNumber);
+
         if (user.getAvt() != null) {
             Glide.with(this).load(user.getAvt()).into(civAvt);
         }
@@ -195,7 +198,13 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
                 userPresenter.onUpdateInfo("LASTNAME", name, userId);
             }
         });
-
+        findViewById(R.id.imgChangePassword).setOnClickListener(v->{
+            Intent i = new Intent(this,ChangePasswordActivity.class);
+            i.putExtra("isChangePassword",true);
+            startActivity(i);
+            finish();
+            overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+        });
     }
 
     @Override

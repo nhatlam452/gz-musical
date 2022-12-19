@@ -20,13 +20,7 @@
             android:layout_centerInParent="true"
             android:src="@drawable/ic_logo_white" />
 
-        <ImageView
-            android:id="@+id/imgCartOpenSetting"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_drawer" />
+
     </RelativeLayout>
 
     <LinearLayout
@@ -118,7 +112,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:lineHeight="20dp"
-                                android:text="Gz Musical CMT8"
+                                android:text="Gz Musical "
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="16dp"
                                 android:textStyle="bold" />
@@ -129,7 +123,6 @@
                                 android:layout_width="200dp"
                                 android:layout_height="wrap_content"
                                 android:lineHeight="20dp"
-                                android:text="241 Xuan Thuy, Dich Vong Hau, Cau Giay, Hanoi"
                                 android:textColor="@color/textColor"
                                 android:textSize="12dp" />
                         </LinearLayout>

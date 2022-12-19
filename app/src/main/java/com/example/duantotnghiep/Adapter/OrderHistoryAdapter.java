@@ -1,10 +1,13 @@
 package com.example.duantotnghiep.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.duantotnghiep.Activities.OrderDetailActivity;
 import com.example.duantotnghiep.Model.CreateOrder;
 import com.example.duantotnghiep.Model.Order;
 import com.example.duantotnghiep.Model.OrderHistory;
@@ -48,6 +52,14 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         Order order = mList.get(position);
         holder.tvItemPaymentMethod.setText(order.getPaymentMethod());
         holder.tvItemOrderHistoryDate.setText(order.getCreateDate());
+        holder.rltGoToOD.setOnClickListener(v->{
+            Intent i = new Intent(context, OrderDetailActivity.class);
+            i.putExtra("orderDetailId",order.getOrderId());
+            context.startActivity(i);
+            Activity activity = (Activity) context;
+            activity.overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+        });
+
         holder.tvTotalOrderHistory.setText(NumberFormat.getInstance().format(order.getTotal()) + "VND");
         switch (order.getPaymentMethod()) {
             case "Thanh toán bằng ví Zalo Pay":
@@ -73,24 +85,24 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
              * */
 
             case 1:
-                holder.imgStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.zaloColor));
+                holder.tvStatusOrder.setText("Preparing Order");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, R.color.zaloColor));
                 break;
             case 2:
-                holder.imgStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
-
-                //Momo Api
+                holder.tvStatusOrder.setText("On Delivery");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, R.color.red));
                 break;
             case 3:
-                holder.imgStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
-                //Momo Api
+                holder.tvStatusOrder.setText("Delivery Success");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                 break;
             case 4:
-                holder.imgStatus.setBackgroundColor(ContextCompat.getColor(context, com.google.android.libraries.places.R.color.quantum_grey));
-                //Momo Api
+                holder.tvStatusOrder.setText("Order Cancel");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, com.google.android.libraries.places.R.color.quantum_grey));
                 break;
             default:
-                holder.imgStatus.setBackgroundColor(ContextCompat.getColor(context, com.google.android.libraries.places.R.color.quantum_orange));
-
+                holder.tvStatusOrder.setText("Waiting for Confirm");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, com.google.android.libraries.places.R.color.quantum_orange));
                 break;
         }
 
@@ -110,15 +122,17 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         private final TextView tvItemPaymentMethod;
         private final TextView tvItemOrderHistoryDate;
         private final TextView tvTotalOrderHistory;
-        private final ImageView imgStatus;
+        private final TextView tvStatusOrder;
+        private final RelativeLayout rltGoToOD;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
             cimgPaymentMethod = itemView.findViewById(R.id.cimgPaymentMethod);
+            rltGoToOD = itemView.findViewById(R.id.rltGoToOD);
             tvItemPaymentMethod = itemView.findViewById(R.id.tvItemPaymentMethod);
             tvItemOrderHistoryDate = itemView.findViewById(R.id.tvItemOrderHistoryDate);
             tvTotalOrderHistory = itemView.findViewById(R.id.tvTotalOrderHistory);
-            imgStatus = itemView.findViewById(R.id.imgStatus);
+            tvStatusOrder = itemView.findViewById(R.id.tvStatusOrder);
         }
     }
 }

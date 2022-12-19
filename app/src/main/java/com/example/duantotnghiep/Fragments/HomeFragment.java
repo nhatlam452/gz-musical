@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment implements NewsInterface {
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean b) {
                 if (!b){
                     youTubePlayer = player;
-                    youTubePlayer.loadVideo("T9PV_nC_JdE");
+                    youTubePlayer.loadVideo("DchGOqXxN2w");
                     youTubePlayer.play();
                     youTubePlayer.setShowFullscreenButton(false);
 
@@ -133,7 +133,12 @@ public class HomeFragment extends Fragment implements NewsInterface {
             svHome.setOnTouchListener(new TranslateAnimation(getActivity(), bottomNavigationView));
         }
         if (user != null) {
-            tvUserName.setText(user.getFirstName() + " " + user.getLastName());
+            if (user.getLastName() == null){
+                tvUserName.setText(user.getFirstName());
+
+            }else{
+                tvUserName.setText(user.getFirstName() + " " + user.getLastName());
+            }
             if (user.getAvt() != null) {
                 cimgAvt.setVisibility(View.VISIBLE);
                 Glide.with(getContext()).load(user.getAvt()).into(cimgAvt);

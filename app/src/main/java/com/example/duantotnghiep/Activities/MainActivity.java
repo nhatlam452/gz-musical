@@ -8,6 +8,7 @@ import androidx.transition.TransitionManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
@@ -17,12 +18,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +42,17 @@ import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,13 +63,19 @@ public class MainActivity extends AppCompatActivity {
     private long backPressTime;
     private ImageView imgClose;
     private ShareDialog shareDialog;
+    private LinearLayout llUserInfo;
+    private SharedPreferences.Editor mEditor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+        SharedPreferences mSharePrefer = getSharedPreferences(String.valueOf(R.string.CHECK_PERMISSION), 0);
+        mEditor = mSharePrefer.edit();
         initUi();
+        checkMyPermission();
         imgClose.setOnClickListener(v -> closeDrawer());
         findViewById(R.id.tvAU).setOnClickListener(v -> {
             startWebView("https://vietthuong.vn/gioi-thieu.html");
@@ -104,21 +124,54 @@ public class MainActivity extends AppCompatActivity {
             closeDrawer();
 
         });
-        findViewById(R.id.tvTellYourFiend).setOnClickListener(v->{
+        findViewById(R.id.tvTellYourFiend).setOnClickListener(v -> {
             ShareLinkContent linkContent = new ShareLinkContent.Builder()
                     .setQuote("Gz Musical")
                     .setContentUrl(Uri.parse("https://youtube.com"))
                     .build();
             shareDialog.show(linkContent);
         });
-        findViewById(R.id.imgYoutube).setOnClickListener(v-> goToUrl("https://www.youtube.com/channel/UCR_v4LC7mFpxZow1uWxognw"));
-        findViewById(R.id.imgFb).setOnClickListener(v-> goToUrl("https://www.facebook.com/profile.php?id=100008612558105"));
-        findViewById(R.id.imgInsta).setOnClickListener(v-> goToUrl("https://www.instagram.com/nhatlam_isme/"));
+        findViewById(R.id.imgYoutube).setOnClickListener(v -> goToUrl("https://www.youtube.com/channel/UCR_v4LC7mFpxZow1uWxognw"));
+        findViewById(R.id.imgFb).setOnClickListener(v -> goToUrl("https://www.facebook.com/profile.php?id=100008612558105"));
+        findViewById(R.id.imgInsta).setOnClickListener(v -> goToUrl("https://www.instagram.com/nhatlam_isme/"));
+
+    }
+
+    private void checkMyPermission() {
+        Dexter.withContext(this).withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                    mEditor.putBoolean(getString(R.string.iSLocationPermissionRequest), true);
+                    mEditor.putBoolean(getString(R.string.isCameraPermissionRequest), true);
+                    mEditor.putBoolean(getString(R.string.isWritePermissionRequest), true);
+                } else {
+                    for (int i = 0; i < multiplePermissionsReport.getGrantedPermissionResponses().size(); i++) {
+                        switch (multiplePermissionsReport.getGrantedPermissionResponses().get(i).getPermissionName()) {
+                            case "android.permission.CAMERA":
+                                mEditor.putBoolean(getString(R.string.isCameraPermissionRequest), true);
+                                break;
+                            case "android.permission.ACCESS_FINE_LOCATION":
+                                mEditor.putBoolean(getString(R.string.iSLocationPermissionRequest), true);
+                                break;
+                            case "android.permission.READ_EXTERNAL_STORAGE":
+                                mEditor.putBoolean(getString(R.string.isWritePermissionRequest), true);
+                                break;
+                        }
+                    }
+                    mEditor.apply();
+                }
+            }
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+            }
+        }).check();
     }
 
     private void goToUrl(String url) {
         Uri uri = Uri.parse(url);
-        startActivity(new Intent(Intent.ACTION_VIEW,uri));
+        startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
 
     private void closeDrawer() {
@@ -134,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         shareDialog = new ShareDialog(this);
 
         vpMainActivity = findViewById(R.id.vpMainActivity);
+        llUserInfo = findViewById(R.id.llUserInfo);
         CircleImageView cimgAvtSetting = findViewById(R.id.cimgAvtSetting);
         bottomNavigationMain = findViewById(R.id.bottomNavigationMain);
         TextView tvUserName = findViewById(R.id.tvUserNameSetting);
@@ -147,9 +201,16 @@ public class MainActivity extends AppCompatActivity {
             if (user.getEmail() != null) {
                 tvEmail.setText(user.getEmail());
             } else {
-                tvEmail.setText("Phone number : " + AppUtil.formatPhoneNumber(user.getPhoneNumber()));
+                if (user.getPhoneNumber() == null) {
+                } else {
+                    tvEmail.setText("Phone number : " + AppUtil.formatPhoneNumber(user.getPhoneNumber()));
+
+                }
             }
             Glide.with(this).load(user.getAvt()).into(cimgAvtSetting);
+        }
+        if (user.getPhoneNumber() == null) {
+            llUserInfo.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -273,7 +334,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
     }
-
 
 
 }
