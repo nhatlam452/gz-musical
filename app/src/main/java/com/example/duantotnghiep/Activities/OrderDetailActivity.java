@@ -49,9 +49,9 @@ public class OrderDetailActivity extends AppCompatActivity implements OrderDetai
         btnCancelOrder.setOnClickListener(v -> {
             openDialogCancel();
         });
-        findViewById(R.id.imgBackOD).setOnClickListener(v->{
+        findViewById(R.id.imgBackOD).setOnClickListener(v -> {
             onBackPressed();
-            overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
     }
 
@@ -59,13 +59,13 @@ public class OrderDetailActivity extends AppCompatActivity implements OrderDetai
         // Create a new BottomSheetDialog
         BottomSheetDialog bottomDialog = new BottomSheetDialog(this);
 
-// Inflate the layout for the bottom dialog
+        // Inflate the layout for the bottom dialog
         View dialogView = getLayoutInflater().inflate(R.layout.bottom_dialog, null);
 
-// Set the inflated layout as the content view for the bottom dialog
+        // Set the inflated layout as the content view for the bottom dialog
         bottomDialog.setContentView(dialogView);
 
-// Find the views in the layout and set up any event listeners or data
+        // Find the views in the layout and set up any event listeners or data
         Button buttonCancel = dialogView.findViewById(R.id.btnNoCancel);
         Button buttonConfirm = dialogView.findViewById(R.id.btnConfirmCancel);
         EditText edtProblem = dialogView.findViewById(R.id.edtProblem);
@@ -74,7 +74,7 @@ public class OrderDetailActivity extends AppCompatActivity implements OrderDetai
             @Override
             public void onClick(View view) {
                 String problem = edtProblem.getText().toString();
-                Toast.makeText(OrderDetailActivity.this, orderId+"", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderDetailActivity.this, orderId + "", Toast.LENGTH_SHORT).show();
                 if (problem.isEmpty()) {
                     Toast.makeText(OrderDetailActivity.this, "Please tell us your reason " + LocalStorage.getInstance(OrderDetailActivity.this).getLocalStorageManager().getUserInfo().getSalutation(), Toast.LENGTH_SHORT).show();
                     return;

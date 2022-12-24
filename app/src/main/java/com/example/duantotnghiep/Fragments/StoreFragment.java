@@ -91,7 +91,7 @@ public class StoreFragment extends Fragment implements StoreContact.View {
 
         }
         storePresenter = new StorePresenter(this);
-        SharedPreferences mSharePrefer = getContext().getSharedPreferences(AppConstants.REMEMBER_LOGIN, 0);
+        SharedPreferences mSharePrefer = getContext().getSharedPreferences(AppConstants.CHECK_PERMISSION, 0);
         boolean isPermissionGranted = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequest, false);
         boolean isPermissionGrantedOnetime = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequestOnetime, false);
         mEditor = mSharePrefer.edit();

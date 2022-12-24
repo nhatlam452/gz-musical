@@ -57,7 +57,7 @@ public class ChooseAddressActivity extends AppCompatActivity implements AddressC
     private RecyclerView rcvChooseAddress;
     private AutoCompleteTextView edtSearchAddress;
     private SearchView sv;
-    private final SharedPreferences mSharePrefer = getSharedPreferences(AppConstants.CHECK_PERMISSION, 0);
+    private  SharedPreferences mSharePrefer = null;
     private SharedPreferences.Editor mEditor;
     private List<AutocompletePrediction> predictionList;
     private PlacesClient placesClient;
@@ -78,6 +78,8 @@ public class ChooseAddressActivity extends AppCompatActivity implements AddressC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_address);
+        mSharePrefer = getSharedPreferences(AppConstants.CHECK_PERMISSION, 0);
+        mEditor = mSharePrefer.edit();
         addressPresenter = new AddressPresenter(this);
         rcvChooseAddress = findViewById(R.id.rcvChooseAddress);
         edtSearchAddress = findViewById(R.id.edtSearchAddress);
@@ -130,45 +132,85 @@ public class ChooseAddressActivity extends AppCompatActivity implements AddressC
 
             }
         });
-        findViewById(R.id.tvYourLocation).setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
-                mEditor.apply();
-            }
-            boolean isPermissionGranted = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequest, false);
-            boolean isPermissionGrantedOnetime = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequestOnetime, false);
-            if (isPermissionGranted || isPermissionGrantedOnetime) {
-                Intent intent = new Intent();
-                intent.putExtra("currentLocation", true);
-                setResult(RESULT_OK, intent);
-                finish();
-            } else {
-                checkMyPermission(true);
-            }
-
-        });
-        findViewById(R.id.tvChooseFromMaps).setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
-                mEditor.apply();
-            }
-            boolean isPermissionGranted = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequest, false);
-            boolean isPermissionGrantedOnetime = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequestOnetime, false);
-            if (isPermissionGranted || isPermissionGrantedOnetime) {
-                Intent i = new Intent(this, ChooseFromMapActivity.class);
-                launchChooseAddress.launch(i);
-                overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
-            } else {
-                checkMyPermission(false);
-            }
-
-        });
         findViewById(R.id.imgBackChooseAddress).setOnClickListener(v -> {
             onBackPressed();
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
+        findViewById(R.id.tvYourLocation).setOnClickListener(v -> getCurrentLocation());
+        findViewById(R.id.tvChooseFromMaps).setOnClickListener(v -> chooseFromMap());
+
+    }
+    /**
+     * Start the ChooseFromMapActivity.
+     */
+    private void chooseFromMap() {
+        // Check if the app has the location permission
+        if (hasLocationPermission()) {
+            // Set the write permission request flag to true
+            setLocationPermissionRequest(true);
+        }
+
+        // Check if the app has the location permission or has requested the permission once
+        if (hasLocationPermission() || hasLocationPermissionOnetime()) {
+            // Start the ChooseFromMapActivity
+            launchChooseAddress.launch(new Intent(this, ChooseFromMapActivity.class));
+            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+        } else {
+            // Request the location permission
+            checkMyPermission(false);
+        }
+    }
+
+    /**
+     * Finish the current activity and return the result to the caller.
+     */
+    private void getCurrentLocation() {
+        // Check if the app has the location permission
+        if (hasLocationPermission()) {
+            // Set the write permission request flag to true
+            setLocationPermissionRequest(true);
+        }
+
+        // Check if the app has the location permission or has requested the permission once
+        if (hasLocationPermission() || hasLocationPermissionOnetime()) {
+            // Finish the current activity and return the result to the caller
+            Intent intent = new Intent();
+            intent.putExtra("currentLocation", true);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            // Request the location permission
+            checkMyPermission(true);
+        }
+    }
+
+    /**
+     * Check if the app has the location permission.
+     *
+     * @return true if the app has the location permission, false otherwise
+     */
+    private boolean hasLocationPermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * Check if the app has requested the location permission once.
+     *
+     * @return true if the app has requested the location permission once, false otherwise
+     */
+    private boolean hasLocationPermissionOnetime() {
+        return mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequestOnetime, false);
+    }
+
+    /**
+     * Set the write permission request flag in the shared preferences.
+     *
+     * @param value the value of the flag
+     */
+    private void setLocationPermissionRequest(boolean value) {
+        mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, value);
+        mEditor.apply();
     }
 
     private void checkMyPermission(boolean isCurrent) {
@@ -179,12 +221,12 @@ public class ChooseAddressActivity extends AppCompatActivity implements AddressC
                 mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
                 mEditor.putBoolean(AppConstants.iSLocationPermissionRequestOnetime, true);
                 mEditor.apply();
-                if (isCurrent){
+                if (isCurrent) {
                     Intent intent = new Intent();
                     intent.putExtra("currentLocation", true);
                     setResult(RESULT_OK, intent);
                     finish();
-                }else {
+                } else {
                     Intent i = new Intent(ChooseAddressActivity.this, ChooseFromMapActivity.class);
                     launchChooseAddress.launch(i);
                     overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);

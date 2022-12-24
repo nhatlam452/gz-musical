@@ -395,7 +395,7 @@ public class CartFragment extends Fragment implements CartContact.View {
     private void getCurrentLocation() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
+            mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
             mEditor.apply();
         }
         boolean isPermissionGranted = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequest, false);

@@ -34,9 +34,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class ChooseFromMapActivity extends AppCompatActivity {
+    // Declare and initialize variables
     private FusedLocationProviderClient fusedLocationProviderClient;
     private SupportMapFragment supportMapFragment;
     private TextView tvCFM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class ChooseFromMapActivity extends AppCompatActivity {
         tvCFM = findViewById(R.id.tvCFM);
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mvCFM);
 
+        // Get the last known location
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         @SuppressLint("MissingPermission")
         Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
@@ -51,27 +54,30 @@ public class ChooseFromMapActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
+                    // Reverse geocode the location to get the address
                     Geocoder geocoder = new Geocoder(ChooseFromMapActivity.this, Locale.getDefault());
                     List<Address> addresses = null;
                     try {
                         addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         tvCFM.setText(addresses.get(0).getAddressLine(0));
+                        // Load the map and set the location and zoom level
                         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                             @SuppressLint("MissingPermission")
                             @Override
                             public void onMapReady(@NonNull GoogleMap googleMap) {
                                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,25);
+                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 25);
                                 googleMap.animateCamera(cameraUpdate);
                                 googleMap.setMyLocationEnabled(true);
                                 googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+                                // Update the address when the camera position changes
                                 googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                                     @Override
                                     public void onCameraIdle() {
                                         Geocoder geocoder = new Geocoder(ChooseFromMapActivity.this, Locale.getDefault());
                                         List<Address> addresses = null;
                                         try {
-                                            addresses = geocoder.getFromLocation(googleMap.getCameraPosition().target.latitude,googleMap.getCameraPosition().target.longitude, 1);
+                                            addresses = geocoder.getFromLocation(googleMap.getCameraPosition().target.latitude, googleMap.getCameraPosition().target.longitude, 1);
                                             tvCFM.setText(addresses.get(0).getAddressLine(0));
                                         } catch (IOException e) {
                                             e.printStackTrace();
@@ -83,31 +89,34 @@ public class ChooseFromMapActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-
                 }
-
             }
-
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ChooseFromMapActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                // Show a toast message if there is an error getting the location
+                Toast.makeText(ChooseFromMapActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        findViewById(R.id.imgBackCFM).setOnClickListener(v-> onBackPressed());
-        findViewById(R.id.btnConfirmCFM).setOnClickListener(v->{
+
+        // Set up a click listener for the back button
+        findViewById(R.id.imgBackCFM).setOnClickListener(v -> onBackPressed());
+
+        // Set up a click listener for the confirm button
+        findViewById(R.id.btnConfirmCFM).setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.putExtra("address",tvCFM.getText().toString());
-            setResult(RESULT_OK,intent);
+            // Put the address in the intent as an extra
+            intent.putExtra("address", tvCFM.getText().toString());
+            setResult(RESULT_OK, intent);
             finish();
         });
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+        // Set a custom animation for when the activity finishes
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
     }
+
 }

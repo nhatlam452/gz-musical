@@ -24,6 +24,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCon
     private UserPresenter userPresenter;
     private EditText edtPassword, edtNewPassword, edtConfirmNewPassword;
     private TextInputLayout tipOldPassword, tipNewPassword, tipConfirmNewPassword;
+    private boolean isChangedPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,52 +34,68 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCon
 
         setContentView(R.layout.activity_change_password);
         initUI();
-        boolean isChangedPassword = getIntent().getBooleanExtra("isChangePassword", false);
+        //isChangedPassword or Forgot Password
+        isChangedPassword = getIntent().getBooleanExtra("isChangePassword", false);
         if (isChangedPassword) {
             tipOldPassword.setVisibility(View.VISIBLE);
         }
         btnConfirmPassword.setOnClickListener(v -> {
-            String password = edtPassword.getText().toString().trim();
-            String newPassword = edtNewPassword.getText().toString().trim();
-            String confirmNewPassword = edtConfirmNewPassword.getText().toString().trim();
-            boolean isValidNewPassword = AppUtil.ValidateInput.isValidPassword(newPassword);
-            if (newPassword.isEmpty()) {
-                tipNewPassword.setError("Please enter your new Password");
-                return;
-            } else {
-                tipNewPassword.setError(null);
-            }
-            if (!newPassword.equals(confirmNewPassword)) {
-                tipConfirmNewPassword.setError("Your password does not matched");
-                return;
-            } else {
-                tipConfirmNewPassword.setError(null);
-
-            }
-            if (isValidNewPassword) {
-                tipNewPassword.setError(null);
-            } else {
-                tipNewPassword.setError("Invalid password");
-                return;
-            }
-            boolean b = !newPassword.isEmpty() && confirmNewPassword.equals(newPassword) && isValidNewPassword;
-            if (!isChangedPassword) {
-                if (b) {
-                    String phoneNumber = getIntent().getStringExtra("userPhone");
-                    if (phoneNumber == null) {
-                        Toast.makeText(this, "Unknown  a Error", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    AppUtil.showDialog.show(this);
-                    userPresenter.onChangePassword(phoneNumber, newPassword, null);
-                }
-            } else {
-                if (b) {
-                    AppUtil.showDialog.show(this);
-                    userPresenter.onChangePassword(LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo().getPhoneNumber(), newPassword, password);
-                }
-            }
+            onChangePassword();
         });
+    }
+
+    private void onChangePassword() {
+        // Get the values of the password fields
+        String password = edtPassword.getText().toString().trim();
+        String newPassword = edtNewPassword.getText().toString().trim();
+        String confirmNewPassword = edtConfirmNewPassword.getText().toString().trim();
+
+        // Check if the new password is valid
+        boolean isValidNewPassword = AppUtil.ValidateInput.isValidPassword(newPassword);
+
+        // Validate that the new password field is not empty
+        if (newPassword.isEmpty()) {
+            tipNewPassword.setError("Please enter your new Password");
+            return;
+        }
+
+        // Validate that the confirm new password field matches the new password field
+        if (!newPassword.equals(confirmNewPassword)) {
+            tipConfirmNewPassword.setError("Your password does not matched");
+            return;
+        }
+
+        // Validate that the new password is valid
+        if (!isValidNewPassword) {
+            tipNewPassword.setError("Invalid password");
+            return;
+        }
+
+        // Clear any errors that may have been displayed for the new password and confirm new password fields
+        tipNewPassword.setError(null);
+        tipConfirmNewPassword.setError(null);
+
+        // Get the phone number from the intent
+        String phoneNumber = getIntent().getStringExtra("userPhone");
+
+        // Check if the phone number was not found in the intent
+        if (phoneNumber == null) {
+            Toast.makeText(this, "Unknown  a Error", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Show the dialog
+        AppUtil.showDialog.show(this);
+
+        // If the password is not being changed, call the onChangePassword method with a null password
+        if (!isChangedPassword) {
+            userPresenter.onChangePassword(phoneNumber, newPassword, null);
+        }
+        // If the password is being changed, call the onChangePassword method with the current password
+        else {
+            userPresenter.onChangePassword(LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo().getPhoneNumber(), newPassword, password);
+        }
+
     }
 
     private void initUI() {
