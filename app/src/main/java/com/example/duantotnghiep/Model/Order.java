@@ -8,34 +8,45 @@ public class Order {
     private String contact;
     /*
     * status :
-    * 0 : đang chờ xác nhận
-    * 1 : đang chuẩn bị đơn hàng
-    * 2 : đang giao hàng
-    * 3 : đã giao hàng
-    * 4 : đã hủy
+    *     * 0: đã hủy
+     * 1 : đang chờ xác nhận
+    * 2: đang chuẩn bị đơn hàng
+    * 3 : đang giao hàng
+    * 4 : đã giao hàng
+    * 5 : hẹn giao lại
     * */
     private int status;
     private double total;
     private String note;
     private String createDate;
+    private String deliveryTime;
     private int orderMethod;
     private String dFrom;
     private String dTo;
     private String paymentMethod;
     private List<Cart> listCart;
 
-    public Order(int userId,String contact, int status, double total, String note, String createDate, int orderMethod, String dFrom, String dTo, String paymentMethod, List<Cart> listCart) {
+    public Order(int userId,String contact, int status, double total, String note, String createDate,String deliveryTime, int orderMethod, String dFrom, String dTo, String paymentMethod, List<Cart> listCart) {
         this.userId = userId;
         this.contact = contact;
         this.status = status;
         this.total = total;
         this.note = note;
         this.createDate = createDate;
+        this.deliveryTime = deliveryTime;
         this.orderMethod = orderMethod;
         this.dFrom = dFrom;
         this.dTo = dTo;
         this.paymentMethod = paymentMethod;
         this.listCart = listCart;
+    }
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
     }
 
     public Order(int orderId, int userId, int status, double total, String note, String createDate, int orderMethod, String dFrom, String dTo, String paymentMethod, List<Cart> listCart) {

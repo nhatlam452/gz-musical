@@ -52,9 +52,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         Order order = mList.get(position);
         holder.tvItemPaymentMethod.setText(order.getPaymentMethod());
         holder.tvItemOrderHistoryDate.setText(order.getCreateDate());
-        holder.rltGoToOD.setOnClickListener(v->{
+        holder.rltGoToOD.setOnClickListener(v -> {
             Intent i = new Intent(context, OrderDetailActivity.class);
-            i.putExtra("orderDetailId",order.getOrderId());
+            i.putExtra("orderDetailId", order.getOrderId());
             context.startActivity(i);
             Activity activity = (Activity) context;
             activity.overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
@@ -77,35 +77,44 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         switch (order.getStatus()) {
             /*
              * status :
-             * 0 : đang chờ xác nhận - yellow
-             * 1 : đang chuẩn bị đơn hàng - blue
-             * 2 : đang giao hàng - red
-             * 3 : đã giao hàng - green
-             * 4 : đã hủy - grey
+             *     * 0: đã hủy
+             * 1 : đang chờ xác nhận
+             * 2: đang chuẩn bị đơn hàng
+             * 3 : đang giao hàng
+             * 4 : đã giao hàng
+             * 5 : hẹn giao lại
+             * 6 : giao hàng không thành công
              * */
 
             case 1:
-                holder.tvStatusOrder.setText("Preparing Order");
+                holder.tvStatusOrder.setText("Waiting for Confirm");
                 holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, R.color.zaloColor));
                 break;
             case 2:
-                holder.tvStatusOrder.setText("On Delivery");
-                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, R.color.red));
+                holder.tvStatusOrder.setText("Preparing Order");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, R.color.teal_700));
                 break;
             case 3:
+                holder.tvStatusOrder.setText("On Delivery");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, com.google.android.libraries.places.R.color.quantum_orange));
+                break;
+            case 4:
                 holder.tvStatusOrder.setText("Delivery Success");
                 holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
                 break;
-            case 4:
-                holder.tvStatusOrder.setText("Order Cancel");
-                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, com.google.android.libraries.places.R.color.quantum_grey));
+            case 5:
+                holder.tvStatusOrder.setText("Re-Delivery");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, R.color.momoColor));
+                break;
+            case 6:
+                holder.tvStatusOrder.setText("Delivery Falied");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, R.color.red));
                 break;
             default:
-                holder.tvStatusOrder.setText("Waiting for Confirm");
-                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, com.google.android.libraries.places.R.color.quantum_orange));
+                holder.tvStatusOrder.setText("Order cancel");
+                holder.tvStatusOrder.setTextColor(ContextCompat.getColor(context, com.google.android.libraries.places.R.color.quantum_grey));
                 break;
         }
-
     }
 
     @Override

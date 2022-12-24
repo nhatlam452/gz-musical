@@ -1,7 +1,10 @@
 package com.example.duantotnghiep.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
@@ -11,12 +14,20 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -25,23 +36,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.duantotnghiep.Adapter.ChangeFragmentAdapter;
+import com.example.duantotnghiep.Adapter.SpinnerAdapter;
+import com.example.duantotnghiep.BroadcastReceiver.NetworkBroadcastReceiver;
+import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Fragments.CartFragment;
 import com.example.duantotnghiep.Model.User;
+import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppConstants;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
 
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -52,19 +72,24 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UserContract.View {
     private RelativeLayout layoutSetting;
     private ViewPager2 vpMainActivity;
     private BottomNavigationView bottomNavigationMain;
+    private Switch switchNotification;
     private long backPressTime;
     private ImageView imgClose;
     private ShareDialog shareDialog;
     private LinearLayout llUserInfo;
+    private final UserPresenter userPresenter = new UserPresenter(this);
     private SharedPreferences.Editor mEditor;
+    private NetworkBroadcastReceiver networkChangeReceiver;
 
 
     @Override
@@ -72,9 +97,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-        SharedPreferences mSharePrefer = getSharedPreferences(String.valueOf(R.string.CHECK_PERMISSION), 0);
+        SharedPreferences mSharePrefer = getSharedPreferences(AppConstants.CHECK_PERMISSION, 0);
         mEditor = mSharePrefer.edit();
         initUi();
+        TextView layout = findViewById(R.id.tvConnectionMain);
+        networkChangeReceiver = new NetworkBroadcastReceiver(layout);
+
+//        onGetNotification();
         checkMyPermission();
         imgClose.setOnClickListener(v -> closeDrawer());
         findViewById(R.id.tvAU).setOnClickListener(v -> {
@@ -84,6 +113,13 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.tvHelp).setOnClickListener(v -> {
             startWebView("https://vietthuong.vn/huong-dan-mua-hang");
             closeDrawer();
+
+        });
+        findViewById(R.id.tvLanguage).setOnClickListener(v -> {
+            List<String> mList = new ArrayList<>();
+            mList.add("Tiếng Việt");
+            mList.add("English");
+            openDialogLanguage(mList, "Ngôn ngữ");
 
         });
         findViewById(R.id.tvPrivacyPolice).setOnClickListener(v -> {
@@ -101,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor mEditor = sharedPreferences.edit();
             mEditor.clear();
             mEditor.apply();
-            SharedPreferences sharedPreferences2 = getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), MODE_PRIVATE);
+            SharedPreferences sharedPreferences2 = getSharedPreferences((AppConstants.REMEMBER_LOGIN), MODE_PRIVATE);
             SharedPreferences.Editor mEditor2 = sharedPreferences2.edit();
             mEditor2.clear();
             mEditor2.apply();
@@ -118,6 +154,18 @@ public class MainActivity extends AppCompatActivity {
                 }
 
         );
+        switchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            AppUtil.showDialog.show(this);
+
+            if (isChecked) {
+                switchNotification.setChecked(true);
+                userPresenter.onUpdateNotification(1, LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo().getUserId());
+            } else {
+                switchNotification.setChecked(false);
+                userPresenter.onUpdateNotification(0, LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo().getUserId());
+            }
+
+        });
         findViewById(R.id.tvSavedAddress).setOnClickListener(v -> {
             startActivity(new Intent(this, SavedAddressActivity.class));
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
@@ -137,31 +185,89 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void openDialogLanguage(List<String> mList, String title) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_spinner);
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = Gravity.CENTER;
+        window.setAttributes(windowAttributes);
+
+        TextView tvTitle = dialog.findViewById(R.id.tvSpinnerTitle);
+        RecyclerView rcvSpinner = dialog.findViewById(R.id.rcvSpinner);
+        SharedPreferences mPreferences = getSharedPreferences(AppConstants.LANGUAGE, 0);
+        SharedPreferences.Editor editor = mPreferences.edit();
+        tvTitle.setText(title);
+        SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this, mList, s -> {
+            dialog.dismiss();
+
+            if (s.equals("Tiếng Việt")) {
+                Configuration config = getBaseContext().getResources().getConfiguration();
+                config.locale = new Locale("vi"); // Đặt ngôn ngữ mới là tiếng Việt
+                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+                editor.putString("language", "vi");
+            } else if (s.equals("English")) {
+                Configuration config = getBaseContext().getResources().getConfiguration();
+                config.locale = new Locale("en"); // Đặt ngôn ngữ mới là tiếng Anh
+                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+                editor.putString("language", "en");
+            }
+            editor.apply();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
+        rcvSpinner.setLayoutManager(new LinearLayoutManager(this));
+        rcvSpinner.setAdapter(spinnerAdapter);
+        dialog.show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeReceiver);
+    }
+
     private void checkMyPermission() {
         Dexter.withContext(this).withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new MultiplePermissionsListener() {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                 if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                    mEditor.putBoolean(getString(R.string.iSLocationPermissionRequest), true);
-                    mEditor.putBoolean(getString(R.string.isCameraPermissionRequest), true);
-                    mEditor.putBoolean(getString(R.string.isWritePermissionRequest), true);
+                    mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
+                    mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
+                    mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
                 } else {
                     for (int i = 0; i < multiplePermissionsReport.getGrantedPermissionResponses().size(); i++) {
                         switch (multiplePermissionsReport.getGrantedPermissionResponses().get(i).getPermissionName()) {
                             case "android.permission.CAMERA":
-                                mEditor.putBoolean(getString(R.string.isCameraPermissionRequest), true);
+                                mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
                                 break;
                             case "android.permission.ACCESS_FINE_LOCATION":
-                                mEditor.putBoolean(getString(R.string.iSLocationPermissionRequest), true);
+                                mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
                                 break;
                             case "android.permission.READ_EXTERNAL_STORAGE":
-                                mEditor.putBoolean(getString(R.string.isWritePermissionRequest), true);
+                                mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
                                 break;
                         }
                     }
                     mEditor.apply();
                 }
             }
+
             @Override
             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
                 permissionToken.continuePermissionRequest();
@@ -185,8 +291,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initUi() {
         shareDialog = new ShareDialog(this);
-
         vpMainActivity = findViewById(R.id.vpMainActivity);
+        switchNotification = findViewById(R.id.switchNotification);
         llUserInfo = findViewById(R.id.llUserInfo);
         CircleImageView cimgAvtSetting = findViewById(R.id.cimgAvtSetting);
         bottomNavigationMain = findViewById(R.id.bottomNavigationMain);
@@ -203,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 if (user.getPhoneNumber() == null) {
                 } else {
-                    tvEmail.setText("Phone number : " + AppUtil.formatPhoneNumber(user.getPhoneNumber()));
+                    tvEmail.setText(getResources().getString(R.string.phone_number) + " : " + AppUtil.formatPhoneNumber(user.getPhoneNumber()));
 
                 }
             }
@@ -212,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
         if (user.getPhoneNumber() == null) {
             llUserInfo.setVisibility(View.INVISIBLE);
         }
+        switchNotification.setChecked(user.getNotification() == 1);
     }
 
     private void openDialogContact() {
@@ -336,4 +443,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onSuccess(User user) {
+        LocalStorage.getInstance(this).getLocalStorageManager().setUserInfo(user);
+        AppUtil.showDialog.dismiss();
+
+    }
+
+    @Override
+    public void onFail(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        AppUtil.showDialog.dismiss();
+
+    }
+
+    @Override
+    public void onResponseFail(Throwable t) {
+        AppUtil.showDialog.dismiss();
+        Log.d("Update Notification", t.getMessage());
+        Toast.makeText(this, "Client Error. Please check your connection", Toast.LENGTH_SHORT).show();
+
+    }
 }

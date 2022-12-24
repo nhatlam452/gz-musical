@@ -44,16 +44,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/imgHi"
             android:lineHeight="31.5dp"
-            android:text="Welcome to "
+            android:text="@string/welcome_to"
             android:textColor="@color/black"
             android:textSize="21dp"
             android:textStyle="bold" />
 
         <TextView
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imgHi"
-            android:layout_toRightOf="@id/tvWelcome"
+            android:layout_below="@id/tvWelcome"
             android:lineHeight="31.5dp"
             android:text="Gz Musical"
             android:textColor="@color/colorPrimary"
@@ -82,14 +82,15 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="137dp"
+                android:paddingHorizontal="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="29dp"
                 android:layout_gravity="left"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/custom_button_oval"
                 android:gravity="center"
                 android:lineHeight="20dp"
-                android:text="Login Details"
+                android:text="@string/login_details"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -98,7 +99,7 @@
                 android:layout_height="20dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-                android:text="This will be your username"
+                android:text="@string/this_will_be_your_username"
                 android:textColor="@color/textColor"
                 android:textStyle="bold" />
             <com.google.android.material.textfield.TextInputLayout
@@ -107,7 +108,7 @@
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 android:layout_marginTop="5dp"
-                android:hint="Phone Number">
+                android:hint="@string/phone_number">
 
                 <EditText
                     android:id="@+id/edtPhoneNumberRegister"
@@ -132,7 +133,7 @@
                 android:layout_marginTop="5dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
-                android:hint="Password"
+                android:hint="@string/password"
                 app:boxStrokeColor="#FF0000"
                 app:hintTextColor="#FF0000"
                 app:passwordToggleEnabled="true">
@@ -272,7 +273,7 @@
                 android:layout_marginTop="5dp"
                 app:errorEnabled="true"
                 app:passwordToggleEnabled="true"
-                android:hint="Confirm Password">
+                android:hint="@string/confirm_password">
 
                 <EditText
                     android:inputType="textPassword"
@@ -295,7 +296,7 @@
                 android:background="@drawable/custom_button_oval"
                 android:gravity="center"
                 android:lineHeight="20dp"
-                android:text="Personal Details"
+                android:text="@string/personal_details"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -306,7 +307,7 @@
                 app:errorEnabled="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Salutations">
+                android:hint="@string/salutations">
 
                 <EditText
                     android:cursorVisible="false"
@@ -327,7 +328,7 @@
                 app:errorEnabled="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="First Name">
+                android:hint="@string/first_name">
 
                 <EditText
                     android:inputType="text"
@@ -347,7 +348,7 @@
                 android:layout_width="345dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Last Name">
+                android:hint="@string/last_name">
 
                 <EditText
                     android:inputType="text"
@@ -371,7 +372,7 @@
                 android:background="@drawable/custom_button_oval"
                 android:gravity="center"
                 android:lineHeight="20dp"
-                android:text="Birthday"
+                android:text="@string/birthday"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -381,7 +382,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="10dp"
                 android:lineHeight="20dp"
-                android:text="We would never want to miss such a special day. Your birthday cannot be changed after submission."
+                android:text="@string/we_would_never_want_to_miss_such_a_special_day_your_birthday_cannot_be_changed_after_submission"
                 android:textColor="@color/textColor"
                 android:textSize="16dp"
                 android:textStyle="bold" />
@@ -396,7 +397,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:hint="Day">
+                    android:hint="@string/day">
 
                     <EditText
                         android:cursorVisible="false"
@@ -418,7 +419,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="5dp"
-                    android:hint="Month">
+                    android:hint="@string/month">
 
                     <EditText
                         android:cursorVisible="false"
@@ -442,7 +443,7 @@
                 android:background="@drawable/custom_button_oval"
                 android:gravity="center"
                 android:lineHeight="20dp"
-                android:text="Contact Address"
+                android:text="@string/contact_address"
                 android:textColor="@color/white"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -453,7 +454,7 @@
                 app:errorEnabled="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Address">
+                android:hint="@string/address">
 
                 <EditText
                     android:imeOptions="actionDone"
@@ -473,7 +474,7 @@
                 android:id="@+id/tipCity"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="City">
+                android:hint="@string/city">
 
                 <EditText
                     android:cursorVisible="false"
@@ -494,7 +495,7 @@
                 android:layout_marginTop="5dp"
                 android:id="@+id/tipDistrict"
                 app:errorEnabled="true"
-                android:hint="District">
+                android:hint="@string/district">
 
                 <EditText
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
@@ -515,7 +516,7 @@
                 app:errorEnabled="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:hint="Ward">
+                android:hint="@string/ward">
 
                 <EditText
                     android:cursorVisible="false"
@@ -536,7 +537,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="Phone number preferences and terms"
+                android:text="@string/phone_number_preferences_and_terms"
                 android:textColor="@color/textColor"
                 android:textSize="14dp"
                 android:textStyle="bold" />
@@ -560,7 +561,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_toRightOf="@id/cbRegisterNotification"
                     android:lineHeight="20dp"
-                    android:text="I do not wish to receive news, special offers and more form Gz Musical"
+                    android:text="@string/i_do_not_wish_to_receive_news_special_offers_and_more_form_gz_musical"
                     android:textColor="@color/textColor"
                     android:textSize="12dp" />
             </RelativeLayout>
@@ -572,19 +573,19 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="By clicking this button, I agree to the
-Gz Musical Site"
+                android:text="@string/by_clicking_this_button_i_agree_to_the_gz_musical_site"
                 android:textColor="@color/textColor"
                 android:textSize="14dp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvTOSRegister"
                 android:layout_width="78dp"
                 android:layout_height="20dp"
                 android:layout_gravity="left"
                 android:layout_marginStart="25dp"
                 android:lineHeight="20dp"
-                android:text="Terms of Use"
+                android:text="@string/term_of_service"
                 android:textColor="@color/colorPrimary"
                 android:textSize="12dp" />
 
@@ -598,7 +599,7 @@ Gz Musical Site"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/custom_button_oval"
                 android:lineHeight="20dp"
-                android:text="Join now"
+                android:text="@string/join_now"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="14dp"

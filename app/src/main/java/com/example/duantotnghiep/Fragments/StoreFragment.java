@@ -32,6 +32,7 @@ import com.example.duantotnghiep.Contract.StoreContact;
 import com.example.duantotnghiep.Model.Store;
 import com.example.duantotnghiep.Presenter.StorePresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppConstants;
 import com.example.duantotnghiep.Utilities.TranslateAnimation;
 import com.facebook.CallbackManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -84,8 +85,8 @@ public class StoreFragment extends Fragment implements StoreContact.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rcvStore = view.findViewById(R.id.rcvStore);
-        SharedPreferences mSharePrefer = getContext().getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), 0);
-        boolean isPermissionGranted = mSharePrefer.getBoolean(String.valueOf(R.string.iSLocationPermissionRequest), false);
+        SharedPreferences mSharePrefer = getContext().getSharedPreferences(AppConstants.REMEMBER_LOGIN, 0);
+        boolean isPermissionGranted = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequest, false);
         mEditor = mSharePrefer.edit();
 
         if (getActivity() != null) {
@@ -108,7 +109,7 @@ public class StoreFragment extends Fragment implements StoreContact.View {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                 storePresenter.getProduct();
-                mEditor.putBoolean(getString(R.string.iSLocationPermissionRequest), true);
+                mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
             }
 
             @Override
@@ -194,5 +195,11 @@ public class StoreFragment extends Fragment implements StoreContact.View {
     public void onResponseFail(Throwable t) {
         Toast.makeText(getContext(), "Unknown Error. Please check your location", Toast.LENGTH_SHORT).show();
         Log.d("StoreFragment", t.getMessage());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        storePresenter = new StorePresenter(this);
     }
 }

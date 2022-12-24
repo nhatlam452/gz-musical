@@ -239,11 +239,12 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
+
     <Button
         android:id="@+id/btnChooseStore"
-        android:textAllCaps="false"
-        android:text="Choose Store"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Choose Store"
+        android:textAllCaps="false" />
 </RelativeLayout>

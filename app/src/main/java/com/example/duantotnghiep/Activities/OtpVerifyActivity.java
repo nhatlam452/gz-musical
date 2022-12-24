@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duantotnghiep.Contract.UserContract;
@@ -25,6 +26,7 @@ import com.google.gson.Gson;
 public class OtpVerifyActivity extends AppCompatActivity implements UserContract.View {
     private EditText edtOTP1, edtOTP2, edtOTP3, edtOTP4, edtOTP5, edtOTP6;
     private UserPresenter userPresenter;
+    private TextView tvPhoneNumberSendOtp;
     private Button btnConfirmOtp;
 
     @Override
@@ -37,7 +39,7 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
         User user = (User) getIntent().getSerializableExtra("UserRegister");
 
         String verificationId = getIntent().getStringExtra("verificationId");
-
+        tvPhoneNumberSendOtp.setText(user.getPhoneNumber()+"");
         btnConfirmOtp.setOnClickListener(v -> {
             AppUtil.showDialog.show(this);
             String OTP = edtOTP1.getText().toString() + edtOTP2.getText().toString() + edtOTP3.getText().toString() + edtOTP4.getText().toString() + edtOTP5.getText().toString() + edtOTP6.getText().toString();
@@ -64,6 +66,7 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
     private void initUI() {
         userPresenter = new UserPresenter(this);
         btnConfirmOtp = findViewById(R.id.btnConfirmOtp);
+        tvPhoneNumberSendOtp = findViewById(R.id.tvPhoneNumberSendOtp);
         edtOTP1 = findViewById(R.id.edtOTP1);
         edtOTP2 = findViewById(R.id.edtOTP2);
         edtOTP3 = findViewById(R.id.edtOTP3);
@@ -172,11 +175,12 @@ public class OtpVerifyActivity extends AppCompatActivity implements UserContract
     @Override
     public void onSuccess(User user) {
         Intent i = new Intent(this,SuccessActivity.class);
-        i.putExtra("Notification","Thanks for giving us your precious time. Now you are ready for an enjoyable moment.");
+        i.putExtra("Notification",getResources().getString(R.string.thank_for_giving));
         startActivity(i);
         finish();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         AppUtil.showDialog.dismiss();
+        AppUtil.onGetNotification(this,"Thanks for giving us your precious time. Now you are ready for an enjoyable moment.");
     }
 
     @Override

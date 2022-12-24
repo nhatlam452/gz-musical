@@ -64,13 +64,13 @@ public class ProductDetailActivity extends AppCompatActivity implements DetailCo
         new TabLayoutMediator(tlProductDetail, vpProductDetail, (tab, position) -> {
             switch (position) {
                 case 0:
-                    tab.setText("Detail");
+                    tab.setText(getResources().getString(R.string.detail));
                     break;
                 case 1:
-                    tab.setText("Video");
+                    tab.setText(getResources().getString(R.string.video));
                     break;
                 case 2:
-                    tab.setText("Comment");
+                    tab.setText(getResources().getString(R.string.comments));
                     break;
 
             }

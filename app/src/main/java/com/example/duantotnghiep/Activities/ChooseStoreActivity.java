@@ -104,7 +104,7 @@ public class ChooseStoreActivity extends AppCompatActivity implements StoreConta
                                 float[] result = new float[10];
                                 Location.distanceBetween(location.getLatitude(), location.getLongitude(),latitude,longitude,result);
                                 String s = String.format("%.1f",result[0] / 1000);
-                                textView.setText(s + "km away from you");
+                                textView.setText(s +" "+ getResources().getString(R.string.km_away_from_you));
                             }
 
 

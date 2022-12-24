@@ -51,7 +51,6 @@
         android:layout_below="@id/rltSearchStore" />
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvStore"
         android:layout_width="match_parent"

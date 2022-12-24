@@ -20,13 +20,16 @@
             android:id="@+id/bottomNavigationMain"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_margin="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/custom_bottom_navigation_shape"
             android:elevation="3dp"
             app:itemIconTint="@color/custom_bottom_color_item"
             app:itemRippleColor="@android:color/transparent"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/menu_bottom_navigation" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -125,16 +128,18 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:lineHeight="20dp"
-                    android:text="Notifications"
+                    android:text="@string/notifications"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     android:textStyle="bold" />
 
                 <Switch
-                    android:layout_width="69dp"
-                    android:layout_height="27dp"
+                    android:id="@+id/switchNotification"
+                    android:layout_width="76dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginRight="12dp"
                     android:checked="false" />
             </RelativeLayout>
 
@@ -144,16 +149,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="Saved Address"
+                android:text="@string/saved_address"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
             <TextView
+                android:id="@+id/tvLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="Language"
+                android:text="@string/language"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -163,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="About Us"
+                android:text="@string/about_us"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -173,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="Help"
+                android:text="@string/help"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -183,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="Privacy Police"
+                android:text="@string/privacy_police"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -193,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="Term of Service"
+                android:text="@string/term_of_service"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -203,7 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="Contact Us"
+                android:text="@string/contact_us"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -213,7 +219,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="Tell Your Friend"
+                android:text="@string/tell_your_friend"
                 android:textColor="@color/white"
                 android:textSize="12dp" />
 
@@ -223,9 +229,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:lineHeight="20dp"
-                android:text="Log out"
+                android:text="@string/log_out"
                 android:textColor="@color/white"
-                android:textSize="14dp"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
             <View
@@ -277,4 +283,15 @@
             android:text="© 2021 Gz Musical Company. All rights reserved."
             />
     </RelativeLayout>
+    <TextView
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/tvConnectionMain"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:background="#80000000"
+        android:text="@string/don_t_have_connection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

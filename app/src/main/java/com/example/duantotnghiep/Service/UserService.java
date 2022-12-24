@@ -55,10 +55,17 @@ public class UserService implements UserContract.Model, AddressContact.AddressMo
     }
 
     @Override
-    public void updateUser(OnFinishedListener onFinishedListener, String param, String value, String userId) {
-        Call<UserResponse> call = apiInterface.update_info(param, value, userId);
+    public void updateUser(OnFinishedListener onFinishedListener, String avt,String firstName,String lastName,String salutations,String userId) {
+        Call<UserResponse> call = apiInterface.update_info(avt, firstName, lastName,salutations,userId);
         onUserCallback(call, onFinishedListener);
     }
+
+    @Override
+    public void updateNotification(OnFinishedListener onFinishedListener, int notification, String userId) {
+        Call<UserResponse> call = apiInterface.update_notification(notification,userId);
+        onUserCallback(call, onFinishedListener);
+    }
+
     @Override
     public void getUserAddress(OnAddressFinished onAddressFinished, String userId) {
         Call<AddressResponse> call = apiInterface.get_user_address(userId);

@@ -2,15 +2,20 @@ package com.example.duantotnghiep.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -20,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -32,9 +38,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,17 +52,13 @@ import com.example.duantotnghiep.Activities.PaymentActivity;
 import com.example.duantotnghiep.Activities.ProductDetailActivity;
 import com.example.duantotnghiep.Adapter.CartAdapter;
 import com.example.duantotnghiep.Adapter.PaymentMethodAdapter;
-import com.example.duantotnghiep.Adapter.SpinnerAdapter;
 import com.example.duantotnghiep.Contract.CartContact;
-import com.example.duantotnghiep.Contract.NewsInterface;
-import com.example.duantotnghiep.Contract.OrderContract;
 import com.example.duantotnghiep.Model.Cart;
-import com.example.duantotnghiep.Model.CreateOrder;
 import com.example.duantotnghiep.Model.Order;
 import com.example.duantotnghiep.Model.PaymentMethod;
 import com.example.duantotnghiep.Presenter.CartPresenter;
-import com.example.duantotnghiep.Presenter.OrderPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.example.duantotnghiep.Utilities.TranslateAnimation;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -64,35 +67,44 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import vn.zalopay.sdk.Environment;
-import vn.zalopay.sdk.ZaloPayError;
 import vn.zalopay.sdk.ZaloPaySDK;
-import vn.zalopay.sdk.listeners.PayOrderListener;
 
 
 public class CartFragment extends Fragment implements CartContact.View {
     private final CartPresenter cartPresenter = new CartPresenter(this);
     private TextView tvCartPrice, tvCartTotalPrice, tvDelivery, tvGoToStore,
             tvAddressCustomerName, tvAddressCustomer, tvStoreName, tvNotificationCart,imgPricePaymentMethod,
-            tvStoreAddress, tvPaymentMethodName, tvShippingPrice,tvNameCartPayment;
+            tvStoreAddress, tvPaymentMethodName, tvShippingPrice,tvNameCartPayment,tvShippingTime;
     private ImageView imgChooseStore;
     private List<Cart> mList;
     private EditText edtNote;
     private String paymentMethod = "Thanh toán khi nhận hàng";
-    float sum = 0;
-    float mSum = 0;
+    double sum = 0;
+    double mSum = 0;
     private RelativeLayout rlCustomer, rltStore;
     private String note = "null";
+    private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            if (isConnected) {
+                // Perform the desired action here
+                cartPresenter.onGetCart(Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId()));
+            }
+        }
+    };
     private final ActivityResultLauncher<Intent> launchChooseStore = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -123,6 +135,7 @@ public class CartFragment extends Fragment implements CartContact.View {
     private RecyclerView rcvCartFragment;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("MissingPermission")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -142,16 +155,21 @@ public class CartFragment extends Fragment implements CartContact.View {
             view.findViewById(R.id.svCart).setOnTouchListener(new TranslateAnimation(getActivity(), bottomNavigationView));
 
         }
-
+        tvShippingTime.setOnClickListener(v->{
+            DatePickerFragment newFragment = new DatePickerFragment();
+            newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+        });
         getCurrentLocation();
-
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getContext().registerReceiver(networkChangeReceiver, filter);
         tvDelivery.setOnClickListener(v -> {
             imgChooseStore.setVisibility(View.GONE);
             tvDelivery.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cartTabColor));
             tvGoToStore.setBackgroundColor(Color.TRANSPARENT);
             rlCustomer.setVisibility(View.VISIBLE);
-            mSum = sum + 400000;
+            mSum = sum + 40000;
             tvCartTotalPrice.setText("$" + NumberFormat.getInstance().format(mSum));
+            imgPricePaymentMethod.setText("$" + NumberFormat.getInstance().format(mSum));
             tvShippingPrice.setText("$40.000");
         });
         tvGoToStore.setOnClickListener(v -> {
@@ -162,6 +180,7 @@ public class CartFragment extends Fragment implements CartContact.View {
             tvShippingPrice.setText("$0");
             mSum = sum;
             tvCartTotalPrice.setText("$" + NumberFormat.getInstance().format(mSum));
+            tvShippingPrice.setText("$" + NumberFormat.getInstance().format(mSum));
 
         });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -202,7 +221,7 @@ public class CartFragment extends Fragment implements CartContact.View {
                 orderMethod = 1;
             }
 
-            Order order = new Order(userId,LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getPhoneNumber(), 0, mSum, note, time, orderMethod, storeName,
+            Order order = new Order(userId,LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getPhoneNumber(), 0, mSum, note, time,tvShippingTime.getText().toString().trim(), orderMethod, storeName,
                     customerAddress, tvPaymentMethodName.getText().toString(), mList);
             Gson gson = new Gson();
             String json = gson.toJson(order);
@@ -219,7 +238,37 @@ public class CartFragment extends Fragment implements CartContact.View {
             openChoosePaymentMethodDialog(view.findViewById(R.id.imgPaymentMethod),view.findViewById(R.id.tvPaymentMethodName));
         });
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(networkChangeReceiver);
+    }
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
 
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(),R.style.DatePickerDialogTheme,this, year, month, day);
+
+            return dialog;        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Convert the selected date to a string in the desired format
+            String dateString = String.format("%d-%d-%d", day, month + 1, year);
+
+            // Do something with the date string, such as display it in a TextView
+            TextView textView = getActivity().findViewById(R.id.tvShippingTime);
+            textView.setText(dateString);
+        }
+    }
     private void openChoosePaymentMethodDialog(ImageView imgView ,TextView tv) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -275,6 +324,7 @@ public class CartFragment extends Fragment implements CartContact.View {
 
 
     private void initUI(View view) {
+        tvShippingTime = view.findViewById(R.id.tvShippingTime);
         tvCartPrice = view.findViewById(R.id.tvCartPrice);
         edtNote = view.findViewById(R.id.edtNoteOrder);
         rcvCartFragment = view.findViewById(R.id.rcvCartFragment);
@@ -296,7 +346,9 @@ public class CartFragment extends Fragment implements CartContact.View {
         tvNameCartPayment.setText(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getFirstName() + " "
         + LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getLastName()
         );
-
+        Date date = new Date();
+        SimpleDateFormat set = new SimpleDateFormat("dd-MM-yyyy");
+        tvShippingTime.setText(set.format(date.getTime()));
     }
 
     @SuppressLint("MissingPermission")
@@ -348,7 +400,7 @@ public class CartFragment extends Fragment implements CartContact.View {
 
         sum = 0;
         for (int i = 0; i < cartList.size(); i++) {
-            sum = sum + (cartList.get(i).getQuantity() * cartList.get(i).getPrice());
+            sum = sum + (cartList.get(i).getQuantity() * (cartList.get(i).getPrice() * (100 - cartList.get(i).getDiscount()) / 100));
         }
         mSum = sum;
         tvCartPrice.setText("$" + NumberFormat.getInstance().format(sum));

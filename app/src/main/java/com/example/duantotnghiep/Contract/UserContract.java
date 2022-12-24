@@ -24,7 +24,9 @@ public interface UserContract {
 
         void changePassword(OnFinishedListener onFinishedListener, String phone, String newPassword, String password);
 
-        void updateUser(OnFinishedListener onFinishedListener, String param, String value, String userId);
+        void updateUser(OnFinishedListener onFinishedListener, String avt,String firstName,String lastName,String salutations,String userId);
+
+        void updateNotification(OnFinishedListener onFinishedListener,int notification,String userId);
     }
 
 
@@ -46,8 +48,10 @@ public interface UserContract {
 
         void onCheckExits(String phone);
 
-        void onUpdateInfo(String param, String value, String userId);
+        void onUpdateInfo(String avt,String firstName,String lastName,String salutations,String userId);
 
         void onChangePassword(String phoneNumber, String newPassword, String oldPassword);
+        void onUpdateNotification(int notification, String userId);
+
     }
 }

@@ -12,9 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -24,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duantotnghiep.Adapter.LoginPromotionAdapter;
+import com.example.duantotnghiep.BroadcastReceiver.NetworkBroadcastReceiver;
 import com.example.duantotnghiep.Contract.NewsInterface;
 import com.example.duantotnghiep.Contract.UserContract;
 import com.example.duantotnghiep.Model.News;
@@ -31,6 +38,7 @@ import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.NewsPresenter;
 import com.example.duantotnghiep.Presenter.UserPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppConstants;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.example.duantotnghiep.Utilities.SnapHelperOneByOne;
@@ -51,6 +59,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,12 +75,14 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     private LoginPromotionAdapter promotionAdapter;
     private Button btnLogin;
     private CheckBox cbKeepLogged;
-    private TextView tvSignUp, tvForgotPassword;
+    private TextView tvSignUp, tvForgotPassword,tvGreet;
     private EditText edtPhoneNumberLogin, edtPasswordLogin;
     private UserPresenter userPresenter;
     private NewsPresenter newsPresenter;
     private SharedPreferences.Editor mEditor;
     private long backPressTime;
+    private NetworkBroadcastReceiver networkChangeReceiver;
+
     private GoogleSignInClient mGoogleSignInClient;
     private final ActivityResultLauncher<Intent> ggLoginLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -94,10 +105,13 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setContentView(R.layout.activity_login);
-        SharedPreferences mSharePrefer = getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), 0);
+        SharedPreferences mSharePrefer = getSharedPreferences(AppConstants.REMEMBER_LOGIN, 0);
         mEditor = mSharePrefer.edit();
         callbackManager = CallbackManager.Factory.create();
-        boolean isLogin = mSharePrefer.getBoolean(String.valueOf(R.string.isLogin), false);
+        networkChangeReceiver = new NetworkBroadcastReceiver(findViewById(R.id.tvConnectionLogin));
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, filter);
+        boolean isLogin = mSharePrefer.getBoolean(AppConstants.isLogin, false);
         if (isLogin) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
@@ -170,6 +184,12 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     }
 
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeReceiver);
+    }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             AppUtil.showDialog.show(LoginActivity.this);
@@ -229,6 +249,7 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
     private void initUi() {
         rcvPromotion = findViewById(R.id.vpPromotion);
         cbKeepLogged = findViewById(R.id.cbKeepLogged);
+        tvGreet = findViewById(R.id.tvGreeting);
         edtPhoneNumberLogin = findViewById(R.id.edtPhoneNumberLogin);
         edtPasswordLogin = findViewById(R.id.edtPasswordLogin);
         btnLogin = findViewById(R.id.btnLogin);
@@ -242,13 +263,43 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    int hour = LocalTime.now().getHour();
+                    if (hour >= 5 && hour < 12) {
+                        tvGreet.setText(getString(R.string.good_morning));
+                    } else if (hour >= 12 && hour < 18) {
+                        tvGreet.setText(getString(R.string.good_afternoon));
+                    } else {
+                        tvGreet.setText(getString(R.string.good_evening));
+                    }
+                }
+            }
+        }, 0, 1000);
+
     }
 
+    public class NetworkChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            if (isConnected) {
+                // Device is connected to a network
+            } else {
+                // Device is not connected to a network
+            }
+        }
+    }
 
     @Override
     public void onSuccess(User user) {
         if (cbKeepLogged.isChecked()) {
-            mEditor.putBoolean(String.valueOf(R.string.isLogin), true);
+            mEditor.putBoolean(AppConstants.isLogin, true);
             mEditor.apply();
         }
         LocalStorage.getInstance(this).getLocalStorageManager().setUserInfo(user);

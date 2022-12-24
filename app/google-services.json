@@ -1,78 +1,33 @@
 {
   "project_info": {
-    "project_number": "927972328539",
-    "project_id": "laptop-4aa89",
-    "storage_bucket": "laptop-4aa89.appspot.com"
+    "project_number": "808647332931",
+    "project_id": "datn-367204",
+    "storage_bucket": "datn-367204.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:927972328539:android:06ecd020bb4616aaa12b7e",
+        "mobilesdk_app_id": "1:808647332931:android:c8abaaa214525ccba230f6",
         "android_client_info": {
           "package_name": "com.example.duantotnghiep"
         }
       },
       "oauth_client": [
         {
-          "client_id": "927972328539-8578njgeio726m4o10angotgfg3rc13g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.duantotnghiep",
-            "certificate_hash": "353a86c5a6d90ee72dea084e43143575485b802c"
-          }
-        },
-        {
-          "client_id": "927972328539-jqq9vsf4d08mbmskivi3udll98jo3v0i.apps.googleusercontent.com",
+          "client_id": "808647332931-8srhtnv5ro36hjb49d6cjecqgqel9j3k.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB3Nv9bYNmCy-EUtOV0aCyZNGxWNcVrLYM"
+          "current_key": "AIzaSyAql1UHbgvncr_SSp1q2ozajh94s3ZtSFQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "927972328539-aotmlfhf9lek2r9gg9oe2ggr4a7fc49k.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:927972328539:android:c7e2d021dd81f360a12b7e",
-        "android_client_info": {
-          "package_name": "com.example.myapplication"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "927972328539-u9cjdanfjmbstkhvdpn03d55vqo9k00b.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.myapplication",
-            "certificate_hash": "353a86c5a6d90ee72dea084e43143575485b802c"
-          }
-        },
-        {
-          "client_id": "927972328539-jqq9vsf4d08mbmskivi3udll98jo3v0i.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB3Nv9bYNmCy-EUtOV0aCyZNGxWNcVrLYM"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "927972328539-aotmlfhf9lek2r9gg9oe2ggr4a7fc49k.apps.googleusercontent.com",
+              "client_id": "808647332931-8srhtnv5ro36hjb49d6cjecqgqel9j3k.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

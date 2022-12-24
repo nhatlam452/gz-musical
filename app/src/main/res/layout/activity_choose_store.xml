@@ -26,7 +26,7 @@
             android:layout_toLeftOf="@id/imgFindStore"
             android:layout_toRightOf="@id/imgLogoStore"
             android:backgroundTint="@color/colorPrimary"
-            android:hint="Find a store"
+            android:hint="@string/find_a_store"
             android:textColor="@color/black"
             android:textCursorDrawable="@color/colorPrimary"
             android:textSize="20dp"

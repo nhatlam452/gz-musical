@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:lineHeight="24dp"
-        android:text="Portfolio"
+        android:text="@string/portfolio"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="16dp"
@@ -55,7 +55,7 @@
                     android:layout_width="128dp"
                     android:layout_height="13dp"
                     android:lineHeight="13dp"
-                    android:text="Total Order"
+                    android:text="@string/total_order"
                     android:textAlignment="center"
                     android:textSize="12dp" />
 
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:lineHeight="13dp"
-                    android:text="12"
+                    android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16dp"
@@ -92,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="13dp"
                     android:lineHeight="13dp"
-                    android:text="Total Payment(VND)"
+                    android:text="@string/total_payment_vnd"
                     android:textAlignment="center"
                     android:textSize="12dp" />
 
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:lineHeight="13dp"
-                    android:text="23.000.000"
+                    android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16dp"

@@ -45,6 +45,7 @@ import com.example.duantotnghiep.Contract.CommentContact;
 import com.example.duantotnghiep.Model.Comment;
 import com.example.duantotnghiep.Presenter.CommentPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppConstants;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.google.firebase.storage.FirebaseStorage;
@@ -136,9 +137,9 @@ public class CommentFragment extends Fragment implements CommentContact.View {
 
         commentPresenter = new CommentPresenter(this);
         AppUtil.showDialog.show(getContext());
-        SharedPreferences mSharePrefer = getContext().getSharedPreferences(String.valueOf(R.string.REMEMBER_LOGIN), 0);
-        boolean isCameraPermissionGranted = mSharePrefer.getBoolean(String.valueOf(R.string.isCameraPermissionRequest), false);
-        boolean isReadPermissionGranted = mSharePrefer.getBoolean(String.valueOf(R.string.isWritePermissionRequest), false);
+        SharedPreferences mSharePrefer = getContext().getSharedPreferences(AppConstants.REMEMBER_LOGIN, 0);
+        boolean isCameraPermissionGranted = mSharePrefer.getBoolean(AppConstants.isCameraPermissionRequest, false);
+        boolean isReadPermissionGranted = mSharePrefer.getBoolean(AppConstants.isWritePermissionRequest, false);
         mEditor = mSharePrefer.edit();
         commentPresenter.onGetComment(productDetailActivity.getProductId());
         if (uri != null || bitmap != null) {
@@ -187,7 +188,7 @@ public class CommentFragment extends Fragment implements CommentContact.View {
         Dexter.withContext(getContext()).withPermission(Manifest.permission.CAMERA).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                mEditor.putBoolean(getString(R.string.isCameraPermissionRequest), true);
+                mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
             }
 
             @Override
@@ -206,7 +207,7 @@ public class CommentFragment extends Fragment implements CommentContact.View {
         Dexter.withContext(getContext()).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                mEditor.putBoolean(getString(R.string.isWritePermissionRequest), true);
+                mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
             }
 
             @Override

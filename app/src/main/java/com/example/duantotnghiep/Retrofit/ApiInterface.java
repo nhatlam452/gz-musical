@@ -9,6 +9,7 @@ import com.example.duantotnghiep.Model.Response.CartResponse;
 import com.example.duantotnghiep.Model.Response.CommentResponse;
 import com.example.duantotnghiep.Model.Response.LocationResponse;
 import com.example.duantotnghiep.Model.Response.NewsResponse;
+import com.example.duantotnghiep.Model.Response.NotificationResponse;
 import com.example.duantotnghiep.Model.Response.OrderDetailResponse;
 import com.example.duantotnghiep.Model.Response.OrderResponse;
 import com.example.duantotnghiep.Model.Response.ProductDetailResponse;
@@ -27,6 +28,20 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
+    //Notification Api
+    @FormUrlEncoded
+    @POST("views/get-notification.php")
+    Call<NotificationResponse> get_notification(@Field("userId") String userId);   @FormUrlEncoded
+    @POST("views/set_notification_is_viewed.php")
+    Call<NotificationResponse> set_notification_viewed(@Field("userId") String userId);
+    @FormUrlEncoded
+    @POST("views/send-notifcation.php")
+    Call<NotificationResponse> send_notification(
+            @Field("userId") String userId,
+            @Field("notification") String notification,
+            @Field("title") String title,
+            @Field("sentTime") String sentTime
+    );
     //Order Detail Api
     @FormUrlEncoded
     @POST("views/get-order-detail.php")
@@ -37,6 +52,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("views/get-order-by-user.php")
     Call<OrderResponse> get_all_order(@Field("userId") int userId);
+    @FormUrlEncoded
+    @POST("views/update-order.php")
+    Call<OrderResponse> update_order(
+            @Field("status") int status,
+            @Field("orderId") int orderId,
+            @Field("problem") String problem
+                                      );
     //Store Api
     @GET("views/get-all-store.php")
     Call<StoreResponse> get_all_store();
@@ -66,6 +88,11 @@ public interface ApiInterface {
 
     //User Api
     @FormUrlEncoded
+    @POST("views/update-notification.php")
+    Call<UserResponse> update_notification(@Field("notification") int notification,
+                                   @Field("userId") String userId
+    );
+    @FormUrlEncoded
     @POST("views/check-login.php")
     Call<UserResponse> check_login(@Field("phoneNumber") String phoneNumber,
                                    @Field("password") String password
@@ -73,8 +100,10 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("views/update-user.php")
-    Call<UserResponse> update_info(@Field("param") String param,
-                                   @Field("value") String value,
+    Call<UserResponse> update_info(@Field("avt") String avt,
+                                   @Field("firstName") String firstName,
+                                   @Field("lastName") String lastName,
+                                   @Field("salutations") String salutations,
                                    @Field("userId") String userId
     );
 

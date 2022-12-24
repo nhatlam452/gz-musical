@@ -1,7 +1,11 @@
 package com.example.duantotnghiep.Utilities;
 
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,6 +19,9 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.core.app.NotificationCompat;
+
+import com.example.duantotnghiep.Activities.MainActivity;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.R;
 import com.google.gson.Gson;
@@ -27,6 +34,40 @@ import java.util.regex.Pattern;
 
 public class AppUtil {
 
+    public static void onGetNotification(Context context,String notification) {
+        if (String.valueOf(LocalStorage.getInstance(context).getLocalStorageManager().getUserInfo().getNotification()) == null){
+            return;
+        }
+        if(LocalStorage.getInstance(context).getLocalStorageManager().getUserInfo().getNotification() == 0){
+            return;
+        }
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,  PendingIntent.FLAG_IMMUTABLE);
+
+        // Create the notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel_id")
+                .setSmallIcon(R.drawable.ic_logo_green)
+                .setContentTitle("Gz Musical")
+                .setContentText(notification)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Check if the device is running Android 8.0 or higher and create a notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("channel_id",
+                    "Gz Musical",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Show the notification
+        notificationManager.notify(0 /* ID of notification */, builder.build());
+    }
 
     public static String formatDate(String date){
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

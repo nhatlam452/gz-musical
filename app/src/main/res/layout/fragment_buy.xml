@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:lineHeight="11dp"
-                    android:text="Price"
+                    android:text="@string/price"
                     android:lines="1"
                     android:gravity="center"
                     android:textColor="@color/colorPrimary"
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:lineHeight="11dp"
-                    android:text="Brand"
+                    android:text="@string/brand"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14dp" />
 
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:lineHeight="11dp"
-                    android:text="List"
+                    android:text="@string/sort"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14dp" />
             </LinearLayout>

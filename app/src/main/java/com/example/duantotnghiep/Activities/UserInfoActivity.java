@@ -58,6 +58,8 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
     private final static int MY_REQUEST_CODE = 1;
     private Button btnChangeInfo;
     private Uri uri;
+    private String avtU = "";
+
     private String userId;
     private UserPresenter userPresenter;
     private final User user = LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo();
@@ -88,7 +90,6 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         setContentView(R.layout.activity_user_info);
         civAvt = findViewById(R.id.imgChangeAvt);
         EditText edtPhone = findViewById(R.id.edtPhoneNumberInfo);
-        EditText edtEmail = findViewById(R.id.edtEmailInfo);
         EditText edtSalutation = findViewById(R.id.edtSalutationInfo);
         EditText edtFirstName = findViewById(R.id.edtFirstNameInfo);
         EditText edtLastName = findViewById(R.id.edtLastNameInfo);
@@ -109,9 +110,6 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         if (user.getAvt() != null) {
             Glide.with(this).load(user.getAvt()).into(civAvt);
         }
-        if (email != null) {
-            edtEmail.setText(email);
-        }
         edtSalutation.setText(salutation);
         edtFirstName.setText(firstName);
         edtLastName.setText(lastName);
@@ -119,7 +117,6 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         edtPhone.setOnClickListener(v -> showToast("Your Phone Number"));
         edtBirthday.setOnClickListener(v -> showToast("Your Date Of Birth"));
         imgBackInfo.setOnClickListener(v -> onBackPressed());
-        onTextChange(edtEmail, email);
         onTextChange(edtFirstName, firstName);
         onTextChange(edtLastName, lastName);
         onTextChange(edtSalutation, salutation);
@@ -179,31 +176,36 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         );
         btnChangeInfo.setOnClickListener(v -> {
             AppUtil.showDialog.show(this);
+
+            if (user.getAvt() == null) {
+                avtU = "";
+            } else {
+                avtU = user.getAvt();
+            }
             if (uri != null) {
                 uploadtoFireBase(uri);
+                avtU = uri.toString();
             }
-            if (!edtEmail.getText().toString().equals(email)) {
-//               userPresenter.onUpdateInfo("EMAIL",);
-            }
+            String salutationU = salutation;
+            String firstNameU = firstName;
+            String lastNameU = lastName;
             if (!edtSalutation.getText().toString().equals(salutation)) {
-                userPresenter.onUpdateInfo("SALUTATION", edtSalutation.getText().toString(), userId);
+                salutationU = edtSalutation.getText().toString();
             }
             if (!edtFirstName.getText().toString().equals(firstName)) {
-                String name = edtFirstName.getText().toString();
-                userPresenter.onUpdateInfo("FIRSTNAME", name, "6");
-
+                firstNameU = edtFirstName.getText().toString();
             }
             if (!edtLastName.getText().toString().equals(lastName)) {
-                String name = edtLastName.getText().toString();
-                userPresenter.onUpdateInfo("LASTNAME", name, userId);
+                lastNameU = edtLastName.getText().toString();
             }
+         userPresenter.onUpdateInfo(avtU,firstNameU,lastNameU,salutationU,userId);
         });
-        findViewById(R.id.imgChangePassword).setOnClickListener(v->{
-            Intent i = new Intent(this,ChangePasswordActivity.class);
-            i.putExtra("isChangePassword",true);
+        findViewById(R.id.imgChangePassword).setOnClickListener(v -> {
+            Intent i = new Intent(this, ChangePasswordActivity.class);
+            i.putExtra("isChangePassword", true);
             startActivity(i);
             finish();
-            overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
     }
 
@@ -288,8 +290,10 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
 
     private void uploadtoFireBase(Uri uri) {
         StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
-        fileRef.putFile(uri).addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri1 ->
-                        userPresenter.onUpdateInfo("AVATAR", uri1.toString(), userId))
+        fileRef.putFile(uri).addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri1 -> {
+                            avtU = uri1.toString();
+                        }
+                )
                 .addOnFailureListener(e -> {
                     AppUtil.showDialog.dismiss();
                     Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();

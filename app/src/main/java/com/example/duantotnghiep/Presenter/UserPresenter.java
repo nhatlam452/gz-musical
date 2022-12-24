@@ -68,12 +68,9 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
     }
 
     @Override
-    public void onUpdateInfo(String param, String value, String userId) {
-        if (param == null || value == null || userId == null){
-            Log.d(TAG,"Lack info");
-            return;
-        }
-        model.updateUser(this,param,value,userId);
+    public void onUpdateInfo(String avt,String firstName,String lastName,String salutations,String userId) {
+
+        model.updateUser(this,avt,firstName,lastName,salutations,userId);
     }
 
 
@@ -84,6 +81,11 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
             mView.onFail("Please check your input");
         }
         model.changePassword(this,phoneNumber,newPassword,oldPassword);
+    }
+
+    @Override
+    public void onUpdateNotification(int notification, String userId) {
+        model.updateNotification(this,notification,userId);
     }
 
     @Override

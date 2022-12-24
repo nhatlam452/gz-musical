@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
@@ -39,9 +40,45 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.NotificationActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".Service.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <receiver android:name=".BroadcastReceiver.NotificationReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.duantotnghiep.NOTIFICATION_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".BroadcastReceiver.NetworkBroadcastReceiver"
+            android:exported="false"
+            tools:ignore="Instantiatable">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".Service.MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:configChanges="locale"
+
             android:name=".Activities.OrderDetailActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.PaymentActivity"
             android:exported="true"
             android:launchMode="singleTask">
@@ -57,18 +94,28 @@
             </intent-filter>
         </activity>
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.StoreInfoActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.ChooseStoreActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.ChooseFromMapActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.ChooseAddressActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.ProductDetailActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateHidden|adjustPan" />
@@ -85,33 +132,52 @@
             android:required="false" />
 
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.SavedAddressActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.UserInfoActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.ViewImageActivity"
             android:exported="false" />
+
+
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.WebViewActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.ChangePasswordActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.SuccessActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.OtpVerifyActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.ForgotPasswordActivity"
             android:exported="false" />
         <activity
+            android:configChanges="locale"
+
             android:name=".Activities.RegisterActivity"
             android:exported="true" />
         <activity
+            android:configChanges="locale"
             android:name=".Activities.LoginActivity"
             android:exported="true" />
 
@@ -126,6 +192,7 @@
             android:name=".Activities.OnBoardingActivity"
             android:exported="true" />
         <activity
+            android:configChanges="locale"
             android:name=".Activities.SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -134,7 +201,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
+            android:configChanges="locale"
             android:name=".Activities.MainActivity"
             android:exported="true"
             android:screenOrientation="fullSensor" />

@@ -1,8 +1,14 @@
 package com.example.duantotnghiep.Fragments;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -50,7 +56,7 @@ public class BuyFragment extends Fragment implements ProductContract.View {
     private RecyclerView rcvProducts, rcvSearch;
     private EditText edtSearch;
     private RelativeLayout layoutSearch;
-    private ProductPresenter presenter;
+    private ProductPresenter presenter = new ProductPresenter(this);
     private final String TAG = "BUY_FRAGMENT";
     private List<Products> mList;
     private int currentType;
@@ -60,7 +66,18 @@ public class BuyFragment extends Fragment implements ProductContract.View {
     private String order = "null";
     private String sortType = "";
     private SearchAdapter searchAdapter;
-
+    private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            if (isConnected) {
+                // Perform the desired action here
+                presenter.getProduct();
+            }
+        }
+    };
     private float fPrice = 0, sPrice = 1000000000;
 
     @Override
@@ -72,9 +89,11 @@ public class BuyFragment extends Fragment implements ProductContract.View {
         edtSearch = view.findViewById(R.id.edtSearch);
         rcvSearch = view.findViewById(R.id.rcvSearch);
         layoutSearch = view.findViewById(R.id.layoutSearch);
-        presenter = new ProductPresenter(this);
         AppUtil.showDialog.show(getContext());
         presenter.getProduct();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getContext().registerReceiver(networkChangeReceiver, filter);
+
         if (getActivity() != null) {
             BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationMain);
             rcvProducts.setOnTouchListener(new TranslateAnimation(getActivity(), bottomNavigationView));
@@ -138,7 +157,7 @@ public class BuyFragment extends Fragment implements ProductContract.View {
             TextView tvTitle = dialog.findViewById(R.id.tvSpinnerTitle);
             RecyclerView rcvSpinner = dialog.findViewById(R.id.rcvSpinner);
 
-            tvTitle.setText("Price");
+            tvTitle.setText(getResources().getString(R.string.price));
             SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getContext(), mList, s -> {
                 switch (s) {
                     case "Tất cả":
@@ -209,7 +228,7 @@ public class BuyFragment extends Fragment implements ProductContract.View {
             TextView tvTitle = dialog.findViewById(R.id.tvSpinnerTitle);
             RecyclerView rcvSpinner = dialog.findViewById(R.id.rcvSpinner);
 
-            tvTitle.setText("Brand");
+            tvTitle.setText(getResources().getString(R.string.brand));
             SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getContext(), mList, s -> {
                 switch (s) {
                     case "Tất cả":
@@ -316,6 +335,11 @@ public class BuyFragment extends Fragment implements ProductContract.View {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(networkChangeReceiver);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -363,7 +387,6 @@ public class BuyFragment extends Fragment implements ProductContract.View {
 
             }
         });
-
         AppUtil.showDialog.dismiss();
 
     }
@@ -385,6 +408,5 @@ public class BuyFragment extends Fragment implements ProductContract.View {
     public void onResume() {
         super.onResume();
         presenter = new ProductPresenter(this);
-
     }
 }

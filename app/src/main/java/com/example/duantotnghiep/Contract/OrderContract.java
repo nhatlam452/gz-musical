@@ -15,15 +15,25 @@ public interface OrderContract {
         }
         void newOrder(OnOrderFinishedListener orderFinishedListener, Order order);
         void getOrder(OnOrderFinishedListener orderFinishedListener,int userId);
+
+        interface  OnCancelOrderListener{
+            void  onCancelOrderSuccess(OrderResponse orderResponse);
+            void  onCancelOrderFailure(Throwable t);
+        }
+        void cancelOrder(OnCancelOrderListener cancelOrderListener, int status, int orderId,String problem);
     }
     interface View{
         void onOrderSuccess(List<Order> cartList);
         void onOrderFailure(String msg);
         void onOrderResponseFail(Throwable t);
+        void onCancelOrderSuccess(List<Order> cartList);
+        void onCancelOrderFailure(String msg);
+        void onCancelOrderResponseFail(Throwable t);
     }
 
     interface Presenter {
         void onNewOrder(Order order);
         void onGetOrder(int userId);
+        void onCancelOrder(int status, int orderId,String problem);
     }
 }

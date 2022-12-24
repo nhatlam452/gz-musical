@@ -39,7 +39,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_toStartOf="@id/imgSelectPicture"
                 android:background="@drawable/custom_rcv_border"
-                android:hint="Write Comment ..."
+                android:hint="@string/write_comment"
                 android:maxHeight="100dp"
                 android:maxLength="255"
                 android:padding="10dp"

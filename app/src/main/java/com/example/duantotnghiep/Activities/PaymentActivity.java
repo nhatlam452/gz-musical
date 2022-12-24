@@ -78,7 +78,7 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
                     return;
                 }else if (AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString())){
                     orderConfirm = new Order(order.getUserId(),tvPhonePaymentConfirm.getText().toString(),
-                            order.getStatus(),order.getTotal(),orderConfirm.getNote(),order.getCreateDate(),
+                            order.getStatus(),order.getTotal(),orderConfirm.getNote(),order.getCreateDate(),order.getDeliveryTime(),
                             order.getOrderMethod(),order.getdFrom(),order.getdTo(),order.getPaymentMethod(),order.getmList()
                             );
                 }
@@ -148,10 +148,10 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
             tvPhonePaymentConfirm.setHint(LocalStorage.getInstance(this).getLocalStorageManager().getUserInfo().getPhoneNumber());
         }
         if (order.getOrderMethod() == 0) {
-            tvDeliveryMethodPaymentConfirm.setText("Delivery");
+            tvDeliveryMethodPaymentConfirm.setText(getResources().getString(R.string.delivery));
             llStorePC.setVisibility(View.GONE);
         } else {
-            tvDeliveryMethodPaymentConfirm.setText("Go to Store");
+            tvDeliveryMethodPaymentConfirm.setText(getResources().getString(R.string.go_to_store));
             llUserAddressPC.setVisibility(View.GONE);
 
         }
@@ -163,7 +163,6 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
         } else {
             tvNotePaymentConfirm.setText(order.getNote());
         }
-        tvTotalPriceItemPaymentConfirm.setText("Total (" + order.getmList().size() + " item(s))");
         tvTotalPricePaymentConfirm.setText(NumberFormat.getInstance().format(order.getTotal()) + "VND");
         btnPay.setText("PAY : " + NumberFormat.getInstance().format(order.getTotal()) + "VND");
         CartAdapter cartAdapter = new CartAdapter(this, order.getmList(), new CartAdapter.OnClickListener() {
@@ -189,6 +188,8 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
         startActivity(i);
         overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
         finish();
+        AppUtil.onGetNotification(this,"Your order has been received. We will contact to you to confirm once again soon. Thank you for choosing Gz Musical");
+
     }
 
     @Override
@@ -200,5 +201,20 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
     public void onOrderResponseFail(Throwable t) {
         Toast.makeText(this, "Unknown Error . Please check your connection", Toast.LENGTH_SHORT).show();
         Log.d("Payment Activity",t.getMessage());
+    }
+
+    @Override
+    public void onCancelOrderSuccess(List<Order> cartList) {
+
+    }
+
+    @Override
+    public void onCancelOrderFailure(String msg) {
+
+    }
+
+    @Override
+    public void onCancelOrderResponseFail(Throwable t) {
+
     }
 }

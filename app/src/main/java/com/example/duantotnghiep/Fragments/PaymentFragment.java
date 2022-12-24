@@ -1,5 +1,11 @@
 package com.example.duantotnghiep.Fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -48,6 +54,19 @@ public class PaymentFragment extends Fragment implements OrderContract.View {
     private final OrderPresenter orderPresenter = new OrderPresenter(this);
     private TextView tvTotalOrder, tvTotalPayment;
     private static List<Order> mList;
+    private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            if (isConnected) {
+                // Perform the desired action here
+                orderPresenter.onGetOrder(Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId()));
+
+            }
+        }
+    };
     private View view = null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,10 +77,16 @@ public class PaymentFragment extends Fragment implements OrderContract.View {
         vpPayment = view.findViewById(R.id.vpPayment);
         tvTotalOrder = view.findViewById(R.id.tvTotalOrder);
         tvTotalPayment = view.findViewById(R.id.tvTotalPayment);
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        getContext().registerReceiver(networkChangeReceiver, filter);
         orderPresenter.onGetOrder(Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId()));
         return view;
     }
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(networkChangeReceiver);
+    }
     @Override
     public void onOrderSuccess(List<Order> oList) {
         mList = oList;
@@ -131,8 +156,29 @@ public class PaymentFragment extends Fragment implements OrderContract.View {
 
     }
 
+    @Override
+    public void onCancelOrderSuccess(List<Order> cartList) {
+
+    }
+
+    @Override
+    public void onCancelOrderFailure(String msg) {
+
+    }
+
+    @Override
+    public void onCancelOrderResponseFail(Throwable t) {
+
+    }
+
     public List<Order> getmList() {
         return mList;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        orderPresenter.onGetOrder(Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId()));
+
+    }
 }

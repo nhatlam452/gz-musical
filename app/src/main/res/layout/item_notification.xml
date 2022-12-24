@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="7dp"
+    android:layout_margin="5dp"
+    android:background="@drawable/custom_rcv_border"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/civLogoNoti"
+        android:layout_width="40dp"
+        android:scaleType="centerInside"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_logo_green"
+        />
+    <TextView
+        android:id="@+id/tvTitleNoti"
+        android:layout_toEndOf="@id/civLogoNoti"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Gz Musical"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
+
+    <TextView
+
+        android:id="@+id/tvTimeNoti"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/tvTitleNoti"
+        android:gravity="center_vertical|right"
+        android:text="18-12-2000"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+    <TextView
+        android:layout_marginStart="5dp"
+        android:id="@+id/tvBodyNoti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/civLogoNoti"
+        android:text="Nody"
+        android:textSize="16sp" />
+</RelativeLayout>

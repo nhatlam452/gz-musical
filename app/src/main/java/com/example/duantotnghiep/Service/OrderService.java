@@ -56,4 +56,25 @@ public class OrderService implements OrderContract.OrderModel {
             }
         });
     }
+    @Override
+    public void cancelOrder(OnCancelOrderListener cancelOrderListener, int status, int orderId,String problem) {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<OrderResponse> call = apiInterface.update_order(status, orderId,problem);
+        call.enqueue(new Callback<OrderResponse>() {
+            @Override
+            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                if (response.body() != null && response.isSuccessful()) {
+                    Log.d("Order Service", "Response code : " + response.code() + "----" + response.body().getMessage());
+                    cancelOrderListener.onCancelOrderSuccess(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderResponse> call, Throwable t) {
+                cancelOrderListener.onCancelOrderFailure(t);
+                Log.d("Order Service", "Error : " + t.getMessage());
+            }
+        });
+    }
 }
+

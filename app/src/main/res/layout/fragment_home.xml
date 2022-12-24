@@ -14,12 +14,33 @@
         android:layout_marginTop="20dp"
         android:paddingHorizontal="40dp">
 
-        <ImageView
-            android:id="@+id/imgNotificationHome"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/clNoti"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_notification" />
+        >
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/imgNotificationHome"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_notification" />
+
+            <TextView
+                android:visibility="gone"
+                app:layout_anchor="@id/imgNotificationHome"
+                android:id="@+id/tvUnread"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/custom_button_oval"
+                android:backgroundTint="@color/red"
+                android:text="1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                app:layout_anchorGravity="right|top" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <ImageView
             android:layout_width="70dp"
@@ -46,10 +67,10 @@
 
         <TextView
             android:id="@+id/tvGreetingHome"
-            android:layout_width="110dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:lineHeight="20dp"
-            android:text="Good morning,"
+            android:text="@string/have_a_nice_day"
             android:textColor="@color/white"
             android:textSize="15dp" />
 
@@ -59,22 +80,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:lineHeight="20dp"
-            android:text="Nhat Lam"
+            android:text="@string/have_a_nice_day"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="19dp"
             android:textStyle="bold" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:visibility="gone"
             android:id="@+id/cimgAvt"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/custom_avt_shape"
             android:padding="2dp"
-            android:src="@drawable/ic_baseline_person_add_alt_1_24"
             android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_person_add_alt_1_24"
+            android:visibility="gone"
 
             />
     </RelativeLayout>
@@ -202,7 +223,6 @@
 
 
     <ScrollView
-        android:scrollbars="none"
         android:id="@+id/svHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -210,53 +230,66 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/custom_border_top_shape"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="5dp">
-
-        <LinearLayout
+        android:paddingVertical="5dp"
+        android:scrollbars="none">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="53dp"
-                android:layout_height="21dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="10dp"
-                android:lineHeight="21dp"
-                android:text="For you"
-                android:textColor="@color/black"
-                android:textSize="14dp"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvPromotionHome"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
 
-            <me.relex.circleindicator.CircleIndicator2
-                android:id="@+id/ciPromotionHome"
+                <TextView
+                    android:layout_width="53dp"
+                    android:layout_height="21dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:lineHeight="21dp"
+                    android:text="@string/for_you"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvPromotionHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <me.relex.circleindicator.CircleIndicator2
+                    android:id="@+id/ciPromotionHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="5dp"
+                    app:ci_drawable="@drawable/custom_indicator" />
+
+                <TextView
+                    android:layout_width="53dp"
+                    android:layout_height="21dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:lineHeight="21dp"
+                    android:text="@string/news"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvNewsHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lotteProgess"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="5dp"
-                app:ci_drawable="@drawable/custom_indicator" />
-
-            <TextView
-                android:layout_width="53dp"
-                android:layout_height="21dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="10dp"
-                android:lineHeight="21dp"
-                android:text="News"
-                android:textColor="@color/black"
-                android:textSize="14dp"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvNewsHome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                app:lottie_rawRes="@raw/progess"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                />
+        </RelativeLayout>
     </ScrollView>
 
 </RelativeLayout>

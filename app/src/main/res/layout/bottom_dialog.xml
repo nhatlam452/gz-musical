@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@android:color/transparent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <TextView
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="Tell us your feeling"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:background="@drawable/custom_border_top_shape"
+        />
+    <EditText
+        android:padding="5dp"
+        android:gravity="top"
+        android:id="@+id/edtProblem"
+        android:textSize="12dp"
+        android:hint="Thank you for your feedback"
+        android:background="@drawable/custom_border_shape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="150dp"
+        />
+ <RelativeLayout
+     android:layout_marginEnd="5dp"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     >
+     <Button
+         android:text="I think again"
+         android:textAllCaps="false"
+         android:layout_marginEnd="20dp"
+         android:layout_toLeftOf="@id/btnConfirmCancel"
+         android:id="@+id/btnNoCancel"
+         android:backgroundTint="#AED50000"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"/>
+     <Button
+         android:backgroundTint="#BA00623B"
+         android:text="Never mind, Mr"
+         android:textAllCaps="false"
+         android:id="@+id/btnConfirmCancel"
+         android:layout_alignParentRight="true"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"/>
+ </RelativeLayout>
+</LinearLayout>
+

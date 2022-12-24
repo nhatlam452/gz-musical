@@ -32,10 +32,10 @@ import com.example.duantotnghiep.Contract.LocationContract;
 import com.example.duantotnghiep.Contract.VerifyOtpInterface;
 import com.example.duantotnghiep.Model.Location;
 import com.example.duantotnghiep.Model.User;
-import com.example.duantotnghiep.Model.UserAddress;
 import com.example.duantotnghiep.Presenter.LocationPresenter;
 import com.example.duantotnghiep.Presenter.VerifyOtpPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppConstants;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -124,6 +124,12 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
             locationPresenter.getDistrict(mCodeDistrict, edtDistrict, "YOUR DISTRICT");
             edtWard.setText(null);
         });
+        findViewById(R.id.tvTOSRegister).setOnClickListener(v->{
+            Intent i = new Intent(this, WebViewActivity.class);
+            i.putExtra("URL", "https://vietthuong.vn/dieu-khoan-su-dung-website");
+            startActivity(i);
+            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+        });
         edtWard.setOnClickListener(v -> locationPresenter.getWard(mCodeWard, edtWard, "YOUR WARD"));
         btnRegister.setOnClickListener(v -> {
             if (checkValidateInputRegister()){
@@ -137,14 +143,14 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
                 String city = edtCity.getText().toString().trim();
                 String district = edtDistrict.getText().toString().trim();
                 String ward = edtWard.getText().toString().trim();
-                String isNoti ;
+                int isNoti ;
                 if (cbRegisterNotification.isChecked()){
-                    isNoti = "1";
+                    isNoti = 1;
                 }else {
-                    isNoti = "0";
+                    isNoti = 0;
                 }
                 AppUtil.showDialog.show(this);
-                User user = new User(address,city,district,ward,"NULL",null,phoneNumber,null,null,null,firstName,lastName,password,dob,salutation,isNoti,"0");
+                User user = new User(address,city,district,ward,"NULL",null,phoneNumber,null,null,null,firstName,lastName,password,dob,salutation,isNoti,0);
                 verifyOtpPresenter.sendOtp(this,user);
             }
         });
@@ -390,7 +396,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
                     tvCheckSpecialCharacter.setTextColor(getResources().getColor(R.color.red));
                 }
                 if (isLength) {
-                    tvCheckLength.setText(R.string.check);
+                    tvCheckLength.setText(AppConstants.check);
                     tvCheckLength.setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     tvCheckLength.setText("x");
@@ -398,28 +404,28 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
                 }
 
                 if (isDigit) {
-                    tvCheckDigit.setText(R.string.check);
+                    tvCheckDigit.setText(AppConstants.check);
                     tvCheckDigit.setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     tvCheckDigit.setText("x");
                     tvCheckDigit.setTextColor(getResources().getColor(R.color.red));
                 }
                 if (isLower) {
-                    tvCheckLowercase.setText(R.string.check);
+                    tvCheckLowercase.setText(AppConstants.check);
                     tvCheckLowercase.setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     tvCheckLowercase.setText("x");
                     tvCheckLowercase.setTextColor(getResources().getColor(R.color.red));
                 }
                 if (isUpper) {
-                    tvCheckUppercase.setText(R.string.check);
+                    tvCheckUppercase.setText(AppConstants.check);
                     tvCheckUppercase.setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     tvCheckUppercase.setText("x");
                     tvCheckUppercase.setTextColor(getResources().getColor(R.color.red));
                 }
                 if (isSpecial) {
-                    tvCheckSpecialCharacter.setText(R.string.check);
+                    tvCheckSpecialCharacter.setText(AppConstants.check);
                     tvCheckSpecialCharacter.setTextColor(getResources().getColor(R.color.colorPrimary));
                 } else {
                     tvCheckSpecialCharacter.setText("x");

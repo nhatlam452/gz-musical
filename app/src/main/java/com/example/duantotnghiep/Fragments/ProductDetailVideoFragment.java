@@ -65,4 +65,5 @@ public class ProductDetailVideoFragment extends Fragment {
 
 
     }
+
 }

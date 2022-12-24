@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.duantotnghiep.Adapter.ChatAdapter;
 import com.example.duantotnghiep.Model.ChatMsg;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppConstants;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -73,11 +74,11 @@ public class InboxFragment extends Fragment {
 
         } else {
             HashMap<String, Object> msg = new HashMap<>();
-            msg.put(getString(R.string.send_id), LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId());
-            msg.put(getString(R.string.receive_id), "ID_RECEIVE");
-            msg.put(getString(R.string.mess), mess);
-            msg.put(getString(R.string.datetime), new Date());
-            db.collection(getString(R.string.path_chat)).add(msg).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            msg.put(AppConstants.send_id, LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId());
+            msg.put(AppConstants.receive_id, "ID_RECEIVE");
+            msg.put(AppConstants.mess, mess);
+            msg.put(AppConstants.datetime, new Date());
+            db.collection(AppConstants.path_chat).add(msg).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
                     edtInbox.setText("");
@@ -93,14 +94,14 @@ public class InboxFragment extends Fragment {
 
     private void listenerMess() {
 
-        db.collection(getString(R.string.path_chat))
-                .whereEqualTo(getString(R.string.send_id), LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId())
-                .whereEqualTo(getString(R.string.receive_id), "ID_RECEIVE")
+        db.collection(AppConstants.path_chat)
+                .whereEqualTo(AppConstants.send_id, LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId())
+                .whereEqualTo(AppConstants.receive_id, "ID_RECEIVE")
                 .addSnapshotListener(eventListener);
 
-        db.collection(getString(R.string.path_chat))
-                .whereEqualTo(getString(R.string.send_id), "ID_RECEIVE")
-                .whereEqualTo(getString(R.string.receive_id), LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId())
+        db.collection(AppConstants.path_chat)
+                .whereEqualTo(AppConstants.send_id, "ID_RECEIVE")
+                .whereEqualTo(AppConstants.receive_id, LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId())
                 .addSnapshotListener(eventListener);
     }
 

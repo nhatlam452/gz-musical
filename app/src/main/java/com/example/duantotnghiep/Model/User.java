@@ -17,10 +17,10 @@ public class User extends UserAddress implements Serializable {
     private String password;
     private String dob;
     private String salutation;
-    private String notification;
-    private String role;
+    private int notification;
+    private int role;
 
-    public User(String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, String notification, String role) {
+    public User(String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, int notification, int role) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;
         this.fbId = fbId;
@@ -44,7 +44,7 @@ public class User extends UserAddress implements Serializable {
         this.dob = dob;
     }
 
-    public User(String address, String ward, String district, String city, String addressName, String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, String notification, String role) {
+    public User(String address, String ward, String district, String city, String addressName, String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, int notification, int role) {
         super(address, ward, district, city, addressName);
         this.userId = userId;
         this.phoneNumber = phoneNumber;
@@ -149,19 +149,19 @@ public class User extends UserAddress implements Serializable {
         this.salutation = salutation;
     }
 
-    public String getNotification() {
+    public int getNotification() {
         return notification;
     }
 
-    public void setNotification(String notification) {
+    public void setNotification(int notification) {
         this.notification = notification;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
     }
 }
