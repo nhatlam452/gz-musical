@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.Fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -8,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -58,6 +61,7 @@ import com.example.duantotnghiep.Model.Order;
 import com.example.duantotnghiep.Model.PaymentMethod;
 import com.example.duantotnghiep.Presenter.CartPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppConstants;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
 import com.example.duantotnghiep.Utilities.TranslateAnimation;
@@ -66,6 +70,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -83,20 +93,22 @@ import vn.zalopay.sdk.ZaloPaySDK;
 public class CartFragment extends Fragment implements CartContact.View {
     private final CartPresenter cartPresenter = new CartPresenter(this);
     private TextView tvCartPrice, tvCartTotalPrice, tvDelivery, tvGoToStore,
-            tvAddressCustomerName, tvAddressCustomer, tvStoreName, tvNotificationCart,imgPricePaymentMethod,
-            tvStoreAddress, tvPaymentMethodName, tvShippingPrice,tvNameCartPayment,tvShippingTime;
+            tvAddressCustomerName, tvAddressCustomer, tvStoreName, tvNotificationCart, imgPricePaymentMethod,
+            tvStoreAddress, tvPaymentMethodName, tvShippingPrice, tvNameCartPayment, tvShippingTime;
     private ImageView imgChooseStore;
     private List<Cart> mList;
     private EditText edtNote;
-    private String paymentMethod = "Thanh toán khi nhận hàng";
+    private final String paymentMethod = "Thanh toán khi nhận hàng";
     double sum = 0;
     double mSum = 0;
+    private SharedPreferences mSharePrefer = null;
+    private SharedPreferences.Editor mEditor;
     private RelativeLayout rlCustomer, rltStore;
     private String note = "null";
-    private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
             boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
             if (isConnected) {
@@ -143,6 +155,10 @@ public class CartFragment extends Fragment implements CartContact.View {
         initUI(view);
 
         mList = new ArrayList<>();
+        mSharePrefer = getContext().getSharedPreferences(AppConstants.CHECK_PERMISSION, 0);
+
+        mEditor = mSharePrefer.edit();
+
         //zalo pay
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -155,7 +171,7 @@ public class CartFragment extends Fragment implements CartContact.View {
             view.findViewById(R.id.svCart).setOnTouchListener(new TranslateAnimation(getActivity(), bottomNavigationView));
 
         }
-        tvShippingTime.setOnClickListener(v->{
+        tvShippingTime.setOnClickListener(v -> {
             DatePickerFragment newFragment = new DatePickerFragment();
             newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
         });
@@ -220,29 +236,51 @@ public class CartFragment extends Fragment implements CartContact.View {
             if (rlCustomer.getVisibility() == View.GONE) {
                 orderMethod = 1;
             }
+            String phone = LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getPhoneNumber();
+            Order order = null;
+            if (phone == null) {
+                order = new Order(userId, "", 1, mSum, note, time, tvShippingTime.getText().toString().trim(), orderMethod, storeName,
+                        customerAddress, tvPaymentMethodName.getText().toString(), mList);
+            } else {
+                order = new Order(userId, phone, 1, mSum, note, time, tvShippingTime.getText().toString().trim(), orderMethod, storeName,
+                        customerAddress, tvPaymentMethodName.getText().toString(), mList);
+            }
 
-            Order order = new Order(userId,LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getPhoneNumber(), 0, mSum, note, time,tvShippingTime.getText().toString().trim(), orderMethod, storeName,
-                    customerAddress, tvPaymentMethodName.getText().toString(), mList);
             Gson gson = new Gson();
             String json = gson.toJson(order);
             Intent i = new Intent(getContext(), PaymentActivity.class);
-            i.putExtra("OrderInfo",json);
+            Log.d("Order nè", "Order : " + json);
+            i.putExtra("OrderInfo", json);
             startActivity(i);
-            getActivity().overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
-        });
-        view.findViewById(R.id.imgChooseStore).setOnClickListener(v -> {
-            launchChooseStore.launch(new Intent(getContext(), ChooseStoreActivity.class));
             getActivity().overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
-        view.findViewById(R.id.imgChangePaymentMethod).setOnClickListener(v->{
-            openChoosePaymentMethodDialog(view.findViewById(R.id.imgPaymentMethod),view.findViewById(R.id.tvPaymentMethodName));
+        view.findViewById(R.id.imgChooseStore).setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
+                mEditor.apply();
+            }
+            boolean isPermissionGranted = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequest, false);
+            boolean isPermissionGrantedOnetime = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequestOnetime, false);
+            if (isPermissionGranted || isPermissionGrantedOnetime) {
+                Log.d("Permisstion", "a " + isPermissionGranted + "b "+ isPermissionGrantedOnetime);
+                launchChooseStore.launch(new Intent(getContext(), ChooseStoreActivity.class));
+                getActivity().overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
+            } else {
+                checkMyPermission();
+            }
+        });
+        view.findViewById(R.id.imgChangePaymentMethod).setOnClickListener(v -> {
+            openChoosePaymentMethodDialog(view.findViewById(R.id.imgPaymentMethod), view.findViewById(R.id.tvPaymentMethodName));
         });
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         getContext().unregisterReceiver(networkChangeReceiver);
     }
+
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
@@ -256,9 +294,10 @@ public class CartFragment extends Fragment implements CartContact.View {
             int day = c.get(Calendar.DAY_OF_MONTH);
 
             // Create a new instance of DatePickerDialog and return it
-            DatePickerDialog dialog = new DatePickerDialog(getActivity(),R.style.DatePickerDialogTheme,this, year, month, day);
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), R.style.DatePickerDialogTheme, this, year, month, day);
 
-            return dialog;        }
+            return dialog;
+        }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Convert the selected date to a string in the desired format
@@ -269,7 +308,8 @@ public class CartFragment extends Fragment implements CartContact.View {
             textView.setText(dateString);
         }
     }
-    private void openChoosePaymentMethodDialog(ImageView imgView ,TextView tv) {
+
+    private void openChoosePaymentMethodDialog(ImageView imgView, TextView tv) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_spinner);
@@ -297,14 +337,14 @@ public class CartFragment extends Fragment implements CartContact.View {
                 dialog.dismiss();
                 switch (s) {
                     case "Thanh toán khi nhận hàng":
-                        tv.setTextColor(ContextCompat.getColor(getContext(),R.color.colorPrimary));
+                        tv.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
                         break;
-                    case "Thanh toán bằng ví Zalo Pay" :
-                        tv.setTextColor(ContextCompat.getColor(getContext(),R.color.zaloColor));
+                    case "Thanh toán bằng ví Zalo Pay":
+                        tv.setTextColor(ContextCompat.getColor(getContext(), R.color.zaloColor));
 
                         break;
                     default:
-                        tv.setTextColor(ContextCompat.getColor(getContext(),R.color.momoColor));
+                        tv.setTextColor(ContextCompat.getColor(getContext(), R.color.momoColor));
                         break;
                 }
             }
@@ -316,11 +356,11 @@ public class CartFragment extends Fragment implements CartContact.View {
 
     private List<PaymentMethod> getPaymentListData() {
         List<PaymentMethod> pmList = new ArrayList<>();
-        pmList.add(new PaymentMethod(R.drawable.img_cod,"Thanh toán khi nhận hàng"));
-        pmList.add(new PaymentMethod(R.drawable.img_zalo_pay,"Thanh toán bằng ví Zalo Pay"));
-        pmList.add(new PaymentMethod(R.drawable.img_momo,"Thanh toán bằng ví Momo"));
-        return  pmList;
-    };
+        pmList.add(new PaymentMethod(R.drawable.img_cod, "Thanh toán khi nhận hàng"));
+        pmList.add(new PaymentMethod(R.drawable.img_zalo_pay, "Thanh toán bằng ví Zalo Pay"));
+        pmList.add(new PaymentMethod(R.drawable.img_momo, "Thanh toán bằng ví Momo"));
+        return pmList;
+    }
 
 
     private void initUI(View view) {
@@ -344,7 +384,7 @@ public class CartFragment extends Fragment implements CartContact.View {
         tvNameCartPayment = view.findViewById(R.id.tvNameCartPayment);
         imgPricePaymentMethod = view.findViewById(R.id.imgPricePaymentMethod);
         tvNameCartPayment.setText(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getFirstName() + " "
-        + LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getLastName()
+                + LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getLastName()
         );
         Date date = new Date();
         SimpleDateFormat set = new SimpleDateFormat("dd-MM-yyyy");
@@ -353,26 +393,59 @@ public class CartFragment extends Fragment implements CartContact.View {
 
     @SuppressLint("MissingPermission")
     private void getCurrentLocation() {
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
+            mEditor.apply();
+        }
+        boolean isPermissionGranted = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequest, false);
+        boolean isPermissionGrantedOnetime = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequestOnetime, false);
+        if (isPermissionGranted || isPermissionGrantedOnetime) {
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener((Activity) getContext(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                                List<Address> addresses = null;
+                                try {
+                                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                    tvAddressCustomerName.setText("Your Current Location");
+                                    tvAddressCustomer.setText(addresses.get(0).getAddressLine(0));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener((Activity) getContext(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-                            List<Address> addresses = null;
-                            try {
-                                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                tvAddressCustomerName.setText("Your Current Location");
-                                tvAddressCustomer.setText(addresses.get(0).getAddressLine(0));
-                            } catch (IOException e) {
-                                e.printStackTrace();
                             }
-
                         }
-                    }
-                });
+                    });
+        } else {
+            checkMyPermission();
+        }
+    }
+
+    private void checkMyPermission() {
+
+        Dexter.withContext(getContext()).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                getCurrentLocation();
+                mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
+                mEditor.putBoolean(AppConstants.iSLocationPermissionRequestOnetime, true);
+                mEditor.apply();
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                Toast.makeText(getContext(), "Please Granted Permission in your Setting", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest();
+            }
+        }).check();
     }
 
     @Override
@@ -410,10 +483,10 @@ public class CartFragment extends Fragment implements CartContact.View {
             @Override
             public void onClick(int productId, int quantity) {
                 Intent i = new Intent(getContext(), ProductDetailActivity.class);
-                i.putExtra("productId",productId);
-                i.putExtra("quantity",quantity);
+                i.putExtra("productId", productId);
+                i.putExtra("quantity", quantity);
                 getContext().startActivity(i);
-                getActivity().overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+                getActivity().overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
             }
         });
         rcvCartFragment.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -437,10 +510,6 @@ public class CartFragment extends Fragment implements CartContact.View {
         super.onResume();
         cartPresenter.onGetCart(Integer.parseInt(LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId()));
     }
-
-
-
-
 
 
 }

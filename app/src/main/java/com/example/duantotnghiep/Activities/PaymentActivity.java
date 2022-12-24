@@ -46,9 +46,10 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
     private Button btnPay;
     private EditText tvPhonePaymentConfirm;
     private RecyclerView rcvPaymentConfirm;
-    private Order order;
-    private OrderPresenter orderPresenter = new OrderPresenter(this);
-    private LinearLayout llUserAddressPC,llStorePC,llNotePC;
+    private Order order = null;
+
+    private final OrderPresenter orderPresenter = new OrderPresenter(this);
+    private LinearLayout llUserAddressPC, llStorePC, llNotePC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,42 +59,44 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
         StrictMode.ThreadPolicy policy = new
                 StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        findViewById(R.id.imgBackPC).setOnClickListener(v->{
+        findViewById(R.id.imgBackPC).setOnClickListener(v -> {
             onBackPressed();
-            overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+            overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         });
         // ZaloPay SDK Init
         ZaloPaySDK.init(2553, Environment.SANDBOX);
-        btnPay.setOnClickListener(v->{
-            String contact;
-            Order orderConfirm = null;
-            if (!AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString()) && !AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getHint().toString())){
+        btnPay.setOnClickListener(v -> {
+            Toast.makeText(this, order.getOrderMethod() + "", Toast.LENGTH_SHORT).show();
+            Order orderConfirm = order;
+            if (!AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString()) && !AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getHint().toString())) {
                 Toast.makeText(this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
                 return;
-            }else if (AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getHint().toString())){
-                if (tvPhonePaymentConfirm.getText().toString().trim().isEmpty()){
-                    orderConfirm = order;
-                }else if (!AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString())){
+            } else if (AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getHint().toString())) {
+                if (tvPhonePaymentConfirm.getText().toString().isEmpty()) {
+                } else if (!AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString())) {
                     Toast.makeText(this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
                     return;
-                }else if (AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString())){
-                    orderConfirm = new Order(order.getUserId(),tvPhonePaymentConfirm.getText().toString(),
-                            order.getStatus(),order.getTotal(),orderConfirm.getNote(),order.getCreateDate(),order.getDeliveryTime(),
-                            order.getOrderMethod(),order.getdFrom(),order.getdTo(),order.getPaymentMethod(),order.getmList()
-                            );
+                } else if (AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString())) {
+                    orderConfirm = new Order(order.getUserId(), tvPhonePaymentConfirm.getText().toString(),
+                            order.getStatus(), order.getTotal(), orderConfirm.getNote(), order.getCreateDate(), order.getDeliveryTime(),
+                            order.getOrderMethod(), order.getdFrom(), order.getdTo(), order.getPaymentMethod(), order.getmList()
+                    );
                 }
             }
-            switch (order.getPaymentMethod()){
-                case "Thanh toán bằng ví Zalo Pay" :
+            switch (order.getPaymentMethod()) {
+                case "Thanh toán bằng ví Zalo Pay":
                     CreateOrder orderApi = new CreateOrder();
                     try {
                         DecimalFormat format = new DecimalFormat("0.#");
-                        Log.d("Zalo Failed ",format.format(order.getTotal())+"");
+                        Log.d("Zalo Failed ", format.format(order.getTotal()) + "");
                         JSONObject data = orderApi.createOrder(format.format(order.getTotal()));
                         String code = data.getString("return_code");
                         if (code.equals("1")) {
                             String token = data.getString("zp_trans_token");
                             Order finalOrderConfirm = orderConfirm;
+                            Gson gson = new Gson();
+                            String json = gson.toJson(finalOrderConfirm);
+                            Log.d("order nè", "Order : " + json);
                             ZaloPaySDK.getInstance().payOrder(this, token, "demozpdk://app", new PayOrderListener() {
                                 @Override
                                 public void onPaymentSucceeded(String s, String s1, String s2) {
@@ -107,7 +110,7 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
 
                                 @Override
                                 public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
-                                    Toast.makeText(PaymentActivity.this, ""+zaloPayError.toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PaymentActivity.this, "" + zaloPayError.toString(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -120,7 +123,11 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
                     //Momo Api
                     break;
                 default:
-                    orderPresenter.onNewOrder(orderConfirm);
+                    Order finalOrderConfirm = orderConfirm;
+                    Gson gson = new Gson();
+                    String json = gson.toJson(finalOrderConfirm);
+                    Log.d("order nè", "Order : " + json);
+                    orderPresenter.onNewOrder(finalOrderConfirm);
                     break;
             }
 
@@ -174,6 +181,7 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
         rcvPaymentConfirm.setLayoutManager(new LinearLayoutManager(this));
         rcvPaymentConfirm.setAdapter(cartAdapter);
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -182,25 +190,25 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
 
     @Override
     public void onOrderSuccess(List<Order> cartList) {
-        Intent i = new Intent(this,SuccessActivity.class);
-        i.putExtra("isInMain",true);
-        i.putExtra("Notification","Your order has been received. We will contact to you to confirm once again soon. Thank you for choosing Gz Musical");
+        Intent i = new Intent(this, SuccessActivity.class);
+        i.putExtra("isInMain", true);
+        i.putExtra("Notification", "Your order has been received. We will contact to you to confirm once again soon. Thank you for choosing Gz Musical");
         startActivity(i);
-        overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+        overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         finish();
-        AppUtil.onGetNotification(this,"Your order has been received. We will contact to you to confirm once again soon. Thank you for choosing Gz Musical");
+        AppUtil.onGetNotification(this, "Your order has been received. We will contact to you to confirm once again soon. Thank you for choosing Gz Musical");
 
     }
 
     @Override
     public void onOrderFailure(String msg) {
-        Toast.makeText(this, ""+msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onOrderResponseFail(Throwable t) {
         Toast.makeText(this, "Unknown Error . Please check your connection", Toast.LENGTH_SHORT).show();
-        Log.d("Payment Activity",t.getMessage());
+        Log.d("Payment Activity", t.getMessage());
     }
 
     @Override

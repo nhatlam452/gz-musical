@@ -174,7 +174,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:lineHeight="20dp"
-                                android:text="Gz Musical CMT8"
+                                android:text="Your Address "
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="16dp"
                                 android:textStyle="bold" />
@@ -185,7 +185,7 @@
                                 android:layout_height="wrap_content"
                                 android:lineHeight="20dp"
                                 android:maxLines="2"
-                                android:text="241 Xuan Thuy, Dich Vong Hau, Cau Giay, Hanoi"
+                                android:text="Can't get your Location, Please granted permission or use your saved address "
                                 android:textColor="@color/textColor"
                                 android:textSize="12dp" />
 

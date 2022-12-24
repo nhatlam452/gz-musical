@@ -14,7 +14,9 @@ public class AppConstants {
     public static final String datetime = "datetime";
     public static final String path_chat = "chat";
     public static final String iSLocationPermissionRequest = "iSLocationPermissionRequest";
+    public static final String iSLocationPermissionRequestOnetime = "iSLocationPermissionRequestOnetime";
     public static final String isCameraPermissionRequest = "isCameraPermissionRequest";
+    public static final String isCameraPermissionRequestOnetime = "isCameraPermissionRequestOnetime";
     public static final String isWritePermissionRequest = "isWritePermissionRequest";
     public static final String LANGUAGE = "LANGUAGE";
 }

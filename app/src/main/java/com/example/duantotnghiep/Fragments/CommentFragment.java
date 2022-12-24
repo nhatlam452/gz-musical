@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -137,22 +138,36 @@ public class CommentFragment extends Fragment implements CommentContact.View {
 
         commentPresenter = new CommentPresenter(this);
         AppUtil.showDialog.show(getContext());
-        SharedPreferences mSharePrefer = getContext().getSharedPreferences(AppConstants.REMEMBER_LOGIN, 0);
-        boolean isCameraPermissionGranted = mSharePrefer.getBoolean(AppConstants.isCameraPermissionRequest, false);
-        boolean isReadPermissionGranted = mSharePrefer.getBoolean(AppConstants.isWritePermissionRequest, false);
+        SharedPreferences mSharePrefer = getContext().getSharedPreferences(AppConstants.CHECK_PERMISSION, 0);
+
         mEditor = mSharePrefer.edit();
         commentPresenter.onGetComment(productDetailActivity.getProductId());
         if (uri != null || bitmap != null) {
             imgCommentPicture.setVisibility(View.VISIBLE);
         }
+
         view.findViewById(R.id.imgSelectPicture).setOnClickListener(v -> {
-            if (isCameraPermissionGranted && isCameraPermissionGranted) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
+                mEditor.apply();
+            }
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
+                mEditor.apply();
+            }
+            boolean isCameraPermissionGranted = mSharePrefer.getBoolean(AppConstants.isCameraPermissionRequest, false);
+            boolean isCameraPermissionGrantedOnetime = mSharePrefer.getBoolean(AppConstants.isCameraPermissionRequestOnetime, false);
+            boolean isReadPermissionGranted = mSharePrefer.getBoolean(AppConstants.isWritePermissionRequest, false);
+            Log.d("Permission", "Camera " + isCameraPermissionGranted + "Read " + isReadPermissionGranted);
+            if ((isCameraPermissionGranted || isCameraPermissionGrantedOnetime) && isReadPermissionGranted) {
                 openDialogPicture();
-            }else {
+            } else if (!isCameraPermissionGranted) {
                 checkMyCameraPermission();
+            } else {
                 checkReadPermission();
             }
-
         });
         view.findViewById(R.id.imgRemovePicture).setOnClickListener(v -> {
             uri = null;
@@ -168,7 +183,6 @@ public class CommentFragment extends Fragment implements CommentContact.View {
                     String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmap, "Title", null);
                     uploadtoFireBase(Uri.parse(path));
                 } else {
-
                     uploadtoFireBase(uri);
                 }
             } else {
@@ -189,6 +203,7 @@ public class CommentFragment extends Fragment implements CommentContact.View {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                 mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
+                mEditor.apply();
             }
 
             @Override
@@ -207,16 +222,22 @@ public class CommentFragment extends Fragment implements CommentContact.View {
         Dexter.withContext(getContext()).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                Log.d("Permission", "1");
                 mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
+                mEditor.apply();
             }
 
             @Override
             public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                Log.d("Permission", "2");
+
                 Toast.makeText(getContext(), "Please Granted Permission in your Setting", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                Log.d("Permission", "3");
+
                 permissionToken.continuePermissionRequest();
             }
         }).check();
@@ -292,12 +313,12 @@ public class CommentFragment extends Fragment implements CommentContact.View {
         edtComment.setText("");
         if (userAddressList == null) {
             commentPresenter.onGetComment(productDetailActivity.getProductId());
+            return;
         }
         CommentAdapter adapter = new CommentAdapter(getContext(), userAddressList);
         rcvComment.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvComment.setAdapter(adapter);
         AppUtil.showDialog.dismiss();
-
     }
 
     @Override

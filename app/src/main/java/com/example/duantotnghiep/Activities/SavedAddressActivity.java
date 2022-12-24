@@ -55,6 +55,10 @@ public class SavedAddressActivity extends AppCompatActivity implements AddressCo
         AppUtil.showDialog.show(this);
         presenter.onGetAddress(userId);
         findViewById(R.id.btnAddAddress).setOnClickListener(v -> openDialogAddAddress());
+        findViewById(R.id.imgBackAddressInfo).setOnClickListener(v->{
+            onBackPressed();
+            overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+        });
         rcvAddress.setOnTouchListener(new TranslateAnimation(this, findViewById(R.id.btnAddAddress)));
     }
 

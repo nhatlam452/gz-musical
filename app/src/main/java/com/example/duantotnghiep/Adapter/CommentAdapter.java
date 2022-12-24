@@ -43,7 +43,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(@NonNull CommentAdapter.CommentViewHolder holder, int position) {
         Comment comment = mList.get(position);
-        if (comment.getAvatar().trim() != null && !comment.getAvatar().trim().isEmpty() && !comment.getAvatar().trim().equals(""))  {
+        if (comment.getAvatar() != null && !comment.getAvatar().isEmpty() && !comment.getAvatar().equals(""))  {
             Glide.with(context).load(comment.getAvatar()).into(holder.imgAvtCmt);
         }
         if (comment.getImg() != null && !comment.getImg().isEmpty()) {

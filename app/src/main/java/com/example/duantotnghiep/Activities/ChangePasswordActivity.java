@@ -100,7 +100,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements UserCon
         finish();
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         AppUtil.showDialog.dismiss();
-        AppUtil.onGetNotification(this,"Your password has been changed. Now you are ready for an enjoyable moment.");
+        AppUtil.onGetNotification(this, "Your password has been changed. Now you are ready for an enjoyable moment.");
 
     }
 

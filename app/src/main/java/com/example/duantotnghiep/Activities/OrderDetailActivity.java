@@ -49,6 +49,10 @@ public class OrderDetailActivity extends AppCompatActivity implements OrderDetai
         btnCancelOrder.setOnClickListener(v -> {
             openDialogCancel();
         });
+        findViewById(R.id.imgBackOD).setOnClickListener(v->{
+            onBackPressed();
+            overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+        });
     }
 
     private void openDialogCancel() {

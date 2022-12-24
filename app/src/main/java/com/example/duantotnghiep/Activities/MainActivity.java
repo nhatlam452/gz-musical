@@ -1,7 +1,10 @@
 package com.example.duantotnghiep.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +25,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -240,6 +244,9 @@ public class MainActivity extends AppCompatActivity implements UserContract.View
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(networkChangeReceiver);
+        mEditor.putBoolean(AppConstants.iSLocationPermissionRequestOnetime,false);
+        mEditor.putBoolean(AppConstants.isCameraPermissionRequestOnetime,false);
+        mEditor.apply();
     }
 
     private void checkMyPermission() {
@@ -247,6 +254,8 @@ public class MainActivity extends AppCompatActivity implements UserContract.View
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                 if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                    mEditor.putBoolean(AppConstants.iSLocationPermissionRequestOnetime,true);
+                    mEditor.putBoolean(AppConstants.isCameraPermissionRequestOnetime,true);
                     mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
                     mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
                     mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
@@ -271,9 +280,13 @@ public class MainActivity extends AppCompatActivity implements UserContract.View
             @Override
             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
                 permissionToken.continuePermissionRequest();
+
             }
+
         }).check();
     }
+
+
 
     private void goToUrl(String url) {
         Uri uri = Uri.parse(url);
@@ -464,4 +477,5 @@ public class MainActivity extends AppCompatActivity implements UserContract.View
         Toast.makeText(this, "Client Error. Please check your connection", Toast.LENGTH_SHORT).show();
 
     }
+
 }

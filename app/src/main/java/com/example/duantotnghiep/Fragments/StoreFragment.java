@@ -73,7 +73,6 @@ public class StoreFragment extends Fragment implements StoreContact.View {
     private SharedPreferences.Editor mEditor;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,9 +84,6 @@ public class StoreFragment extends Fragment implements StoreContact.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rcvStore = view.findViewById(R.id.rcvStore);
-        SharedPreferences mSharePrefer = getContext().getSharedPreferences(AppConstants.REMEMBER_LOGIN, 0);
-        boolean isPermissionGranted = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequest, false);
-        mEditor = mSharePrefer.edit();
 
         if (getActivity() != null) {
             BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationMain);
@@ -95,11 +91,16 @@ public class StoreFragment extends Fragment implements StoreContact.View {
 
         }
         storePresenter = new StorePresenter(this);
+        SharedPreferences mSharePrefer = getContext().getSharedPreferences(AppConstants.REMEMBER_LOGIN, 0);
+        boolean isPermissionGranted = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequest, false);
+        boolean isPermissionGrantedOnetime = mSharePrefer.getBoolean(AppConstants.iSLocationPermissionRequestOnetime, false);
+        mEditor = mSharePrefer.edit();
+
 
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mvStore);
-        if (isPermissionGranted) {
+        if (isPermissionGranted || isPermissionGrantedOnetime) {
             storePresenter.getProduct();
-        }else {
+        } else {
             checkMyPermission();
         }
     }
@@ -110,11 +111,13 @@ public class StoreFragment extends Fragment implements StoreContact.View {
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                 storePresenter.getProduct();
                 mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
+                mEditor.putBoolean(AppConstants.iSLocationPermissionRequestOnetime, true);
+                mEditor.apply();
             }
 
             @Override
             public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                Toast.makeText(getContext() , "Please Granted Permission in your Setting", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Please Granted Permission in your Setting", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -143,26 +146,27 @@ public class StoreFragment extends Fragment implements StoreContact.View {
                         StoreAdapter storeAdapter = new StoreAdapter(getContext(), mListStore, new StoreAdapter.OnClickListener() {
                             @Override
                             public void onCLickChooseStore(String storeName, String storeAddress) {
-                                Intent i = new Intent(getContext(),StoreInfoActivity.class);
+                                Intent i = new Intent(getContext(), StoreInfoActivity.class);
 
-                                i.putExtra("isChooseStore",false);
-                                i.putExtra("storeName",storeName);
-                                i.putExtra("storeAddress",storeAddress);
+                                i.putExtra("isChooseStore", false);
+                                i.putExtra("storeName", storeName);
+                                i.putExtra("storeAddress", storeAddress);
                                 startActivity(i);
-                                getActivity().overridePendingTransition(R.anim.anim_fadein,R.anim.anim_fadeout);
+                                getActivity().overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
                             }
 
                             @Override
                             public void onClickListener(double latitude, double longitude) {
                                 LatLng latLng = new LatLng(latitude, longitude);
-                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,15);
+                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
                                 googleMap.animateCamera(cameraUpdate);
                             }
+
                             @Override
                             public void onGetDistance(TextView textView, double latitude, double longitude) {
                                 float[] result = new float[10];
-                                Location.distanceBetween(location.getLatitude(), location.getLongitude(),latitude,longitude,result);
-                                String s = String.format("%.1f",result[0] / 1000);
+                                Location.distanceBetween(location.getLatitude(), location.getLongitude(), latitude, longitude, result);
+                                String s = String.format("%.1f", result[0] / 1000);
                                 textView.setText(s + "km away from you");
                             }
                         });
@@ -173,7 +177,7 @@ public class StoreFragment extends Fragment implements StoreContact.View {
                             googleMap.addMarker(new MarkerOptions().position(new LatLng(mListStore.get(i).getLatitude(), mListStore.get(i).getLongitude())));
                         }
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,15);
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
                         googleMap.animateCamera(cameraUpdate);
 
 
@@ -189,6 +193,13 @@ public class StoreFragment extends Fragment implements StoreContact.View {
         });
 
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mEditor.putBoolean(AppConstants.iSLocationPermissionRequestOnetime, false);
+        mEditor.apply();
     }
 
     @Override

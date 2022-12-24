@@ -19,7 +19,7 @@
             android:src="@drawable/ic_logo_green"
             />
         <ImageView
-            android:id="@+id/imgBackInfo"
+            android:id="@+id/imgBackAddressInfo"
             android:layout_marginStart="15dp"
             android:layout_gravity="left"
             android:layout_width="30dp"
