@@ -580,7 +580,7 @@
 
             <TextView
                 android:id="@+id/tvTOSRegister"
-                android:layout_width="78dp"
+                android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_gravity="left"
                 android:layout_marginStart="25dp"

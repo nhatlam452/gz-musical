@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
                         String fName = jsonObject.getString("first_name");
                         String lName = jsonObject.getString("last_name");
 
-                        User user = new User(fbId, null, null, fName, lName, null);
+                        User user = new User(fbId, null, null, fName, lName, null,0);
                         cbKeepLogged.setChecked(true);
                         userPresenter.onSocialRegister(user, LoginActivity.this);
                     } catch (Exception e) {
@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
             String fbId = account.getEmail();
             String fName = account.getDisplayName();
 
-            User user = new User(null, fbId, null, fName, null, null);
+            User user = new User(null, fbId, null, fName, null, null,0);
             // Signed in successfully, show authenticated UI.
             cbKeepLogged.setChecked(true);
 

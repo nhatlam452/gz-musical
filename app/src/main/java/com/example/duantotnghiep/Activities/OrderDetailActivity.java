@@ -170,7 +170,7 @@ public class OrderDetailActivity extends AppCompatActivity implements OrderDetai
         OrderDetailProductAdapter orderDetailProductAdapter = new OrderDetailProductAdapter(this, orderDetails.getListProduct());
         rcvOrderDetail.setLayoutManager(new LinearLayoutManager(this));
         rcvOrderDetail.setAdapter(orderDetailProductAdapter);
-        if (orderDetails.getStatus() != 0) {
+        if (orderDetails.getStatus() != 1) {
             btnCancelOrder.setVisibility(View.GONE);
         }
         AppUtil.showDialog.dismiss();

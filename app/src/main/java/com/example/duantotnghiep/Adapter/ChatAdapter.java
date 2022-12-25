@@ -1,28 +1,21 @@
 package com.example.duantotnghiep.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Paint;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.duantotnghiep.Activities.ProductDetailActivity;
+
 import com.example.duantotnghiep.Model.ChatMsg;
-import com.example.duantotnghiep.Model.Products;
 import com.example.duantotnghiep.R;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -64,20 +57,31 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (!chatMsgList.get(position).getId_send().equals(sendId)) {
+        String isSend = chatMsgList.get(position).getId_send();
+        Log.d("issend",isSend+"");
+
+        if (isSend == null || isSend.isEmpty()){
             return TYPE_SEND;
-        } else {
-            return TYPE_RECEIVED;
         }
+        if (!isSend.equals(sendId)) {
+            return TYPE_RECEIVED;
+        } else {
+            return TYPE_SEND;
+
+        }
+
     }
 
     @Override
     public int getItemCount() {
+        if (chatMsgList == null || chatMsgList.isEmpty()) {
+            return 0;
+        }
         return chatMsgList.size();
     }
 
     public static class SendViewHolder extends RecyclerView.ViewHolder {
-        TextView tvChatContent, tvChatTime, tvChatStatus;
+        TextView tvChatContent, tvChatTime;
 
         public SendViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,7 +91,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public static class ReceivedViewHolder extends RecyclerView.ViewHolder {
-        TextView tvChatContent, tvChatTime, tvChatStatus;
+        TextView tvChatContent, tvChatTime;
 
         public ReceivedViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -182,10 +182,6 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
             } else {
                 avtU = user.getAvt();
             }
-            if (uri != null) {
-                uploadtoFireBase(uri);
-                avtU = uri.toString();
-            }
             String salutationU = salutation;
             String firstNameU = firstName;
             String lastNameU = lastName;
@@ -198,7 +194,11 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
             if (!edtLastName.getText().toString().equals(lastName)) {
                 lastNameU = edtLastName.getText().toString();
             }
-         userPresenter.onUpdateInfo(avtU,firstNameU,lastNameU,salutationU,userId);
+            if (uri != null) {
+                uploadtoFireBase(uri, salutationU, firstNameU, lastNameU);
+            } else {
+                userPresenter.onUpdateInfo(avtU,firstNameU,lastNameU,salutationU,userId);
+            }
         });
         findViewById(R.id.imgChangePassword).setOnClickListener(v -> {
             Intent i = new Intent(this, ChangePasswordActivity.class);
@@ -247,6 +247,10 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         tvTitle.setText("Choose your Options");
         tv2.setText("View your Avatar");
         tv2.setOnClickListener(v -> {
+            if (user.getAvt() == null || user.getAvt() == ""){
+                Toast.makeText(this, "Please add your avatar to view it", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent i = new Intent(this, ViewImageActivity.class);
             i.putExtra("ViewImage", user.getAvt());
             startActivity(i);
@@ -288,10 +292,11 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         Toast.makeText(this, msg + " can not be changed", Toast.LENGTH_SHORT).show();
     }
 
-    private void uploadtoFireBase(Uri uri) {
+    private void uploadtoFireBase(Uri uri, String salutationU, String firstNameU, String lastNameU) {
         StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
         fileRef.putFile(uri).addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri1 -> {
                             avtU = uri1.toString();
+                            userPresenter.onUpdateInfo(avtU,firstNameU,lastNameU,salutationU,userId);
                         }
                 )
                 .addOnFailureListener(e -> {
@@ -303,6 +308,10 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
             Toast.makeText(UserInfoActivity.this, e + "", Toast.LENGTH_SHORT).show();
         });
     }
+
+
+
+
 
     private String getFileExtension(Uri uri) {
         ContentResolver contentResolver = getContentResolver();

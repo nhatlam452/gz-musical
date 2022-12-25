@@ -83,7 +83,6 @@ public class BuyFragment extends Fragment implements ProductContract.View {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mList = new ArrayList<>();
         rcvProducts = view.findViewById(R.id.rcvProducts);
         imgTypeDisplay = view.findViewById(R.id.imgTypeDisplay);
         edtSearch = view.findViewById(R.id.edtSearch);
@@ -350,6 +349,7 @@ public class BuyFragment extends Fragment implements ProductContract.View {
 
     @Override
     public void setProductList(List<Products> mListProduct) {
+        mList = new ArrayList<>();
         mList = mListProduct;
         setTypeDisplay(2);
         adapter = new ProductsAdapter(getContext(), mListProduct);

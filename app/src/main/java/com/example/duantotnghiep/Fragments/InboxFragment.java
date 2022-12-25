@@ -113,11 +113,15 @@ public class InboxFragment extends Fragment {
         if (value != null) {
             for (DocumentChange documentChange : value.getDocumentChanges()) {
                 if (documentChange.getType() == DocumentChange.Type.ADDED) {
-                    String id_send = documentChange.getDocument().getString("id_send");
-                    String id_receive = documentChange.getDocument().getString("id_receive");
-                    String mess = documentChange.getDocument().getString("message");
-                    String datetime = formatDate(documentChange.getDocument().getDate("datetime"));
-                    ChatMsg chatMsg = new ChatMsg(id_send, id_receive, mess, datetime);
+                    String id_send = documentChange.getDocument().getString("send_id");
+                    String id_receive = documentChange.getDocument().getString("receive_id");
+                    String mess = documentChange.getDocument().getString("mess");
+                    Date datetime = documentChange.getDocument().getDate("datetime");
+                    String datetimeD = "";
+                    if (datetime != null){
+                         datetimeD = formatDate(datetime);
+                    }
+                    ChatMsg chatMsg = new ChatMsg(id_receive,id_send, mess, datetimeD);
                     msgList.add(chatMsg);
                 }
             }
@@ -138,11 +142,11 @@ public class InboxFragment extends Fragment {
     }
 
     private void initUI(View view) {
-        msgList = new ArrayList<>();
         rcvInbox = view.findViewById(R.id.rcvInbox);
         edtInbox = view.findViewById(R.id.edtInbox);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rcvInbox.setLayoutManager(layoutManager);
+        msgList = new ArrayList<>();
         adapter = new ChatAdapter(getContext(), msgList, LocalStorage.getInstance(getContext()).getLocalStorageManager().getUserInfo().getUserId());
         rcvInbox.setAdapter(adapter);
 

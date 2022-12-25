@@ -146,29 +146,7 @@ public class CommentFragment extends Fragment implements CommentContact.View {
             imgCommentPicture.setVisibility(View.VISIBLE);
         }
 
-        view.findViewById(R.id.imgSelectPicture).setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
-                mEditor.apply();
-            }
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED) {
-                mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
-                mEditor.apply();
-            }
-            boolean isCameraPermissionGranted = mSharePrefer.getBoolean(AppConstants.isCameraPermissionRequest, false);
-            boolean isCameraPermissionGrantedOnetime = mSharePrefer.getBoolean(AppConstants.isCameraPermissionRequestOnetime, false);
-            boolean isReadPermissionGranted = mSharePrefer.getBoolean(AppConstants.isWritePermissionRequest, false);
-            Log.d("Permission", "Camera " + isCameraPermissionGranted + "Read " + isReadPermissionGranted);
-            if ((isCameraPermissionGranted || isCameraPermissionGrantedOnetime) && isReadPermissionGranted) {
-                openDialogPicture();
-            } else if (!isCameraPermissionGranted) {
-                checkMyCameraPermission();
-            } else {
-                checkReadPermission();
-            }
-        });
+
         view.findViewById(R.id.imgRemovePicture).setOnClickListener(v -> {
             uri = null;
             bitmap = null;
@@ -194,6 +172,29 @@ public class CommentFragment extends Fragment implements CommentContact.View {
                         productDetailActivity.getProductId(), edtComment.getText().toString().trim(), time, "");
                 commentPresenter.onAddComment(comment);
 
+            }
+        });
+        view.findViewById(R.id.imgSelectPicture).setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
+                mEditor.apply();
+            }
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
+                mEditor.apply();
+            }
+            boolean isCameraPermissionGranted = mSharePrefer.getBoolean(AppConstants.isCameraPermissionRequest, false);
+            boolean isCameraPermissionGrantedOnetime = mSharePrefer.getBoolean(AppConstants.isCameraPermissionRequestOnetime, false);
+            boolean isReadPermissionGranted = mSharePrefer.getBoolean(AppConstants.isWritePermissionRequest, false);
+            Log.d("Permission", "Camera " + isCameraPermissionGranted + "Read " + isReadPermissionGranted);
+            if ((isCameraPermissionGranted || isCameraPermissionGrantedOnetime) && isReadPermissionGranted) {
+                openDialogPicture();
+            } else if (!isCameraPermissionGranted) {
+                checkMyCameraPermission();
+            } else {
+                checkReadPermission();
             }
         });
     }

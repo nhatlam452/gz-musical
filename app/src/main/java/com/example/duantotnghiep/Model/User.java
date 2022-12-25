@@ -19,8 +19,17 @@ public class User extends UserAddress implements Serializable {
     private String salutation;
     private int notification;
     private int role;
+    private int state;
 
-    public User(String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, int notification, int role) {
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public User(String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, int notification, int role, int state) {
         this.userId = userId;
         this.phoneNumber = phoneNumber;
         this.fbId = fbId;
@@ -33,18 +42,20 @@ public class User extends UserAddress implements Serializable {
         this.salutation = salutation;
         this.notification = notification;
         this.role = role;
+        this.state = state;
     }
 
-    public User(String fbId, String email, String avt, String firstName, String lastName, String dob) {
+    public User(String fbId, String email, String avt, String firstName, String lastName, String dob, int state) {
         this.fbId = fbId;
         this.email = email;
         this.avt = avt;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
+        this.state = state;
     }
 
-    public User(String address, String ward, String district, String city, String addressName, String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, int notification, int role) {
+    public User(String address, String ward, String district, String city, String addressName, String userId, String phoneNumber, String fbId, String email, String avt, String firstName, String lastName, String password, String dob, String salutation, int notification, int role, int state) {
         super(address, ward, district, city, addressName);
         this.userId = userId;
         this.phoneNumber = phoneNumber;
@@ -58,6 +69,8 @@ public class User extends UserAddress implements Serializable {
         this.salutation = salutation;
         this.notification = notification;
         this.role = role;
+        this.state = state;
+
     }
 
     public User(String phoneNumber) {

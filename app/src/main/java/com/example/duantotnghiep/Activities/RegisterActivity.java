@@ -37,6 +37,7 @@ import com.example.duantotnghiep.Presenter.VerifyOtpPresenter;
 import com.example.duantotnghiep.R;
 import com.example.duantotnghiep.Utilities.AppConstants;
 import com.example.duantotnghiep.Utilities.AppUtil;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -124,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
             locationPresenter.getDistrict(mCodeDistrict, edtDistrict, "YOUR DISTRICT");
             edtWard.setText(null);
         });
-        findViewById(R.id.tvTOSRegister).setOnClickListener(v->{
+        findViewById(R.id.tvTOSRegister).setOnClickListener(v -> {
             Intent i = new Intent(this, WebViewActivity.class);
             i.putExtra("URL", "https://vietthuong.vn/dieu-khoan-su-dung-website");
             startActivity(i);
@@ -132,133 +133,174 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
         });
         edtWard.setOnClickListener(v -> locationPresenter.getWard(mCodeWard, edtWard, "YOUR WARD"));
         btnRegister.setOnClickListener(v -> {
-            if (checkValidateInputRegister()){
+            if (checkValidateInputRegister()) {
                 String phoneNumber = edtPhoneNumberRegister.getText().toString().trim();
                 String password = edtPasswordRegister.getText().toString().trim();
                 String salutation = edtSalutation.getText().toString().trim();
                 String firstName = edtFirstName.getText().toString().trim();
                 String lastName = edtLastName.getText().toString().trim();
-                String dob = edtDate.getText().toString().trim() +"/" + edtMonth.getText().toString().trim();
+                String dob = getFormatDob();
                 String address = edtAddress.getText().toString().trim();
                 String city = edtCity.getText().toString().trim();
                 String district = edtDistrict.getText().toString().trim();
                 String ward = edtWard.getText().toString().trim();
-                int isNoti ;
-                if (cbRegisterNotification.isChecked()){
+                int isNoti;
+                if (cbRegisterNotification.isChecked()) {
                     isNoti = 1;
-                }else {
+                } else {
                     isNoti = 0;
                 }
                 AppUtil.showDialog.show(this);
-                User user = new User(address,city,district,ward,"NULL",null,phoneNumber,null,null,null,firstName,lastName,password,dob,salutation,isNoti,0);
-                verifyOtpPresenter.sendOtp(this,user);
+                User user = new User(address, city, district, ward, "NULL", null, phoneNumber, null, null, null, firstName, lastName, password, dob, salutation, isNoti, 0,0);
+                verifyOtpPresenter.sendOtp(this, user);
             }
         });
 
     }
+    private String getFormatDob(){
+        String dob = null;
+        int selectedDay = Integer.parseInt(edtDate.getText().toString().trim());
+        String selectedMonth = edtMonth.getText().toString().trim();
+        if (selectedMonth.equalsIgnoreCase("January")) {
+            dob = String.format("%02d-01", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("February")) {
+            dob = String.format("%02d-02", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("March")) {
+            dob = String.format("%02d-03", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("April")) {
+            dob = String.format("%02d-04", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("May")) {
+            dob = String.format("%02d-05", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("June")) {
+            dob = String.format("%02d-06", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("July")) {
+            dob = String.format("%02d-07", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("August")) {
+            dob = String.format("%02d-08", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("September")) {
+            dob = String.format("%02d-09", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("October")) {
+            dob = String.format("%02d-10", selectedDay);
+        }else if (selectedMonth.equalsIgnoreCase("November")) {
+            dob = String.format("%02d-11", selectedDay);
+        } else if (selectedMonth.equalsIgnoreCase("December")) {
+            dob = String.format("%02d-12", selectedDay);
+        }
+        return dob;
+    }
+    private void validateInputField(EditText inputField, TextInputLayout inputLayout, String errorMessage) {
+        String input = inputField.getText().toString().trim();
+        if (input.isEmpty()) {
+            inputLayout.setError(errorMessage);
+        } else {
+            inputLayout.setError(null);
+        }
+    }
 
     private boolean checkValidateInputRegister() {
-        boolean isAllValidate ;
-        String phoneNumber = edtPhoneNumberRegister.getText().toString().trim();
-        String password = edtPasswordRegister.getText().toString().trim();
-        String confirmPassword = edtConfirmPassword.getText().toString().trim();
-        String salutation = edtSalutation.getText().toString().trim();
-        String firstName = edtFirstName.getText().toString().trim();
-        String lastName = edtLastName.getText().toString().trim();
+        boolean isAllValidate = true;
+
+        // Validate phone number
+        validateInputField(edtPhoneNumberRegister, tipPhoneNumberRegister, "Phone number is empty");
+        if (tipPhoneNumberRegister.getError() == null) {
+            String phoneNumber = edtPhoneNumberRegister.getText().toString().trim();
+            if (phoneNumber.length() < 10 || !AppUtil.ValidateInput.isValidPhoneNumber(phoneNumber)) {
+                tipPhoneNumberRegister.setError("Invalid phone number");
+                isAllValidate = false;
+            }
+        } else {
+            isAllValidate = false;
+        }
+        validateInputField(edtPasswordRegister, tipPassword, "Your password is in valid");
+        // Validate confirm password
+        validateInputField(edtConfirmPassword, tipConfirmPassword, "Confirm password is empty");
+        if (tipConfirmPassword.getError() == null) {
+            String confirmPassword = edtConfirmPassword.getText().toString().trim();
+            if (!confirmPassword.equals(edtPasswordRegister.getText().toString().trim())) {
+                tipConfirmPassword.setError("Password does not match");
+                isAllValidate = false;
+            }
+        } else {
+            isAllValidate = false;
+        }
+
+// Validate salutation
+        validateInputField(edtSalutation, tipSalutation, "Please choose your salutation");
+        if (tipSalutation.getError() != null) {
+            isAllValidate = false;
+        }
+
+// Validate first name
+        validateInputField(edtFirstName, tipFirstName, "First name is empty");
+        if (tipFirstName.getError() != null) {
+            isAllValidate = false;
+        }
+
+// Validate last name
+        validateInputField(edtLastName, tipLastName, "Last name is empty");
+        if (tipLastName.getError() != null) {
+            isAllValidate = false;
+        }
+
+// Validate date
+        validateInputField(edtDate, tipDate, "Please choose your date");
+        if (tipDate.getError() != null) {
+            isAllValidate = false;
+        }
+
+// Validate month
+        validateInputField(edtMonth, tipMonth, "Please choose your month");
+        if (tipMonth.getError() != null) {
+            isAllValidate = false;
+        }
+        int selectedDay = 0;
         String date = edtDate.getText().toString().trim();
-        String month = edtMonth.getText().toString().trim();
-        String address = edtAddress.getText().toString().trim();
-        String city = edtCity.getText().toString().trim();
-        String district = edtDistrict.getText().toString().trim();
-        String ward = edtWard.getText().toString().trim();
-        //Validate Phone number
-        if (phoneNumber.isEmpty()) {
-            tipPhoneNumberRegister.setError("Phone number is Empty");
-        } else if (phoneNumber.length() < 10 || !AppUtil.ValidateInput.isValidPhoneNumber(phoneNumber)) {
-            tipPhoneNumberRegister.setError("Invalid Phone number");
-        } else {
-            tipPhoneNumberRegister.setError(null);
-        }
-        //Validate Password
-        if (password.isEmpty()) {
-            tipPassword.setError("Password is Empty");
-        } else if (!AppUtil.ValidateInput.isValidPassword(password)) {
-            tipPassword.setError("Invalid Password");
-        } else {
-            tipPassword.setError(null);
-        }
-
-        if (confirmPassword.isEmpty()) {
-            tipConfirmPassword.setError("Confirm password is Empty");
-        } else if (!confirmPassword.equals(password)) {
-            tipConfirmPassword.setError("Password does not match");
-        } else {
-            tipConfirmPassword.setError(null);
-        }
-
-        //Validate Person Detail
-        if (salutation.isEmpty()) {
-            tipSalutation.setError("Please choose your salutation");
-        } else {
-            tipSalutation.setError(null);
-        }
-
-        if (firstName.isEmpty()) {
-            tipFirstName.setError("First name is Empty");
-        } else {
-            tipFirstName.setError(null);
-        }
-
-        if (lastName.isEmpty()) {
-            tipLastName.setError("Last name is Empty");
-        } else {
-            tipLastName.setError(null);
-        }
-
-        //Validate Birthday
         if (date.isEmpty()) {
-            tipDate.setError("Please choose your date");
+            tipDate.setError("Please choose your Date");
+            // Display error message for empty date
         } else {
-            tipDate.setError(null);
+            selectedDay = Integer.parseInt(date);
+        }
+        String selectedMonth = edtMonth.getText().toString().trim();
+
+        if (selectedMonth.equalsIgnoreCase("February")) {
+            if (selectedDay > 29) {
+                tipDate.setError("Invalid day for February");
+                isAllValidate = false;
+            }
+        } else if (selectedMonth.equalsIgnoreCase("April") || selectedMonth.equalsIgnoreCase("June") ||
+                selectedMonth.equalsIgnoreCase("September") || selectedMonth.equalsIgnoreCase("November")) {
+            if (selectedDay > 30) {
+                tipDate.setError("Invalid day for this month");
+                isAllValidate = false;
+            }
+        }
+// Validate address
+        validateInputField(edtAddress, tipAddress, "Address is empty");
+        if (tipAddress.getError() != null) {
+            isAllValidate = false;
         }
 
-        if (month.isEmpty()) {
-            tipMonth.setError("Please choose your month");
-        } else {
-            tipMonth.setError(null);
+
+// Validate city
+        validateInputField(edtCity, tipCity, "Please choose your city");
+        if (tipCity.getError() != null) {
+            isAllValidate = false;
         }
 
-        //Validate Address
-        if (address.isEmpty()) {
-            tipAddress.setError("Address is Empty");
-        } else {
-            tipAddress.setError(null);
+// Validate district
+        validateInputField(edtDistrict, tipDistrict, "Please choose your district");
+        if (tipDistrict.getError() != null) {
+            isAllValidate = false;
         }
 
-        if (city.isEmpty()) {
-            tipCity.setError("Please choose your City");
-        } else {
-            tipCity.setError(null);
+// Validate ward
+        validateInputField(edtWard, tipWard, "Please choose your ward");
+        if (tipWard.getError() != null) {
+            isAllValidate = false;
         }
 
-        if (district.isEmpty()) {
-            tipDistrict.setError("Please choose your District");
-        } else {
-            tipDistrict.setError(null);
-        }
-
-        if (ward.isEmpty()) {
-            tipWard.setError("Please choose your Ward");
-        } else {
-            tipWard.setError(null);
-        }
-
-        isAllValidate = tipPhoneNumberRegister.getError() == null && tipPassword.getError() == null && tipConfirmPassword.getError() == null &&
-                tipSalutation.getError() == null && tipFirstName.getError() == null && tipLastName.getError() == null &&
-                tipMonth.getError() == null && tipDate.getError() == null && tipAddress.getError() == null && tipCity.getError() == null
-                && tipDistrict.getError() == null && tipWard.getError() == null;
         return isAllValidate;
-
     }
 
     private void openDialog(List<String> mList, EditText editText, String title) {
@@ -467,10 +509,10 @@ public class RegisterActivity extends AppCompatActivity implements LocationContr
     }
 
     @Override
-    public void onSendOtpSuccess(User user,String id) {
-        Intent i = new Intent(this,OtpVerifyActivity.class);
-        i.putExtra("UserRegister",user);
-        i.putExtra("verificationId",id);
+    public void onSendOtpSuccess(User user, String id) {
+        Intent i = new Intent(this, OtpVerifyActivity.class);
+        i.putExtra("UserRegister", user);
+        i.putExtra("verificationId", id);
         startActivity(i);
         overridePendingTransition(R.anim.anim_fadein, R.anim.anim_fadeout);
         AppUtil.showDialog.dismiss();
