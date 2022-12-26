@@ -358,7 +358,6 @@ public class CartFragment extends Fragment implements CartContact.View {
         List<PaymentMethod> pmList = new ArrayList<>();
         pmList.add(new PaymentMethod(R.drawable.img_cod, "Thanh toán khi nhận hàng"));
         pmList.add(new PaymentMethod(R.drawable.img_zalo_pay, "Thanh toán bằng ví Zalo Pay"));
-        pmList.add(new PaymentMethod(R.drawable.img_momo, "Thanh toán bằng ví Momo"));
         return pmList;
     }
 

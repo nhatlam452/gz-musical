@@ -62,6 +62,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -316,7 +317,13 @@ public class CommentFragment extends Fragment implements CommentContact.View {
             commentPresenter.onGetComment(productDetailActivity.getProductId());
             return;
         }
-        CommentAdapter adapter = new CommentAdapter(getContext(), userAddressList);
+        List<Comment> commentList = new ArrayList<>();
+        for (int i=0;i<userAddressList.size();i++){
+            if (userAddressList.get(i).getStatus() == 1){
+                commentList.add(userAddressList.get(i));
+            }
+        }
+        CommentAdapter adapter = new CommentAdapter(getContext(), commentList);
         rcvComment.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvComment.setAdapter(adapter);
         AppUtil.showDialog.dismiss();

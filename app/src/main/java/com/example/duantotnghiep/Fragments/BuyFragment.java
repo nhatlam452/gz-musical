@@ -65,6 +65,9 @@ public class BuyFragment extends Fragment implements ProductContract.View {
     private String brandName = "null";
     private String order = "null";
     private String sortType = "";
+    private int currentOffset = 0;
+    private boolean isLoading = false;
+
     private SearchAdapter searchAdapter;
     private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
         @Override
@@ -331,9 +334,30 @@ public class BuyFragment extends Fragment implements ProductContract.View {
 
             dialog.show();
         });
-
+//        rcvProducts.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    loadMoreData();
+//                }
+//            }
+//        });
     }
-
+//    public void loadMoreData() {
+//        if (isLoading || !hasMoreData()) {
+//            return;
+//        }
+//        isLoading = true;
+//        // Make a network request to the server using the current offset and ITEMS_PER_PAGE as the limit
+//        // Parse the response and update the RecyclerView with the new data
+//        currentOffset += 10;
+//        isLoading = false;
+//    }
+//    private boolean hasMoreData() {
+//        // Return true if there is more data to load, false otherwise
+//        return false;
+//    }
     @Override
     public void onDestroy() {
         super.onDestroy();

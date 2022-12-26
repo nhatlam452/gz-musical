@@ -12,17 +12,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -30,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duantotnghiep.Adapter.LoginPromotionAdapter;
+import com.example.duantotnghiep.Adapter.SpinnerAdapter;
 import com.example.duantotnghiep.BroadcastReceiver.NetworkBroadcastReceiver;
 import com.example.duantotnghiep.Contract.NewsInterface;
 import com.example.duantotnghiep.Contract.UserContract;
@@ -298,6 +305,11 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
 
     @Override
     public void onSuccess(User user) {
+        if (user.getState() == 0){
+            AppUtil.showDialog.dismiss();
+            openDialogBan();
+            return;
+        }
         if (cbKeepLogged.isChecked()) {
             mEditor.putBoolean(AppConstants.isLogin, true);
             mEditor.apply();
@@ -308,6 +320,29 @@ public class LoginActivity extends AppCompatActivity implements UserContract.Vie
         finish();
         AppUtil.showDialog.dismiss();
 
+    }
+
+    private void openDialogBan() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_user_ban);
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = Gravity.CENTER;
+        window.setAttributes(windowAttributes);
+        dialog.setCancelable(false);
+        Button btnOk = dialog.findViewById(R.id.btnBanAccount);
+        btnOk.setOnClickListener(v->{
+            dialog.dismiss();
+        });
+        dialog.show();
     }
 
     @Override

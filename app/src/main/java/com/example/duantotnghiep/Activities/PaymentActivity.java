@@ -6,12 +6,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,6 +32,7 @@ import com.example.duantotnghiep.Model.Order;
 import com.example.duantotnghiep.Model.User;
 import com.example.duantotnghiep.Presenter.OrderPresenter;
 import com.example.duantotnghiep.R;
+import com.example.duantotnghiep.Utilities.AppConstants;
 import com.example.duantotnghiep.Utilities.AppInfo;
 import com.example.duantotnghiep.Utilities.AppUtil;
 import com.example.duantotnghiep.Utilities.LocalStorage;
@@ -66,6 +74,8 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
         // ZaloPay SDK Init
         ZaloPaySDK.init(2553, Environment.SANDBOX);
         btnPay.setOnClickListener(v -> {
+
+
             Toast.makeText(this, order.getOrderMethod() + "", Toast.LENGTH_SHORT).show();
             Order orderConfirm = order;
             if (!AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString()) && !AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getHint().toString())) {
@@ -133,6 +143,7 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
 
         });
     }
+
 
     private void initUI() {
         tvPhonePaymentConfirm = findViewById(R.id.tvPhonePaymentConfirm);
