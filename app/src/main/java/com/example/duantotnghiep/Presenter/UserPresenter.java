@@ -101,7 +101,7 @@ public class UserPresenter implements UserContract.Presenter, UserContract.Model
                     if (task.isSuccessful()) {
                         model.getRegister(onFinishedListener, user);
                     } else {
-                        Toast.makeText(activity, task.getException() + "", Toast.LENGTH_SHORT).show();
+                        mView.onFail("\"Incorrect OTP\"");
                         // Sign in failed, display a message and update the UI
                         Log.w("========>", "signInWithCredential:failure", task.getException());
                     }

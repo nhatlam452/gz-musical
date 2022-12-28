@@ -74,9 +74,6 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
         // ZaloPay SDK Init
         ZaloPaySDK.init(2553, Environment.SANDBOX);
         btnPay.setOnClickListener(v -> {
-
-
-            Toast.makeText(this, order.getOrderMethod() + "", Toast.LENGTH_SHORT).show();
             Order orderConfirm = order;
             if (!AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString()) && !AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getHint().toString())) {
                 Toast.makeText(this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
@@ -86,7 +83,7 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
                 } else if (!AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString())) {
                     Toast.makeText(this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText().toString())) {
+                } else if (AppUtil.ValidateInput.isValidPhoneNumber(tvPhonePaymentConfirm.getText(). toString())) {
                     orderConfirm = new Order(order.getUserId(), tvPhonePaymentConfirm.getText().toString(),
                             order.getStatus(), order.getTotal(), orderConfirm.getNote(), order.getCreateDate(), order.getDeliveryTime(),
                             order.getOrderMethod(), order.getdFrom(), order.getdTo(), order.getPaymentMethod(), order.getmList()
