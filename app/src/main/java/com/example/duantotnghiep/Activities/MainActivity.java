@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements UserContract.View
         networkChangeReceiver = new NetworkBroadcastReceiver(layout);
 
 //        onGetNotification();
-        checkMyPermission();
         imgClose.setOnClickListener(v -> closeDrawer());
         findViewById(R.id.tvAU).setOnClickListener(v -> {
             startWebView("https://vietthuong.vn/gioi-thieu.html");
@@ -244,47 +243,9 @@ public class MainActivity extends AppCompatActivity implements UserContract.View
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(networkChangeReceiver);
-        mEditor.putBoolean(AppConstants.iSLocationPermissionRequestOnetime,false);
-        mEditor.putBoolean(AppConstants.isCameraPermissionRequestOnetime,false);
-        mEditor.apply();
     }
 
-    private void checkMyPermission() {
-        Dexter.withContext(this).withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new MultiplePermissionsListener() {
-            @Override
-            public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                    mEditor.putBoolean(AppConstants.iSLocationPermissionRequestOnetime,true);
-                    mEditor.putBoolean(AppConstants.isCameraPermissionRequestOnetime,true);
-                    mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
-                    mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
-                    mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
-                } else {
-                    for (int i = 0; i < multiplePermissionsReport.getGrantedPermissionResponses().size(); i++) {
-                        switch (multiplePermissionsReport.getGrantedPermissionResponses().get(i).getPermissionName()) {
-                            case "android.permission.CAMERA":
-                                mEditor.putBoolean(AppConstants.isCameraPermissionRequest, true);
-                                break;
-                            case "android.permission.ACCESS_FINE_LOCATION":
-                                mEditor.putBoolean(AppConstants.iSLocationPermissionRequest, true);
-                                break;
-                            case "android.permission.READ_EXTERNAL_STORAGE":
-                                mEditor.putBoolean(AppConstants.isWritePermissionRequest, true);
-                                break;
-                        }
-                    }
-                    mEditor.apply();
-                }
-            }
 
-            @Override
-            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-                permissionToken.continuePermissionRequest();
-
-            }
-
-        }).check();
-    }
 
 
 

@@ -318,8 +318,8 @@ public class CommentFragment extends Fragment implements CommentContact.View {
             return;
         }
         List<Comment> commentList = new ArrayList<>();
-        for (int i=0;i<userAddressList.size();i++){
-            if (userAddressList.get(i).getStatus() == 1){
+        for (int i = 0; i < userAddressList.size(); i++) {
+            if (userAddressList.get(i).getStatus() == 1) {
                 commentList.add(userAddressList.get(i));
             }
         }

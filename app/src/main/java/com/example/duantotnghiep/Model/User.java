@@ -73,6 +73,9 @@ public class User extends UserAddress implements Serializable {
 
     }
 
+    public User() {
+    }
+
     public User(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }

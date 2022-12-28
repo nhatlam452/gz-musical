@@ -15,7 +15,7 @@ public class UserResponse {
     public UserResponse() {
     }
 
-    public UserResponse(int responseCode, String error, String message, List<User> data) {
+        public UserResponse(int responseCode, String error, String message, List<User> data) {
         this.responseCode = responseCode;
         this.error = error;
         this.message = message;
