@@ -7,7 +7,7 @@ password : Nhatlam452@
 PhoneNumber : 0789867336    
 OTP : 123456
 
-
+//link video các chức năng cơ bản của app và webamin : https://drive.google.com/drive/u/0/folders/1E3WsjaxyMetjCAKEVRubl-U_gQW-RQ6N
 //link webadmin : https://gzmusical.000webhostapp.com
 username : admin    
 password : 123456789
