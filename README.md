@@ -1,15 +1,20 @@
 # DuAnTotNghiep: 
-//đăng nhập
-Phone Number : 0909916020
-password : Nhatlam452@
+//download zalopay-lib and zalopay-merchant để test
+https://docs.zalopay.vn/v2/docs/apptoapp/demo.html
+// đăng nhập zalo-pay 
+sdt : 0909916020
+otp : 111111
+matkhau : 159357
 
-//dùng để đăng ký 
-PhoneNumber : 0789867336    
-OTP : 123456
+//dang nhap app
+sdt : 0909916020   
+mk : 
+
+
+
 
 //link video các chức năng cơ bản của app và webamin : https://drive.google.com/drive/u/0/folders/1E3WsjaxyMetjCAKEVRubl-U_gQW-RQ6N
 //link webadmin : https://gzmusical.000webhostapp.com
 username : admin    
 password : 123456789
 
-//Em vẫn đang tìm hiểu về unit test nên unit test có thể sẽ không đúng ạ.
