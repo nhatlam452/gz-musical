@@ -104,7 +104,6 @@ public class UserInfoActivity extends AppCompatActivity implements UserContract.
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         userId = user.getUserId();
-        Toast.makeText(this, "" + userId, Toast.LENGTH_SHORT).show();
         edtPhone.setText(phoneNumber);
 
         if (user.getAvt() != null) {

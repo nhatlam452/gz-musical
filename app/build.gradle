@@ -39,10 +39,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:20.1.0'
     implementation 'com.google.firebase:firebase-messaging:23.1.0'
     implementation 'com.google.firebase:firebase-firestore:24.4.1'
-    implementation fileTree(dir: 'C:\\Users\\nhatl\\Downloads\\zalopay', include: ['*.aar', '*.jar'], exclude: [])
-    implementation fileTree(dir: 'C:\\Users\\Admin\\Desktop\\ZaloPay', include: ['*.aar', '*.jar'], exclude: [])
     implementation 'com.google.android.gms:play-services-analytics-impl:18.0.2'
-    implementation files('Downloads')
     implementation fileTree(dir: 'C:\\Users\\Admin\\Downloads\\Programs', include: ['*.aar', '*.jar'], exclude: [])
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

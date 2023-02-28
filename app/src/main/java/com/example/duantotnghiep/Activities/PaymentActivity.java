@@ -95,15 +95,12 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
                     CreateOrder orderApi = new CreateOrder();
                     try {
                         DecimalFormat format = new DecimalFormat("0.#");
-                        Log.d("Zalo Failed ", format.format(order.getTotal()) + "");
                         JSONObject data = orderApi.createOrder(format.format(order.getTotal()));
                         String code = data.getString("return_code");
+                        Log.d("code","code " + code);
                         if (code.equals("1")) {
                             String token = data.getString("zp_trans_token");
                             Order finalOrderConfirm = orderConfirm;
-                            Gson gson = new Gson();
-                            String json = gson.toJson(finalOrderConfirm);
-                            Log.d("order nè", "Order : " + json);
                             ZaloPaySDK.getInstance().payOrder(this, token, "demozpdk://app", new PayOrderListener() {
                                 @Override
                                 public void onPaymentSucceeded(String s, String s1, String s2) {
@@ -117,7 +114,7 @@ public class PaymentActivity extends AppCompatActivity implements OrderContract.
 
                                 @Override
                                 public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
-                                    Toast.makeText(PaymentActivity.this, "" + zaloPayError.toString(), Toast.LENGTH_SHORT).show();
+                                    Log.d("error : ",  "slo" + zaloPayError + "--" + s + "--" + s1);
                                 }
                             });
                         }
